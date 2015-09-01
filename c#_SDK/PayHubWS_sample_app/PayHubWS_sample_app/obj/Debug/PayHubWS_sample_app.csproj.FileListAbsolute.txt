@@ -1,0 +1,11 @@
+C:\Users\agustin\Documents\payhubwsRepository\C# SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\PayHubWS_sample_app.exe.config
+C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\PayHubWS_sample_app.exe.config
+C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\PayHubWS_sample_app.exe
+C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\PayHubWS_sample_app.pdb
+C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\PayHubSDK.dll
+C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\PayHubSDK.pdb
+C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\obj\Debug\PayHubWS_sample_app.exe
+C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\obj\Debug\PayHubWS_sample_app.pdb
+C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\Newtonsoft.Json.dll
+C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\Newtonsoft.Json.xml
+C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\obj\Debug\PayHubWS_sample_app.csprojResolveAssemblyReference.cache

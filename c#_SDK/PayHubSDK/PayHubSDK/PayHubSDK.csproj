@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{100A5368-5739-4322-AB0C-C675F7B2B898}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PayHubSDK</RootNamespace>
+    <AssemblyName>PayHubSDK</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="com\payhub\ws\api\AbstractInfo.cs" />
+    <Compile Include="com\payhub\ws\api\AuthorizationResponseInformation.cs" />
+    <Compile Include="com\payhub\ws\api\BillInformation.cs" />
+    <Compile Include="com\payhub\ws\api\CaptureResponseInfromation.cs" />
+    <Compile Include="com\payhub\ws\api\CardDataInformation.cs" />
+    <Compile Include="com\payhub\ws\api\CustomerInformation.cs" />
+    <Compile Include="com\payhub\ws\api\Errors.cs" />
+    <Compile Include="com\payhub\ws\api\MerchantInformation.cs" />
+    <Compile Include="com\payhub\ws\api\RecurringBillInformation.cs" />
+    <Compile Include="com\payhub\ws\api\RefundInformation.cs" />
+    <Compile Include="com\payhub\ws\api\SaleResponseInformation.cs" />
+    <Compile Include="com\payhub\ws\api\ScheduleInformation.cs" />
+    <Compile Include="com\payhub\ws\api\TransactionManager.cs" />
+    <Compile Include="com\payhub\ws\api\TransactionReportInformation.cs" />
+    <Compile Include="com\payhub\ws\api\TransactionType.cs" />
+    <Compile Include="com\payhub\ws\api\VerifyResponseInformation.cs" />
+    <Compile Include="com\payhub\ws\api\VoidResponseInformation.cs" />
+    <Compile Include="com\payhub\ws\model\AuthOnly.cs" />
+    <Compile Include="com\payhub\ws\model\AuthOnlyResponse.cs" />
+    <Compile Include="com\payhub\ws\model\Bill.cs" />
+    <Compile Include="com\payhub\ws\model\BillingReferences.cs" />
+    <Compile Include="com\payhub\ws\model\Capture.cs" />
+    <Compile Include="com\payhub\ws\model\CaptureResponse.cs" />
+    <Compile Include="com\payhub\ws\model\CardData.cs" />
+    <Compile Include="com\payhub\ws\model\Customer.cs" />
+    <Compile Include="com\payhub\ws\model\CustomerPhones.cs" />
+    <Compile Include="com\payhub\ws\model\CustomerReference.cs" />
+    <Compile Include="com\payhub\ws\model\EncryptedTrackData.cs" />
+    <Compile Include="com\payhub\ws\model\Merchant.cs" />
+    <Compile Include="com\payhub\ws\model\MontlySchedule.cs" />
+    <Compile Include="com\payhub\ws\model\Order.cs" />
+    <Compile Include="com\payhub\ws\model\RecordFormat.cs" />
+    <Compile Include="com\payhub\ws\model\RecurringBill.cs" />
+    <Compile Include="com\payhub\ws\model\RecurringBillResponse.cs" />
+    <Compile Include="com\payhub\ws\model\Refund.cs" />
+    <Compile Include="com\payhub\ws\model\RefundResponse.cs" />
+    <Compile Include="com\payhub\ws\model\Sale.cs" />
+    <Compile Include="com\payhub\ws\model\SaleResponse.cs" />
+    <Compile Include="com\payhub\ws\model\Schedule.cs" />
+    <Compile Include="com\payhub\ws\model\ScheduleSartAndEnd.cs" />
+    <Compile Include="com\payhub\ws\model\Status.cs" />
+    <Compile Include="com\payhub\ws\model\TransactionAmount.cs" />
+    <Compile Include="com\payhub\ws\model\TransactionSearchParameters.cs" />
+    <Compile Include="com\payhub\ws\model\Verify.cs" />
+    <Compile Include="com\payhub\ws\model\VerifyResponse.cs" />
+    <Compile Include="com\payhub\ws\model\VoidResponse.cs" />
+    <Compile Include="com\payhub\ws\model\VoidTransaction.cs" />
+    <Compile Include="com\payhub\ws\util\WsConnections.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
