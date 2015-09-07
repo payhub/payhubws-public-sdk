@@ -54,5 +54,27 @@ namespace PayHubWS
             RecurringBillInformation response = transaction.doRecurringBill(recurringBill);
             Console.Write(response.rowData);
         }
+        public void findByMerchantSample() {
+            string url = "http://localhost:8251/payhubws/api/v2/";
+            string oauth = "af28ce9b-7366-4dfa-b643-44e9897ebc2b";
+            Merchant merchant = new Merchant();
+            merchant.organization_id = 10002;
+            merchant.terminal_id = 2;
+            TransactionManager transaction = new TransactionManager(url, oauth, merchant);
+            List<RecurringBillInformation> response = transaction.findRecurringBillInformationByMerchantOrganization(merchant.organization_id.ToString());
+            if (response!= null) Console.Write(response[0].rowData);
+
+        }
+        public void findByCustomerSample()
+        {
+            string url = "http://localhost:8251/payhubws/api/v2/";
+            string oauth = "af28ce9b-7366-4dfa-b643-44e9897ebc2b";
+            Merchant merchant = new Merchant();
+            merchant.organization_id = 10002;
+            merchant.terminal_id = 2;
+            TransactionManager transaction = new TransactionManager(url, oauth, merchant);
+            List<RecurringBillInformation> response = transaction.findRecurringBillInformationByCustomer("55");
+            if (response!=null) Console.Write(response[0].rowData);
+        }
     }
 }

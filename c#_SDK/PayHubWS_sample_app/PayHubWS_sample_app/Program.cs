@@ -1,4 +1,5 @@
-﻿using PayHubWS.Samples;
+﻿using PayHubWS;
+using PayHubWS.Samples;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,9 @@ namespace PayHubWS_sample_app
     {
         static void Main(string[] args)
         {
-            TransactionReportSample sale = new TransactionReportSample();
-            sale.findReports();
+            RecurringBillingSample rbs = new RecurringBillingSample();
+            rbs.findByMerchantSample();
+            rbs.findByCustomerSample();
         }
     }
 }

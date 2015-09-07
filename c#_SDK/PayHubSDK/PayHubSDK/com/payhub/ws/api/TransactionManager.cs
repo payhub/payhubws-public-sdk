@@ -663,19 +663,29 @@ namespace PayHubSDK.com.payhub.ws.api
         /// </returns>   
         /// <seealso cref="PayHubWS.com.payhub.ws.api.RecurringBillInformation"/>
         /// </summary> 
-        public RecurringBillInformation findRecurringBillInformationByMerchantOrganization(string merchantId) 
+        public List<RecurringBillInformation> findRecurringBillInformationByMerchantOrganization(string merchantId) 
         {
             if (merchantId.Equals("") || merchantId == null)
             {
                 return null;
             }
-            RecurringBillInformation response = new RecurringBillInformation();
+            List<RecurringBillInformation> response = new List<RecurringBillInformation>();
             var url = _url + "recurring-bill/search/findByMerchantOrganizationId?organizationId=" + merchantId;
             var request = setHeadersGet(url, this._oauthToken);
             string result = doGet(request);
-            response = JsonConvert.DeserializeObject<RecurringBillInformation>(result);
-            response.rowData = result;
-            response.transactionManager = this;
+            var node = JObject.Parse(result);
+            try
+            {
+                response = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                foreach (RecurringBillInformation rbi in response)
+                {
+                    rbi.rowData = result;
+                    rbi.transactionManager = this;
+                }
+            }
+            catch {
+                return null;
+            }
             return response;
         }
         /// <summary> 
@@ -689,19 +699,30 @@ namespace PayHubSDK.com.payhub.ws.api
         /// </returns>   
         /// <seealso cref="PayHubWS.com.payhub.ws.api.RecurringBillInformation"/>
         /// </summary> 
-        public RecurringBillInformation findRecurringBillInformationByCustomer(string customerId)
+        public List<RecurringBillInformation> findRecurringBillInformationByCustomer(string customerId)
         {
             if (customerId.Equals("") || customerId == null)
             {
                 return null;
             }
-            RecurringBillInformation response = new RecurringBillInformation();
+            List<RecurringBillInformation> response = new List<RecurringBillInformation>();
             var url = _url + "recurring-bill/search/findByCustomerRef?customerId=" + customerId;
             var request = setHeadersGet(url, this._oauthToken);
             string result = doGet(request);
-            response = JsonConvert.DeserializeObject<RecurringBillInformation>(result);
-            response.rowData = result;
-            response.transactionManager = this;
+            var node = JObject.Parse(result);
+            try
+            {
+                response = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                foreach (RecurringBillInformation rbi in response)
+                {
+                    rbi.rowData = result;
+                    rbi.transactionManager = this;
+                }
+            }
+            catch
+            {
+                return null;
+            }
             return response;
         }
         /// <summary> 
