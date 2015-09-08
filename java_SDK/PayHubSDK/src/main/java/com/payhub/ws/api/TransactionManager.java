@@ -626,21 +626,31 @@ public class TransactionManager extends WsConnections{
      * @return a RecurringBillingInformation object. 
      * @see {@link com.payhub.ws.api.RecurringBillResponseInformation};
      */
-    public RecurringBillResponseInformation findRecurringBillInformationByMerchantOrganization(String merchantId) throws IOException
+    public List<RecurringBillResponseInformation> findRecurringBillInformationByMerchantOrganization(String merchantId) throws IOException
     {
     	if(merchantId.equals("")|| merchantId==null){
     		return null;
     	}
-    	RecurringBillResponseInformation response = new RecurringBillResponseInformation();
+    	//RecurringBillResponseInformation response = new RecurringBillResponseInformation();
         String url = _url + "recurring-bill/search/findByMerchantOrganizationId?organizationId="+ merchantId;
         HttpURLConnection request = setHeadersGet(url, this._oauthToken);
         String result = doGet(request);
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        response =  mapper.readValue(result, RecurringBillResponseInformation.class);
-        response.setRowData(result);
-        response.setTransactionManager(this);
-        return response;  
+        ObjectNode node = mapper.readValue(result,ObjectNode.class);
+        List<RecurringBillResponseInformation> response = new ArrayList<RecurringBillResponseInformation>();
+        try{
+	        response =  mapper.readValue(node.get("_embedded").get("recurringbills").toString(), new TypeReference<List<RecurringBillResponseInformation>>(){});
+	        int i=0;
+	        for (RecurringBillResponseInformation recurringBillResponseInformation : response) {
+	        	recurringBillResponseInformation.setTransactionManager(this);        
+	        	i++;
+			}
+        }catch(Exception e){
+        	System.out.println(e.getMessage());
+        	return null;	
+        }
+        return  response;
         
     }
     
@@ -651,21 +661,30 @@ public class TransactionManager extends WsConnections{
      * @return a RecurringBillingInformation object. 
      * @see {@link com.payhub.ws.api.RecurringBillResponseInformation};
      */
-    public RecurringBillResponseInformation findRecurringBillInformationByCustomer(String customerId) throws IOException
+    public List<RecurringBillResponseInformation> findRecurringBillInformationByCustomer(String customerId) throws IOException
     {
     	if(customerId.equals("")|| customerId==null){
     		return null;
-    	}
-    	RecurringBillResponseInformation response = new RecurringBillResponseInformation();
+    	}    
         String url = _url + "recurring-bill/search/findByCustomerRef?customerId="+ customerId;
         HttpURLConnection request = setHeadersGet(url, this._oauthToken);
         String result = doGet(request);
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        response =  mapper.readValue(result, RecurringBillResponseInformation.class);
-        response.setRowData(result);
-        response.setTransactionManager(this);
-        return response;  
+        ObjectNode node = mapper.readValue(result,ObjectNode.class);
+        List<RecurringBillResponseInformation> response = new ArrayList<RecurringBillResponseInformation>();
+        try{
+	        response =  mapper.readValue(node.get("_embedded").get("recurringbills").toString(), new TypeReference<List<RecurringBillResponseInformation>>(){});
+	        int i=0;
+	        for (RecurringBillResponseInformation recurringBillResponseInformation : response) {
+	        	recurringBillResponseInformation.setTransactionManager(this);        
+	        	i++;
+			}
+        }catch(Exception e){
+        	System.out.println(e.getMessage());
+        	return null;	
+        }
+        return  response; 
         
     }
     public List<TransactionReportInformation> findTransactions(TransactionSearchParameters parameters)throws IOException{
