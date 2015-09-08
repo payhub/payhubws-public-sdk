@@ -419,12 +419,14 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().RecurringBill::$RECURRENT_BILL_ID_LINK."search/findByMerchantOrganizationId?organizationId=".$merchantId;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['recurring-bills'] as $recurringBill) {
-            $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
-        }
-        return $response;
+        if($result['_embedded']['recurringbills']!=null) {
+            foreach ($result['_embedded']['recurringbills'] as $recurringBill) {
+                $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+            return $response;
+        }else return null;
     }
     /**
      * Perform a new query that retrieves you the Recurring Bill Information from a Customer Id.
@@ -440,12 +442,14 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().RecurringBill::$RECURRENT_BILL_ID_LINK."search/findByCustomerRef?customerId=".$customerId;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['recurring-bills'] as $recurringBill) {
-            $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
-        }
-        return $response;
+        if($result['_embedded']['recurringbills']!=null) {
+            foreach ($result['_embedded']['recurringbills'] as $recurringBill) {
+                $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+            return $response;
+        }else return null;
     }
     /**
      * Perform a new query that retrieves you the list of bills for sales Information.

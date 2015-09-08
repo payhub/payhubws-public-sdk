@@ -606,7 +606,7 @@ class TransactionManager < WsConnections
     end
     return response
   end
-=begin
+
 
   #
   # Perform a new query that retrieves you the Recurring Bill Information from a Merchant Id.
@@ -616,13 +616,16 @@ class TransactionManager < WsConnections
   # @see {@link com.payhub.ws.api.RecurringBillResponseInformation}
   #
   def findRecurringBillInformationByMerchantOrganization(merchantId)
-    url=@url+RecurringBill::RECURRENT_BILL_ID_LINK+"search/findByMerchantOrganizationId?organizationId="+merchantId
+    if merchantId.to_s=='' || merchantId==nil
+      return nil
+    end
+    url=@url+RecurringBill::RECURRENT_BILL_ID_LINK+"search/findByMerchantOrganizationId?organizationId="+merchantId.to_s
     result=doGet(url,@token)
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
     if not (result.include?('errors') or result.include?('error') or result.include?('cause') or result.include?('message'))
-      result['_embedded']['recurring-bills'].each do |recurringBill|
+      result['_embedded']['recurringbills'].each do |recurringBill|
         json=JSON.generate(recurringBill)
         response_tmp = RecurringBillResponseInformation.from_json(json)
         response_tmp.transactionManager=self
@@ -643,7 +646,10 @@ class TransactionManager < WsConnections
   # @see {@link com.payhub.ws.api.RecurringBillResponseInformation}
   #
   def findRecurringBillInformationByCustomer(customerId)
-    url=@url+RecurringBill::RECURRENT_BILL_ID_LINK+"search/findByCustomerRef?customerId="+customerId
+    if customerId.to_s=='' || customerId==nil
+      return nil
+    end
+    url=@url+RecurringBill::RECURRENT_BILL_ID_LINK+"search/findByCustomerRef?customerId="+customerId.to_s
     result=doGet(url,@token)
     return nil if result==nil or result==""
     result = JSON.parse(result)
@@ -651,7 +657,7 @@ class TransactionManager < WsConnections
     puts result
 
     if not (result.include?('errors') or result.include?('error') or result.include?('cause') or result.include?('message'))
-      result['_embedded']['recurring-bills'].each do |recurringBill|
+      result['_embedded']['recurringbills'].each do |recurringBill|
         json=JSON.generate(recurringBill)
         response_tmp = RecurringBillResponseInformation.from_json(json)
         response_tmp.transactionManager=self
@@ -660,11 +666,10 @@ class TransactionManager < WsConnections
     else
       response_tmp = Errors.from_json(JSON.generate(result))
       response.push(response_tmp)
-      end
     end
     return response
   end
-=end
+
 
 
   def findTransactions(parameters)
