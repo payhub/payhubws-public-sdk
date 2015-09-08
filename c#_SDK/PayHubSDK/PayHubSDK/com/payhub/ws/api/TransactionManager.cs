@@ -821,5 +821,18 @@ namespace PayHubSDK.com.payhub.ws.api
             }
         
         }
+        public Boolean updateRecurringBillStatus(String id){
+        if(id==null || id==""){
+            return false;
+        }
+         String url = _url + "recurring-bill-status/"+id;
+         HttpWebRequest request = setHeadersPatch(url, this._oauthToken);
+         Boolean result = doPatch(request);
+         return result;
+
+        }
+
+       
     }
+    
 }

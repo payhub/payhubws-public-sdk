@@ -40,7 +40,16 @@ namespace PayHubSDK.com.payhub.ws.util
             request.Accept = "application/json";
             return request;
 	    }
-
+        public HttpWebRequest setHeadersPatch(String url, String token)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.ContentType = "text/json";
+            request.Method = "PATCH";
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.ContentType = "application/json";
+            request.Accept = "application/json";            
+            return request;
+        }
         public string doPost(HttpWebRequest request, string _url)
         {
             string result = null;
@@ -195,5 +204,28 @@ namespace PayHubSDK.com.payhub.ws.util
             }
             return result;
         }
+
+        public bool doPatch(HttpWebRequest request)
+        {
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                var json = "{ \n\t\"recurring_bill_status\": \"CANCELED\"\n}";
+                streamWriter.Write(json);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            var response = (HttpWebResponse)request.GetResponse();
+            Console.WriteLine("\nSending 'Patch' request to URL");
+            Console.WriteLine("Response Code : " + response.StatusCode);
+            if (HttpStatusCode.NoContent == response.StatusCode)
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     }
+
 }
