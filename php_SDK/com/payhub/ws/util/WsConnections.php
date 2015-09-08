@@ -97,6 +97,26 @@ class WsConnections
 
         return $request;
     }
+    public function setHeadersPatch($WsURL,$token)
+    {
+        echo $WsURL;
+
+        $this->token=$token;
+        $request = curl_init();
+        curl_setopt($request, CURLOPT_URL, $WsURL);
+        curl_setopt($request, CURLOPT_CUSTOMREQUEST, "PATCH");
+        curl_setopt($request, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Accept: application/json',
+                'Authorization: Bearer '. $this->token)
+        );
+        curl_setopt($request, CURLOPT_POSTFIELDS,  "{ \n\t\"recurring_bill_status\": \"CANCELED\"\n}");
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($request, CURLOPT_HEADER, 1);
+        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, 0);
+
+        return $request;
+    }
     public function doPost($request, $_url){
         $response = curl_exec($request);
         $curl_info = curl_getinfo($request);
@@ -161,5 +181,15 @@ class WsConnections
         }
         $data = json_decode($rawBody, true);
         return $data;
+    }
+    public function doPatch($request){
+        $response = curl_exec($request);
+        $httpcode = curl_getinfo($request, CURLINFO_HTTP_CODE);
+        curl_close($request);
+        if ($httpcode>=200 && $httpcode< 400){
+            return true;
+        } else {
+          return false;
+        }
     }
 }

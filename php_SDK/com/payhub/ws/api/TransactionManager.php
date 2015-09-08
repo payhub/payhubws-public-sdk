@@ -610,4 +610,16 @@ class TransactionManager extends WsConnections
             return true;
         }
     }
+    public function updateRecurringBillStatus($id){
+        if(is_null($id) || $id==""){
+            return null;
+        }
+        $url = $this->getUrl()."recurring-bill-status/".$id;
+        $request = $this->setHeadersPatch($url, $this->_oauthToken);
+        $result = $this->doPatch($request);
+        var_dump($result);
+        return $result;
+
+    }
+
 }
