@@ -736,4 +736,15 @@ class TransactionManager < WsConnections
     end
 
   end
+
+  def updateRecurringBillStatus(id)
+    if id.to_s=='' || id==nil
+      return false
+    end
+    url=@url+"recurring-bill-status/"+id.to_s
+    http,request = setHeadersPatch(url,@token)
+    result=doPatch(http,request)
+    return result
+  end
+
 end

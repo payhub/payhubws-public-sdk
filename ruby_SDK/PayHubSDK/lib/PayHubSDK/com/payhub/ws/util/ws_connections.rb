@@ -48,7 +48,19 @@ class WsConnections
     request["authorization"] = 'Bearer '+@token
     return http,request
   end
-
+  def setHeadersPatch(operationUrl, token)
+    url = URI(operationUrl)
+    @token=token
+    http = Net::HTTP.new(url.host, url.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    request = Net::HTTP::Patch.new(url)
+    request["content-type"] = 'application/json'
+    request["accept"] = 'application/json'
+    request["authorization"] = 'Bearer '+@token
+    request.body = "{ \n\t\"recurring_bill_status\": \"CANCELED\"\n}"
+    return http,request
+  end
   def doPost(http,request)
     response = http.request(request)
     puts "post result: "+response.code
@@ -84,5 +96,15 @@ class WsConnections
     response = http.request(request)
     return response.read_body
   end
-  
+# @param [Object] http
+# @param [Object] request
+  def doPatch(http,request)
+    response = http.request(request)
+    case response.code.to_i
+      when 200..399
+        return true;
+      else
+        return false
+    end
+  end
 end
