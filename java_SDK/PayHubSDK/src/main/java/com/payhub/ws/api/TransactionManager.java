@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.http.client.methods.HttpPatch;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.Object;
 import org.omg.CORBA.TypeCode;
@@ -741,6 +742,20 @@ public class TransactionManager extends WsConnections{
         	System.out.println("Metadata added successfully");	
         }
         
-    }    
+    }
+    public boolean updateRecurringBillStatus(String id) throws IOException{
+	    if (id.equals("") || id==null){
+	    	return false;
+	    }
+	    String url=_url+"recurring-bill-status/"+id;
+	    HttpPatch request = setHeadersPatch(url, this.getToken());
+        boolean result = doPatch(request);	    
+	    
+        return result;
+    }
+		
+    
+
+
 	
 }

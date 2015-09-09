@@ -24,22 +24,6 @@ class RecurringBillResponseInformation
     /**
      * @return mixed
      */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param mixed $status
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getLastRecurringBillResponse()
     {
         return $this->lastRecurringBillResponse;
@@ -183,6 +167,18 @@ class RecurringBillResponseInformation
             $this->scheduleInformation=$s;
         }
         return $this->scheduleInformation;
+    }
+    /**
+     * @return mixed
+     */
+    public function getStatusInformation()
+    {
+        if($this->status==null){
+            $s = new StatusInformation($this->transactionManager);
+            $s->getDataByTransaction(TransactionType::RecurringBill, $this->lastRecurringBillResponse->getRecurringBillId());
+            $this->status=$s;
+        }
+        return $this->status;
     }
     public static function fromArray($data){
         $recurringBill = new RecurringBillResponseInformation();

@@ -829,7 +829,6 @@ namespace PayHubSDK.com.payhub.ws.api
          HttpWebRequest request = setHeadersPatch(url, this._oauthToken);
          Boolean result = doPatch(request);
          return result;
-
         }
 
        

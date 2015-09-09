@@ -108,5 +108,20 @@ namespace PayHubSDK.com.payhub.ws.api
                 return _scheduleInformation;
             }
         }
+
+        private StatusInformation _statusInformation;
+        public  StatusInformation statusInformation
+        {
+            get
+            {
+                if (_statusInformation == null)
+                {
+                    StatusInformation s = new StatusInformation(this._transactionManager);
+                    s.getDataByTransaction(TransactionType.RecurringBill, lastRecurringBillResponse.RecurringBillId);
+                    _statusInformation = s;
+                }
+                return _statusInformation;
+            }
+        }
     }
 }

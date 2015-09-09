@@ -99,8 +99,6 @@ class WsConnections
     }
     public function setHeadersPatch($WsURL,$token)
     {
-        echo $WsURL;
-
         $this->token=$token;
         $request = curl_init();
         curl_setopt($request, CURLOPT_URL, $WsURL);

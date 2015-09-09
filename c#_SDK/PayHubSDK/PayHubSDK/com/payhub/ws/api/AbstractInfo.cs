@@ -89,12 +89,13 @@ namespace PayHubSDK.com.payhub.ws.api
 	public void convertAbstractData(String json) {  
     		// read from file, convert it to user class
             var node = JObject.Parse(json);
-    			this.Version=(string)node["version"];
-    			this.CreatedAt=(string)node["createdAt"];
-    			this.LastModified=(string)node["lastModified"];
-    			this.CreatedBy=(string)node["createdBy"];
-    			this.LastModifiedBy=(string)node["lastModifiedBy"];
-    			this.metaData=(string)node["metaData"];
+            if ((string)node["version"] != null) { this.Version = (string)node["version"]; }
+            if ((string)node["createdAt"] != null) { this.CreatedAt = (string)node["createdAt"]; }
+            if ((string)node["lastModified"] != null) { this.LastModified = (string)node["lastModified"]; }
+            if ((string)node["createdBy"] != null) { this.CreatedBy = (string)node["createdBy"]; }
+            if ((string)node["lastModifiedBy"] != null) { this.LastModifiedBy = (string)node["lastModifiedBy"]; }
+            if ((string)node["metaData"] != null) { this.metaData = (string)node["metaData"]; }
+    
 	}
 	public abstract string getUrlForTransactionType(TransactionType type);
     }

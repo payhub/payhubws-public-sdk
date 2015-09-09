@@ -56,7 +56,9 @@ abstract class AbstractInfo
         $this->lastModified=$obj->{'lastModified'};
         $this->createdBy=$obj->{'createdBy'};
         $this->lastModifiedBy=$obj->{'lastModifiedBy'};
-        $this->metaData=$obj->{'metaData'};
+        if(TransactionType::Status!=($this->transactionType)) {
+            $this->metaData = $obj->{'metaData'};
+        }
 	}
 	public abstract function getUrlForTransactionType($type);
 }

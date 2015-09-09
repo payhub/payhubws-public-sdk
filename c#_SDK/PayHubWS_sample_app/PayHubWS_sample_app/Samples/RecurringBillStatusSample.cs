@@ -50,13 +50,14 @@ namespace PayHubWS
             RecurringBillInformation response = transaction.doRecurringBill(recurringBill);
             if (response.errors == null) {
                 var id = response.lastRecurringBillResponse.RecurringBillId.ToString();
+                Console.Write(response.statusInformation.status.recurring_bill_status);
                 var update = transaction.updateRecurringBillStatus(id);
                 if (update)
                 {
                     RecurringBillInformation responseUpdated = transaction.getRecurringBillInformation(id);
                     if (responseUpdated.errors == null)
                     {
-                        Console.Write(responseUpdated.rowData);
+                        Console.Write(responseUpdated.statusInformation.status.recurring_bill_status);
                     }
                 }
             }

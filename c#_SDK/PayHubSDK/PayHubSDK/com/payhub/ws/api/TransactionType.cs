@@ -19,6 +19,7 @@ namespace PayHubSDK.com.payhub.ws.api
         Schedule,//forSchedule
         Refund,//forRefund
         VoidTransaction,
-        Verify//forVoid
+        Verify,//forVoid
+        Status
     }
 }

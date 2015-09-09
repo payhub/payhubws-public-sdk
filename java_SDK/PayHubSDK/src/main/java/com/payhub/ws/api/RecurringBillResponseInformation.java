@@ -20,7 +20,7 @@ public class RecurringBillResponseInformation {
 	private CardData card_data;
 	private Bill bill;
 	private Schedule schedule;
-	private Status status;
+	private StatusInformation status;
 	private RecurringBillResponse lastRecurringBillResponse;         
 	public Object _links;
 	private List<Errors> errors;
@@ -62,12 +62,6 @@ public class RecurringBillResponseInformation {
 	}
 	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
-	}
-	public Status getStatus() {
-		return status;
-	}
-	public void setStatus(Status status) {
-		this.status = status;
 	}
 	public String getMetaData() {
 		return (String) metaData;
@@ -173,12 +167,20 @@ public class RecurringBillResponseInformation {
 	 * @throws JsonParseException 
 	 */
 	public ScheduleInformation getScheduleInformation() throws JsonParseException, JsonMappingException, IOException {
-		if(merchantInformation==null){			
+		if(scheduleInformation==null){			
 			ScheduleInformation s = new ScheduleInformation(this.transactionManager);
 			s.getDataByTransaction(TransactionType.Schedule, lastRecurringBillResponse.getRecurringBillId());
 			scheduleInformation=s;				
 		}
 		return scheduleInformation;
+	}
+	public StatusInformation getStatusInformation() throws JsonParseException, JsonMappingException, IOException {
+		if(status==null){			
+			StatusInformation s = new StatusInformation(this.transactionManager);
+			s.getDataByTransaction(TransactionType.RecurringBill, lastRecurringBillResponse.getRecurringBillId());
+			status=s;				
+		}
+		return status;
 	}
 
 }
