@@ -438,6 +438,27 @@ class TransactionManager < WsConnections
       return response
     end
   end
+
+  def getAllRecurringBillInformation()
+    url=@url+RecurringBill::RECURRENT_BILL_ID_LINK
+    result=doGet(url,@token)
+    return nil if result==nil or result==""
+    result = JSON.parse(result)
+    response ||= Array.new
+    if result['error']==nil
+      result['_embedded']['recurringbills'].each do |recurringBill|
+        response_tmp = RecurringBillResponseInformation.from_json(JSON.generate(recurringBill))
+        response_tmp.transactionManager=self
+        response.push(response_tmp)
+      end
+    else
+      result['errors'].each do |error|
+        response_tmp = Errors.from_json(JSON.generate(error))
+        response.push(response_tmp)
+      end
+    end
+    return response
+  end
   #
   # Perform a new query that retrieves you the list of bills for sales Information.
   #

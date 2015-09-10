@@ -620,6 +620,24 @@ public class TransactionManager extends WsConnections{
         return response;  
         
     }
+    
+    public List<RecurringBillResponseInformation> getAllRecurringBillInformation() throws IOException
+    {
+        String url = _url + RecurringBill.RECURRENT_BILL_ID_LINK ;
+        HttpURLConnection request = setHeadersGet(url, this._oauthToken);
+        String result = doGet(request);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        ObjectNode node = mapper.readValue(result,ObjectNode.class);
+        List<RecurringBillResponseInformation> response =  mapper.readValue(node.get("_embedded").get("recurringbills").toString(), new TypeReference<List<RecurringBillResponseInformation>>(){});
+        int i=0;
+        for (RecurringBillResponseInformation recurringBillResponseInformation : response) {
+        	recurringBillResponseInformation.setTransactionManager(this);      
+        	recurringBillResponseInformation.setRowData(node.get("_embedded").get("recurringbills").get(i).toString());
+        	i++;
+		}
+        return  response;
+    }
     /**
      * Perform a new query that retrieves you the Recurring Bill Information from a Merchant Id.
      *

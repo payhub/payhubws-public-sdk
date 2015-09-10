@@ -189,8 +189,6 @@ class RecurringBillResponseInformation
                     $recurringBill->{$key}=RecurringBillResponse::fromArray($value);
                 }elseif($key=="errors"){
                     $recurringBill->{$key}=Errors::fromArray($value);
-                }elseif($key=="status"){
-                    $recurringBill->{$key}=Status::fromArray($value);
                 }else{
                     $recurringBill->{$key} = $value;
                 }

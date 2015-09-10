@@ -652,6 +652,32 @@ namespace PayHubSDK.com.payhub.ws.api
             response.transactionManager = this;
             return response;
         }
+
+        public List<RecurringBillInformation> getAllRecurringBillInformation()
+        {
+            String url = _url + RecurringBill.RECURRENT_BILL_ID_LINK;
+            HttpWebRequest request = setHeadersGet(url, this._oauthToken);
+            String result = doGet(request);
+            var node = JObject.Parse(result);
+            List<RecurringBillInformation> response = new List<RecurringBillInformation>();
+            try
+            {
+                int index = 0;
+                response = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                foreach (RecurringBillInformation rbi in response)
+                {
+                    rbi.rowData = node["_embedded"]["recurringbills"][index].ToString();
+                    index++;
+                    rbi.transactionManager = this;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+            return response;
+        }
+
         /// <summary> 
         ///  Perform a new query that retrieves you the Recurring Bill Information from a Merchant Id.
         ///

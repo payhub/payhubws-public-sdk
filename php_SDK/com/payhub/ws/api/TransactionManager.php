@@ -412,6 +412,22 @@ class TransactionManager extends WsConnections
      * @return a RecurringBillingInformation object.
      * @see {@link com.payhub.ws.api.RecurringBillResponseInformation};
      */
+    public function getAllRecurringBillInformation()
+    {
+        $url = $this->getUrl() . RecurringBill::$RECURRENT_BILL_ID_LINK;
+        $request = $this->setHeadersGet($url, $this->_oauthToken);
+        $result = $this->doGet($request);
+        if($result['_embedded']['recurringbills']!=null) {
+            foreach ($result['_embedded']['recurringbills'] as $recurringBill) {
+                $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+            return $response;
+        }else{
+            return null;
+        }
+    }
     public function findRecurringBillInformationByMerchantOrganization($merchantId){
         if(is_null($merchantId) || $merchantId==""){
             return null;

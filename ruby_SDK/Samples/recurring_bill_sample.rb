@@ -1,11 +1,15 @@
 require 'PayHubSDK/com/payhub/ws/extra/include_classes'
 
+=begin
 wsURL="https://staging-api.payhub.com/api/v2/"
 oauth_token = "107d74ab-4a18-4713-88ff-69bd05710086"
+=end
+wsURL="http://localhost:8251/payhubws/api/v2/"
+oauth_token = "af28ce9b-7366-4dfa-b643-44e9897ebc2b"
 
 merchant = Merchant.new
-merchant.organization_id=10127
-merchant.terminal_id=215
+merchant.organization_id=10002
+merchant.terminal_id=2
 
 # bill data
 bill= Bill.new
@@ -24,7 +28,7 @@ customer.phone_number="844-217-1631"
 customer.phone_type="W"
 
 montly_s=MonthlySchedule.new("E",15)
-start=Date.new(2015,8,29)
+start=Date.new(2015,9,29)
 type="O"
 endDate=Date.new(2016,8,29)
 scheduleSandE=ScheduleStartAndEnd.new(start,type,endDate)
@@ -37,4 +41,10 @@ recurringBill = RecurringBill.new(merchant,customer,bill,card_data,schedule)
 response = transaction.doRecurringBill(recurringBill)
 if response.errors==nil
   puts response.inspect
+else
+  puts response.errors.inspect
 end
+resultList = transaction.getAllRecurringBillInformation()
+puts resultList.at(0).inspect
+
+

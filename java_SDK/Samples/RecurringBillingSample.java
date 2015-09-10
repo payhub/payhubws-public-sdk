@@ -67,4 +67,15 @@ public class RecurringBillingSample {
         RecurringBillResponseInformation response = transaction.doRecurringBill(recurringBill);
         System.out.println(response.rowData);
     }
+	public void findAll() throws IOException, ParseException
+    {
+		String url = "http://localhost:8251/payhubws/api/v2/";
+	    String oauth = "af28ce9b-7366-4dfa-b643-44e9897ebc2b";
+        Merchant merchant = new Merchant();
+        merchant.setOrganization_id(10002);
+        merchant.setTerminal_id(2);
+        TransactionManager transaction = new TransactionManager(url, oauth, merchant);
+        List<RecurringBillResponseInformation> response = transaction.getAllRecurringBillInformation();
+        System.out.println(response.get(0).rowData);
+    }
 }
