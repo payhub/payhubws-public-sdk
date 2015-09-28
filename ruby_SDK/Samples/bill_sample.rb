@@ -1,6 +1,6 @@
 require 'PayHubSDK/com/payhub/ws/extra/include_classes'
 wsURL="https://staging-api.payhub.com/api/v2/"
-oauth_token = "107d74ab-4a18-4713-88ff-69bd05710086"
+oauth_token = "bb96358e-2aa8-4c6c-8a2e-901b676e979d"
 
 merchant = Merchant.new
 merchant.organization_id=10127
