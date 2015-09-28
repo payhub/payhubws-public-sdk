@@ -12,7 +12,7 @@ namespace PayHubWS_sample_app.Samples
     {
         public void getLists() {
             string url = "https://staging-api.payhub.com/api/v2/";
-            string oauth = "107d74ab-4a18-4713-88ff-69bd05710086";
+            string oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
 
             Merchant merchant = new Merchant();
             merchant.organization_id = 10127;
