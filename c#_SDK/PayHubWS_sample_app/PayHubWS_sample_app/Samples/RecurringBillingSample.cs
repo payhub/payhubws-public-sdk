@@ -17,7 +17,7 @@ namespace PayHubWS
         public void doRecurringBilling()
         {
             string url = "https://staging-api.payhub.com/api/v2/";
-            string oauth = "107d74ab-4a18-4713-88ff-69bd05710086";
+            string oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
             ScheduleSartAndEnd scheduleSartAndEnd = new ScheduleSartAndEnd();
             scheduleSartAndEnd.Start_date = Convert.ToDateTime("2015-07-08");
             scheduleSartAndEnd.End_date = Convert.ToDateTime("2016-07-08");
@@ -55,8 +55,8 @@ namespace PayHubWS
             Console.Write(response.rowData);
         }
         public void findByMerchantSample() {
-            string url = "http://localhost:8251/payhubws/api/v2/";
-            string oauth = "af28ce9b-7366-4dfa-b643-44e9897ebc2b";
+            string url = "https://staging-api.payhub.com/api/v2/";
+            string oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
             Merchant merchant = new Merchant();
             merchant.organization_id = 10002;
             merchant.terminal_id = 2;
@@ -67,8 +67,8 @@ namespace PayHubWS
         }
         public void findByCustomerSample()
         {
-            string url = "http://localhost:8251/payhubws/api/v2/";
-            string oauth = "af28ce9b-7366-4dfa-b643-44e9897ebc2b";
+            string url = "https://staging-api.payhub.com/api/v2/";
+            string oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
             Merchant merchant = new Merchant();
             merchant.organization_id = 10002;
             merchant.terminal_id = 2;
@@ -78,8 +78,8 @@ namespace PayHubWS
         }
         public void findAll()
         {
-            string url = "http://localhost:8251/payhubws/api/v2/";
-            string oauth = "af28ce9b-7366-4dfa-b643-44e9897ebc2b";
+            string url = "https://staging-api.payhub.com/api/v2/";
+            string oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
             Merchant merchant = new Merchant();
             merchant.organization_id = 10002;
             merchant.terminal_id = 2;
