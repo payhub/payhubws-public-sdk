@@ -23,8 +23,8 @@ public class RecurringBillStatusSample {
 
 	public void updateRecurringBill() throws IOException, ParseException {
 		
-		    String url = "http://localhost:8251/payhubws/api/v2/";
-	        String oauth = "af28ce9b-7366-4dfa-b643-44e9897ebc2b";
+	        String url = "https://staging-api.payhub.com/api/v2/";
+	        String oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
 	        ScheduleSartAndEnd scheduleSartAndEnd = new ScheduleSartAndEnd();
 	        scheduleSartAndEnd.setStartDate("2015-09-20");
 	        scheduleSartAndEnd.setEndDate("2016-07-08");
