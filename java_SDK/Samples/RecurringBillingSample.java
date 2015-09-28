@@ -29,7 +29,7 @@ public class RecurringBillingSample {
 	public void doRecurringBilling() throws IOException, ParseException
     {
         String url = "https://staging-api.payhub.com/api/v2/";
-        String oauth = "107d74ab-4a18-4713-88ff-69bd05710086";
+        String oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
         ScheduleSartAndEnd scheduleSartAndEnd = new ScheduleSartAndEnd();
         scheduleSartAndEnd.setStartDate("2015-07-08");
         scheduleSartAndEnd.setEndDate("2016-07-08");
@@ -69,8 +69,8 @@ public class RecurringBillingSample {
     }
 	public void findAll() throws IOException, ParseException
     {
-		String url = "http://localhost:8251/payhubws/api/v2/";
-	    String oauth = "af28ce9b-7366-4dfa-b643-44e9897ebc2b";
+        String url = "https://staging-api.payhub.com/api/v2/";
+        String oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
         Merchant merchant = new Merchant();
         merchant.setOrganization_id(10002);
         merchant.setTerminal_id(2);
