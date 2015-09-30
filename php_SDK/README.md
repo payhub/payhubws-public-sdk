@@ -14,9 +14,9 @@ include_once ($path."/payhub/ws/extra/includeClasses.php");
 
 ## Development
 
-#Copy both folders ``com`` and `Samples` into your server.
-#Go to http://localhost/your_app/Samples
-#Execute the sample that you choose.
+``*`` Copy both folders ``com`` and `Samples` into your server.
+``*`` Go to http://localhost/your_app/Samples
+``*`` Execute the sample that you choose.
 
 
 
