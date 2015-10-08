@@ -26,7 +26,7 @@ Welcome! In this directory, you'll find the files you need to be able to package
 		<version>2.5.0</version>
 	</dependency>
 
-* Updete the maven dependencies.
+* Update the maven dependencies.
 * You're ready to use our SDK.
 
 ## Contributing
