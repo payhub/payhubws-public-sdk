@@ -16,12 +16,18 @@ import com.payhub.ws.model.Refund;
  */
 public class RefundSample {
 	public void doRefund() throws IOException{
-        String url = "https://staging-api.payhub.com/api/v2/";
-        String oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
+    	 /* The current url, oauth_token, orgId and Terminal Id provided in this example, are only for testing purposes
+		 *  For development purposes you need to contact the Payhub Integration Support team. They will provide you with  *  all you need.
+		 *  Thanks.
+		 */
+		 //Defining the Web Service URL
+         String url = "https://sandbox-api.payhub.com/api/v2/";
+         String oauth = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
 
-        Merchant merchant = new Merchant();
-        merchant.organization_id = 10127;
-        merchant.terminal_id = 215;
+         Merchant merchant = new Merchant();
+         merchant.setOrganization_id(10074);
+         merchant.setTerminal_id(134);
+
         //'{someSaleId}' is the Id for the sale that is going to be refunded, each refund transaction will be valid only if the batch has been settled
         //'{someRecordFormat}' like CREDIT_CARD
         String transaction_id="someSaleId";

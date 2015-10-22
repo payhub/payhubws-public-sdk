@@ -12,8 +12,19 @@ namespace PayHubWS
     {
         public void updateStatus()
         {
-            string url = "https://staging-api.payhub.com/api/v2/";
-            string oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
+			/* The current url, oauth_token, orgId and Terminal Id provided in this example, are only for testing purposes
+			*  For development purposes you need to contact the Payhub Integration Support team. They will provide you with  *  all you need.
+			*  Thanks.
+			*/
+			//Defining the Web Service URL
+            string url = "https://sandbox-api.payhub.com/api/v2/";
+            string oauth = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
+           
+            Merchant merchant = new Merchant();
+            merchant.organization_id = 10074;
+            merchant.terminal_id = 134;
+
+
             ScheduleSartAndEnd scheduleSartAndEnd = new ScheduleSartAndEnd();
             scheduleSartAndEnd.Start_date = Convert.ToDateTime("2015-09-08");
             scheduleSartAndEnd.End_date = Convert.ToDateTime("2016-07-08");
@@ -26,9 +37,7 @@ namespace PayHubWS
             Schedule schedule = new Schedule(scheduleSartAndEnd, montlySchedule);
             schedule.Schedule_type = "M";
             schedule.Bill_generation_interval = 1;
-            Merchant merchant = new Merchant();
-            merchant.organization_id = 10002;
-            merchant.terminal_id = 2;
+
             Bill bill = new Bill();
             bill.Base_amount = (decimal)19.99m;
             CardData card_data = new CardData();

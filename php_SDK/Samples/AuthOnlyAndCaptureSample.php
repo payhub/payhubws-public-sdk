@@ -1,23 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: agustin
- * Date: 27/07/2015
- * Time: 12:34
- */
-
+/* The current url, oauth_token, orgId and Terminal Id provided in this example, are only for testing purposes
+*  For development purposes you need to contact the Payhub Integration Support team. They will provide you with  *   all you need.
+*  Thanks.
+*/
 $path_to_IncludeClases="../com/payhub/ws/extra/includeClasses.php";
 include_once $path_to_IncludeClases;
 
 //Defining the Web Service URL
-$WsURL="https://staging-api.payhub.com/api/v2/";
-$oauth_token = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
+$WsURL="https://sandbox-api.payhub.com/api/v2/";
+$oauth_token = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
 
 //Defining data for the SALE transaction
 // Merchant data (obtained from the payHub Virtual Terminal (3rd party integration)
 $merchant = new Merchant();
-$merchant->setOrganizationId(10127);
-$merchant->setTerminalId(215);
+$merchant->setOrganizationId(10074);
+$merchant->setTerminalId(134);
 
 // bill data
 $bill= new Bill();

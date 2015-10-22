@@ -28,8 +28,18 @@ import com.payhub.ws.model.TransactionAmount;
 public class RecurringBillingSample {
 	public void doRecurringBilling() throws IOException, ParseException
     {
-        String url = "https://staging-api.payhub.com/api/v2/";
-        String oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
+    	 /* The current url, oauth_token, orgId and Terminal Id provided in this example, are only for testing purposes
+		 *  For development purposes you need to contact the Payhub Integration Support team. They will provide you with  *  all you need.
+		 *  Thanks.
+		 */
+		 //Defining the Web Service URL
+         String url = "https://sandbox-api.payhub.com/api/v2/";
+         String oauth = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
+
+         Merchant merchant = new Merchant();
+         merchant.setOrganization_id(10074);
+         merchant.setTerminal_id(134);
+
         ScheduleSartAndEnd scheduleSartAndEnd = new ScheduleSartAndEnd();
         scheduleSartAndEnd.setStartDate("2015-07-08");
         scheduleSartAndEnd.setEndDate("2016-07-08");
@@ -43,9 +53,6 @@ public class RecurringBillingSample {
         schedule.setSchedule_type("M");
         schedule.setBill_generation_interval(1);
         
-        Merchant merchant = new Merchant();
-        merchant.setOrganization_id(10127);
-        merchant.setTerminal_id(215);
         
         Bill bill = new Bill();
         bill.setBase_amount(new TransactionAmount().dollars(new BigDecimal(100)));
@@ -69,11 +76,18 @@ public class RecurringBillingSample {
     }
 	public void findAll() throws IOException, ParseException
     {
-        String url = "https://staging-api.payhub.com/api/v2/";
-        String oauth = "bb96358e-2aa8-4c6c-8a2e-901b676e979d";
-        Merchant merchant = new Merchant();
-        merchant.setOrganization_id(10002);
-        merchant.setTerminal_id(2);
+    	 /* The current url, oauth_token, orgId and Terminal Id provided in this example, are only for testing purposes
+		 *  For development purposes you need to contact the Payhub Integration Support team. They will provide you with  *  all you need.
+		 *  Thanks.
+		 */
+		 //Defining the Web Service URL
+         String url = "https://sandbox-api.payhub.com/api/v2/";
+         String oauth = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
+
+         Merchant merchant = new Merchant();
+         merchant.setOrganization_id(10074);
+         merchant.setTerminal_id(134);
+
         TransactionManager transaction = new TransactionManager(url, oauth, merchant);
         List<RecurringBillResponseInformation> response = transaction.getAllRecurringBillInformation();
         System.out.println(response.get(0).rowData);
