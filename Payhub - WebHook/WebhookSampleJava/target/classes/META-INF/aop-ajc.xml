@@ -1,0 +1,13 @@
+<aspectj>
+<aspects>
+<aspect name="webhook.sample.domain.Notifications_Roo_Jpa_ActiveRecord"/>
+<aspect name="webhook.sample.web.NotificationsController_Roo_Controller"/>
+<aspect name="webhook.sample.domain.Notifications_Roo_ToString"/>
+<aspect name="webhook.sample.domain.Notifications_Roo_JavaBean"/>
+<aspect name="webhook.sample.domain.Notifications_Roo_Configurable"/>
+<aspect name="webhook.sample.web.ApplicationConversionServiceFactoryBean_Roo_ConversionService"/>
+<aspect name="webhook.sample.domain.Notifications_Roo_Jpa_Entity"/>
+<aspect name="webhook.sample.domain.Notifications_Roo_Json"/>
+</aspects>
+</aspectj>
+

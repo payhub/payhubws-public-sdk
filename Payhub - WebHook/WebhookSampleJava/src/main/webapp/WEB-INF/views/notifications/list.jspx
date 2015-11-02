@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_webhook_sample_domain_Notifications" items="${notificationses}" z="sZNrLLS1dVc6OxvRwBhUWHSErrI=">
+        <table:table data="${notificationses}" id="l_webhook_sample_domain_Notifications" path="/notifications" z="+quv65gTu0krp4dO6XahvKVvPTI=">
+            <table:column id="c_webhook_sample_domain_Notifications_notification" property="notification" z="FqJc0jCv/ixEEkZpbXfbIqCKqs0="/>
+        </table:table>
+    </page:list>
+</div>
