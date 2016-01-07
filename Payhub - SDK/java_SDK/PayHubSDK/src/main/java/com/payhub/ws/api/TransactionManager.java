@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.http.client.methods.HttpPatch;
+import org.apache.commons.lang3.StringUtils;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.Object;
 import org.omg.CORBA.TypeCode;
@@ -13,6 +13,7 @@ import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -34,6 +35,13 @@ import com.payhub.ws.model.TransactionSearchParameters;
 import com.payhub.ws.model.Verify;
 import com.payhub.ws.model.VoidTransaction;
 import com.payhub.ws.util.WsConnections;
+import com.payhub.ws.vt.GeneralSettings;
+import com.payhub.ws.vt.RiskFraudSettings;
+import com.payhub.ws.vt.RoleSettings;
+import com.payhub.ws.vt.UserRoles;
+import com.payhub.ws.vt.ValidatedDevices;
+import com.payhub.ws.vt.WebhookConfiguration;
+
 
 @JsonInclude(JsonInclude.Include.NON_NULL) 
 public class TransactionManager extends WsConnections{
@@ -132,6 +140,7 @@ public class TransactionManager extends WsConnections{
     public AuthorizationResponseInformation doAuthonly(AuthOnly authorization) throws IOException
     {
     	authorization.setMerchant(this._merchant);
+    	authorization.setUrl(this._url);
         HttpURLConnection request = setHeadersPost(authorization.getUrl(), this.getToken());
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -620,24 +629,6 @@ public class TransactionManager extends WsConnections{
         return response;  
         
     }
-    
-    public List<RecurringBillResponseInformation> getAllRecurringBillInformation() throws IOException
-    {
-        String url = _url + RecurringBill.RECURRENT_BILL_ID_LINK ;
-        HttpURLConnection request = setHeadersGet(url, this._oauthToken);
-        String result = doGet(request);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        ObjectNode node = mapper.readValue(result,ObjectNode.class);
-        List<RecurringBillResponseInformation> response =  mapper.readValue(node.get("_embedded").get("recurringbills").toString(), new TypeReference<List<RecurringBillResponseInformation>>(){});
-        int i=0;
-        for (RecurringBillResponseInformation recurringBillResponseInformation : response) {
-        	recurringBillResponseInformation.setTransactionManager(this);      
-        	recurringBillResponseInformation.setRowData(node.get("_embedded").get("recurringbills").get(i).toString());
-        	i++;
-		}
-        return  response;
-    }
     /**
      * Perform a new query that retrieves you the Recurring Bill Information from a Merchant Id.
      *
@@ -645,31 +636,21 @@ public class TransactionManager extends WsConnections{
      * @return a RecurringBillingInformation object. 
      * @see {@link com.payhub.ws.api.RecurringBillResponseInformation};
      */
-    public List<RecurringBillResponseInformation> findRecurringBillInformationByMerchantOrganization(String merchantId) throws IOException
+    public RecurringBillResponseInformation findRecurringBillInformationByMerchantOrganization(String merchantId) throws IOException
     {
     	if(merchantId.equals("")|| merchantId==null){
     		return null;
     	}
-    	//RecurringBillResponseInformation response = new RecurringBillResponseInformation();
+    	RecurringBillResponseInformation response = new RecurringBillResponseInformation();
         String url = _url + "recurring-bill/search/findByMerchantOrganizationId?organizationId="+ merchantId;
         HttpURLConnection request = setHeadersGet(url, this._oauthToken);
         String result = doGet(request);
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        ObjectNode node = mapper.readValue(result,ObjectNode.class);
-        List<RecurringBillResponseInformation> response = new ArrayList<RecurringBillResponseInformation>();
-        try{
-	        response =  mapper.readValue(node.get("_embedded").get("recurringbills").toString(), new TypeReference<List<RecurringBillResponseInformation>>(){});
-	        int i=0;
-	        for (RecurringBillResponseInformation recurringBillResponseInformation : response) {
-	        	recurringBillResponseInformation.setTransactionManager(this);        
-	        	i++;
-			}
-        }catch(Exception e){
-        	System.out.println(e.getMessage());
-        	return null;	
-        }
-        return  response;
+        response =  mapper.readValue(result, RecurringBillResponseInformation.class);
+        response.setRowData(result);
+        response.setTransactionManager(this);
+        return response;  
         
     }
     
@@ -680,30 +661,21 @@ public class TransactionManager extends WsConnections{
      * @return a RecurringBillingInformation object. 
      * @see {@link com.payhub.ws.api.RecurringBillResponseInformation};
      */
-    public List<RecurringBillResponseInformation> findRecurringBillInformationByCustomer(String customerId) throws IOException
+    public RecurringBillResponseInformation findRecurringBillInformationByCustomer(String customerId) throws IOException
     {
     	if(customerId.equals("")|| customerId==null){
     		return null;
-    	}    
+    	}
+    	RecurringBillResponseInformation response = new RecurringBillResponseInformation();
         String url = _url + "recurring-bill/search/findByCustomerRef?customerId="+ customerId;
         HttpURLConnection request = setHeadersGet(url, this._oauthToken);
         String result = doGet(request);
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        ObjectNode node = mapper.readValue(result,ObjectNode.class);
-        List<RecurringBillResponseInformation> response = new ArrayList<RecurringBillResponseInformation>();
-        try{
-	        response =  mapper.readValue(node.get("_embedded").get("recurringbills").toString(), new TypeReference<List<RecurringBillResponseInformation>>(){});
-	        int i=0;
-	        for (RecurringBillResponseInformation recurringBillResponseInformation : response) {
-	        	recurringBillResponseInformation.setTransactionManager(this);        
-	        	i++;
-			}
-        }catch(Exception e){
-        	System.out.println(e.getMessage());
-        	return null;	
-        }
-        return  response; 
+        response =  mapper.readValue(result, RecurringBillResponseInformation.class);
+        response.setRowData(result);
+        response.setTransactionManager(this);
+        return response;  
         
     }
     public List<TransactionReportInformation> findTransactions(TransactionSearchParameters parameters)throws IOException{
@@ -761,19 +733,144 @@ public class TransactionManager extends WsConnections{
         }
         
     }
-    public boolean updateRecurringBillStatus(String id) throws IOException{
-	    if (id.equals("") || id==null){
-	    	return false;
-	    }
-	    String url=_url+"recurring-bill-status/"+id;
-	    HttpPatch request = setHeadersPatch(url, this.getToken());
-        boolean result = doPatch(request);	    
-	    
-        return result;
-    }
-		
-    
-
-
+	public GeneralSettings getGeneralSettings() throws IOException {
+		String url = _url +GeneralSettings.GENERAL_SETTINGS_LINK ;
+        HttpURLConnection request = setHeadersGet(url, this._oauthToken);
+        String result = doGet(request);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        GeneralSettings node = mapper.readValue(result,GeneralSettings.class);      
+        return node;
+	}
+	public WebhookConfiguration getWebhookConfiguration() throws IOException {
+		String url = _url +WebhookConfiguration.WEBHOOK_LINK ;
+        HttpURLConnection request = setHeadersGet(url, this._oauthToken);
+        String result = doGet(request);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        ObjectNode node = mapper.readValue(result,ObjectNode.class);
+        WebhookConfiguration webhook = mapper.readValue(node.get("webhookConfiguration").toString(),WebhookConfiguration.class);
+        return webhook;
+	}  
 	
+	public void patchWebhookConfiguration(WebhookConfiguration webhookConfiguration) throws Exception {
+		String url = _url +WebhookConfiguration.WEBHOOK_LINK ;
+        //HttpURLConnection request = setHeadersPatch(url, this._oauthToken);
+        
+        
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.setSerializationInclusion(Include.NON_NULL);
+        String json = mapper.writeValueAsString(webhookConfiguration);
+        String result = doPatch(url, this._oauthToken, json);
+        if(!StringUtils.isEmpty(result)){
+        	throw new Exception(result);
+        }
+        return;
+	}
+	
+	public ValidatedDevices getValidatedDevices() throws IOException {
+		String url = _url +ValidatedDevices.VALIDATED_DEVICES_LINK ;
+        HttpURLConnection request = setHeadersGet(url, this._oauthToken);
+        String result = doGet(request);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        ObjectNode node = mapper.readValue(result,ObjectNode.class);
+        ValidatedDevices validatedDevices = mapper.readValue(node.toString(),ValidatedDevices.class);
+        return validatedDevices;
+	}    
+	public void patchValidatedDevices(ValidatedDevices validatedDevices) throws Exception {
+		String url = _url +ValidatedDevices.VALIDATED_DEVICES_LINK;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.setSerializationInclusion(Include.NON_NULL);
+        String json = mapper.writeValueAsString(validatedDevices);
+        String result = doPatch(url, this._oauthToken, json);
+        if(!StringUtils.isEmpty(result)){
+        	throw new Exception(result);
+        }
+        return;
+	}
+	public RiskFraudSettings getRiskFraudSettings() throws IOException {
+		String url = _url +RiskFraudSettings.RISK_FRAUD_SETTINGS_LINK ;
+        HttpURLConnection request = setHeadersGet(url, this._oauthToken);
+        String result = doGet(request);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        ObjectNode node = mapper.readValue(result,ObjectNode.class);
+        RiskFraudSettings riskFraudSettings = mapper.readValue(node.toString(),RiskFraudSettings.class);
+        return riskFraudSettings;
+	}
+	public void patchRiskFraudSettings(RiskFraudSettings riskFraudSettings) throws Exception {
+		String url = _url +RiskFraudSettings.RISK_FRAUD_PATCH_SETTINGS_LINK;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.setSerializationInclusion(Include.NON_NULL);
+        String json = mapper.writeValueAsString(riskFraudSettings);
+        String result = doPatch(url, this._oauthToken, json);
+        if(!StringUtils.isEmpty(result)){
+        	throw new Exception(result);
+        }
+        return;
+	}
+
+	public UserRoles getAllUserRoles() throws IOException
+    {
+    	String url = _url + UserRoles.ALL_USER_ROLE_LINK;
+        HttpURLConnection request = setHeadersGet(url, this._oauthToken);
+        String result = doGet(request);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        ObjectNode node = mapper.readValue(result,ObjectNode.class);
+        UserRoles response = mapper.readValue(result, UserRoles.class);	        
+        return  response;
+    }
+	
+	public RoleSettings getUserRolesById(String roleId) throws IOException
+    {
+		if(roleId==null || roleId.equals("")){
+    		return null;
+    	}
+    	String url = _url + RoleSettings.USER_ROLE_LINK+roleId;
+        HttpURLConnection request = setHeadersGet(url, this._oauthToken);
+        String result = doGet(request);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        RoleSettings response = mapper.readValue(result, RoleSettings.class);	        
+        return  response;
+    }
+	public void patchUserRoles(String roleId,RoleSettings roleSettings) throws Exception
+    {
+		if(roleId==null || roleId.equals("")){
+    		return;
+    	}
+    	String url = _url + RoleSettings.PATCH_USER_ROLE_LINK+roleId;
+    	ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.setSerializationInclusion(Include.NON_NULL);
+        String json = mapper.writeValueAsString(roleSettings);
+        String result = doPatch(url, this._oauthToken, json);
+        if(!StringUtils.isEmpty(result)){
+        	throw new Exception(result);
+        }
+        return;
+    }
+	
+	public void postUserRoles(RoleSettings roleSettings) throws Exception
+    {
+		if(roleSettings==null){
+    		return;
+    	}
+    	String url = _url + RoleSettings.CREATE_USER_ROLE_LINK;
+    	ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.setSerializationInclusion(Include.NON_NULL);
+        String json = mapper.writeValueAsString(roleSettings);
+        String result = doPostForUserRole(url, this._oauthToken, json);
+        if(!StringUtils.isEmpty(result)){
+        	throw new Exception(result);
+        }
+        return;
+    }
+	 
 }

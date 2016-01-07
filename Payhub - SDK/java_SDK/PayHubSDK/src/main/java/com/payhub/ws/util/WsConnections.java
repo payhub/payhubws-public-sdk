@@ -11,16 +11,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
-import javax.xml.ws.Response;
 
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
 import org.omg.CORBA.portable.OutputStream;
+
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
 /**
  * @author agustin
@@ -73,22 +72,6 @@ public class WsConnections {
         request.setRequestProperty("Authorization", "Bearer " + token);
         request.setRequestProperty("Accept","application/json");
         return request;
-	}
-    public HttpPatch setHeadersPatch(String operationUrl, String token) throws  IOException{
-//    	URL connection = new URL(operationUrl);
-//		HttpURLConnection request = (HttpURLConnection)connection.openConnection();
-//		request.setDoOutput(true);
-//        request.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-//        request.setRequestMethod("PATCH");
-//        request.setRequestProperty("Authorization", "Bearer " + token);
-//        request.setRequestProperty("Accept","application/json");
-//        return request;
-    	 HttpPatch httpPatchReq = new HttpPatch(operationUrl);
-    	 httpPatchReq.setHeader("Content-Type",  "application/json; charset=utf-8");
-    	 httpPatchReq.setHeader("Authorization", "Bearer " + token);
-    	 httpPatchReq.setHeader("Accept","application/json");
-    	 return httpPatchReq;
-    	 
 	}
 	
     public String doPost(HttpURLConnection request, String _url)
@@ -249,27 +232,73 @@ public class WsConnections {
             return response.toString();
 		}  	           
     }
+    
+    public String doPatch(String url,String token,String json) throws IOException
+    {
+    	OkHttpClient client = new OkHttpClient();
 
-	public boolean doPatch(HttpPatch request) throws IOException {
-//		DataOutputStream wr;
-//		wr.writeBytes("{ \n\t\"recurring_bill_status\": \"CANCELED\"\n}");
-//		wr.flush();
-//		wr.close();	
-//		
-		StringEntity se = new StringEntity("{ \n\t\"recurring_bill_status\": \"CANCELED\"\n}");
-		se.setContentType("application/json;charset=UTF-8");
-	    se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json;charset=UTF-8"));
-	        
-		request.setEntity(se);
-		DefaultHttpClient httpclient = new DefaultHttpClient();
+    	MediaType mediaType = MediaType.parse("application/json");
+    	RequestBody body = RequestBody.create(mediaType, json);
+    	Request request = new Request.Builder().url(url)
+    	  .patch(body)
+    	  .addHeader("accept", "application/json")
+    	  .addHeader("content-type", "application/json")
+    	  .addHeader("authorization", "Bearer "+token)
+    	  .addHeader("cache-control", "no-cache")
+    	  .build();
 
-    	int statusCode = httpclient.execute(request).getStatusLine().getStatusCode();
-		System.out.println("\nSending 'Patch' request to URL");
-		System.out.println("Response Code : " + statusCode);
-		if (statusCode >= 200 && statusCode < 400) {
-			return true;
-		}else{
-		return false;
-		}
-	}
+    	Response response = client.newCall(request).execute();   
+    	if(response.code()>=200 && response.code()<400){
+    		return "";
+    	}else{    		
+	    	StringBuffer responseB = new StringBuffer();   	
+	    	BufferedReader er = new BufferedReader(new InputStreamReader(response.body().byteStream()));
+	     	String line;
+	     	try {
+	     		int c = 0;
+			     while((c = er.read()) != -1) {					         
+			    	 responseB.append((char)c);
+			     }					    
+						 
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        return responseB.toString();
+    	}
+    }
+    public String doPostForUserRole(String url,String token,String json) throws IOException
+    {
+    	OkHttpClient client = new OkHttpClient();
+
+    	MediaType mediaType = MediaType.parse("application/json");
+    	RequestBody body = RequestBody.create(mediaType, json);
+    	Request request = new Request.Builder().url(url)
+    	  .post(body)
+    	  .addHeader("accept", "application/json")
+    	  .addHeader("content-type", "application/json")
+    	  .addHeader("authorization", "Bearer "+token)
+    	  .addHeader("cache-control", "no-cache")
+    	  .build();
+
+    	Response response = client.newCall(request).execute();   
+    	if(response.code()>=200 && response.code()<400){
+    		return "";
+    	}else{    		
+	    	StringBuffer responseB = new StringBuffer();   	
+	    	BufferedReader er = new BufferedReader(new InputStreamReader(response.body().byteStream()));
+	     	String line;
+	     	try {
+	     		int c = 0;
+			     while((c = er.read()) != -1) {					         
+			    	 responseB.append((char)c);
+			     }					    
+						 
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        return responseB.toString();
+    	}
+    }
 }
