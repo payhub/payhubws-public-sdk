@@ -11,7 +11,7 @@ class TransactionType
   Refund="forRefund"
   VoidTransaction="forVoid"
   Verify="forVerify"
-  Status="forStatus"
+
   def initialize
 
   end

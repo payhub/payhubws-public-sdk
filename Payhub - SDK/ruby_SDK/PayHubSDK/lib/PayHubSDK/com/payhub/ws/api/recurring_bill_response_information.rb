@@ -54,13 +54,5 @@ class RecurringBillResponseInformation
     end
     return @scheduleInformation
   end
-  def status
-    if (@status==nil)
-      status=StatusInformation.new(@transactionManager)
-      status.getDataByTransaction(TransactionType::RecurringBill  ,@lastRecurringBillResponse.recurringBillId)
-      @status=status
-    end
-    return @status
-  end
 
 end

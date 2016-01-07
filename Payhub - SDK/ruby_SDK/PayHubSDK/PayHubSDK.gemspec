@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
   end
 
-  spec.files = Dir['lib/PayHubSDK/com/payhub/ws/util/*'] + Dir['bin/*']+Dir['lib/PayHubSDK/com/payhub/ws/model/*']+Dir['lib/PayHubSDK/com/payhub/ws/api/*']+Dir['lib/PayHubSDK/com/payhub/ws/extra/*']
+  spec.files = Dir['lib/PayHubSDK/com/payhub/ws/util/*'] + Dir['bin/*']+Dir['lib/PayHubSDK/com/payhub/ws/model/*']+Dir['lib/PayHubSDK/com/payhub/ws/api/*']+Dir['lib/PayHubSDK/com/payhub/ws/extra/*']+Dir['lib/PayHubSDK/com/payhub/ws/vt/*']
 
   spec.files.reject! { |fn| fn.include? "CVS" }
 

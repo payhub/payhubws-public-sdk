@@ -438,27 +438,6 @@ class TransactionManager < WsConnections
       return response
     end
   end
-
-  def getAllRecurringBillInformation()
-    url=@url+RecurringBill::RECURRENT_BILL_ID_LINK
-    result=doGet(url,@token)
-    return nil if result==nil or result==""
-    result = JSON.parse(result)
-    response ||= Array.new
-    if result['error']==nil
-      result['_embedded']['recurringbills'].each do |recurringBill|
-        response_tmp = RecurringBillResponseInformation.from_json(JSON.generate(recurringBill))
-        response_tmp.transactionManager=self
-        response.push(response_tmp)
-      end
-    else
-      result['errors'].each do |error|
-        response_tmp = Errors.from_json(JSON.generate(error))
-        response.push(response_tmp)
-      end
-    end
-    return response
-  end
   #
   # Perform a new query that retrieves you the list of bills for sales Information.
   #
@@ -627,7 +606,7 @@ class TransactionManager < WsConnections
     end
     return response
   end
-
+=begin
 
   #
   # Perform a new query that retrieves you the Recurring Bill Information from a Merchant Id.
@@ -637,16 +616,13 @@ class TransactionManager < WsConnections
   # @see {@link com.payhub.ws.api.RecurringBillResponseInformation}
   #
   def findRecurringBillInformationByMerchantOrganization(merchantId)
-    if merchantId.to_s=='' || merchantId==nil
-      return nil
-    end
-    url=@url+RecurringBill::RECURRENT_BILL_ID_LINK+"search/findByMerchantOrganizationId?organizationId="+merchantId.to_s
+    url=@url+RecurringBill::RECURRENT_BILL_ID_LINK+"search/findByMerchantOrganizationId?organizationId="+merchantId
     result=doGet(url,@token)
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
     if not (result.include?('errors') or result.include?('error') or result.include?('cause') or result.include?('message'))
-      result['_embedded']['recurringbills'].each do |recurringBill|
+      result['_embedded']['recurring-bills'].each do |recurringBill|
         json=JSON.generate(recurringBill)
         response_tmp = RecurringBillResponseInformation.from_json(json)
         response_tmp.transactionManager=self
@@ -667,10 +643,7 @@ class TransactionManager < WsConnections
   # @see {@link com.payhub.ws.api.RecurringBillResponseInformation}
   #
   def findRecurringBillInformationByCustomer(customerId)
-    if customerId.to_s=='' || customerId==nil
-      return nil
-    end
-    url=@url+RecurringBill::RECURRENT_BILL_ID_LINK+"search/findByCustomerRef?customerId="+customerId.to_s
+    url=@url+RecurringBill::RECURRENT_BILL_ID_LINK+"search/findByCustomerRef?customerId="+customerId
     result=doGet(url,@token)
     return nil if result==nil or result==""
     result = JSON.parse(result)
@@ -678,7 +651,7 @@ class TransactionManager < WsConnections
     puts result
 
     if not (result.include?('errors') or result.include?('error') or result.include?('cause') or result.include?('message'))
-      result['_embedded']['recurringbills'].each do |recurringBill|
+      result['_embedded']['recurring-bills'].each do |recurringBill|
         json=JSON.generate(recurringBill)
         response_tmp = RecurringBillResponseInformation.from_json(json)
         response_tmp.transactionManager=self
@@ -687,10 +660,11 @@ class TransactionManager < WsConnections
     else
       response_tmp = Errors.from_json(JSON.generate(result))
       response.push(response_tmp)
+      end
     end
     return response
   end
-
+=end
 
 
   def findTransactions(parameters)
@@ -758,14 +732,221 @@ class TransactionManager < WsConnections
 
   end
 
-  def updateRecurringBillStatus(id)
-    if id.to_s=='' || id==nil
-      return false
+  def getGeneralSettings()
+    url=@url+GeneralSettings::GENERAL_SETTINGS_LINK
+    result=doGet(url,@token)
+    return nil if result==nil or result==""
+    result = JSON.parse(result)
+    response = GeneralSettings.new
+    tlist = Array.new
+    if result['errors']==nil
+      response = GeneralSettings.from_json(JSON.generate(result))
+      result['terminalList'].each do |terminalList|
+        json=JSON.generate(terminalList)
+        response_tmp = TerminalList.from_json(json)
+        tlist.push(response_tmp)
+      end
+      response.terminalList=tlist
+      return response
+    else
+      elist = Array.new
+      result['errors'].each do |errors|
+        json=JSON.generate(errors)
+        response_tmp = Errors.from_json(json)
+        elist.push(response_tmp)
+      end
+      response.errors = elist
+      return response
     end
-    url=@url+"recurring-bill-status/"+id.to_s
+  end
+
+  def getWebhookConfiguration()
+    url=@url+WebhookConfiguration::WEBHOOK_LINK
+    result=doGet(url,@token)
+    return nil if result==nil or result==""
+    result = JSON.parse(result)
+    response = WebhookConfiguration.new
+    if result['errors']==nil
+      response = WebhookConfiguration.from_json(JSON.generate(result["webhookConfiguration"]))
+      return response
+    else
+      elist = Array.new
+      result['errors'].each do |errors|
+        json=JSON.generate(errors)
+        response_tmp = Errors.from_json(json)
+        elist.push(response_tmp)
+      end
+      response.errors = elist
+      return response
+    end
+  end
+
+
+  def getValidatedDevices()
+    url=@url+ValidatedDevices::VALIDATED_DEVICES_LINK
+    result=doGet(url,@token)
+    return nil if result==nil or result==""
+    result = JSON.parse(result)
+    response = ValidatedDevices.new
+    devTmp=Array.new
+    if result['errors']==nil
+      response.enforce_device_validation = result['enforce_device_validation']
+      result['devices'].each do |devices|
+        json=JSON.generate(devices)
+        response_tmp = Devices.from_json(json)
+        devTmp.push(response_tmp)
+      end
+      response.devices=devTmp
+      return response
+    else
+      elist = Array.new
+      result['errors'].each do |errors|
+        json=JSON.generate(errors)
+        response_tmp = Errors.from_json(json)
+        elist.push(response_tmp)
+      end
+      response.errors = elist
+      return response
+    end
+  end
+
+  def getRiskFraudSettings()
+    url=@url+RiskFraudSettings::RISK_FRAUD_SETTINGS_LINK
+    result=doGet(url,@token)
+    return nil if result==nil or result==""
+    result = JSON.parse(result)
+    response = RiskFraudSettings.new
+    devTmp=Array.new
+    if result['errors']==nil
+      response = RiskFraudSettings.from_json(JSON.generate(result))
+      return response
+    else
+      elist = Array.new
+      result['errors'].each do |errors|
+        json=JSON.generate(errors)
+        response_tmp = Errors.from_json(json)
+        elist.push(response_tmp)
+      end
+      response.errors = elist
+      return response
+    end
+  end
+
+  def patchWebhookConfiguration(webhook)
+    url=@url+WebhookConfiguration::WEBHOOK_LINK
     http,request = setHeadersPatch(url,@token)
+    json = webhook.serialize_to_json
+    request.body = json
     result=doPatch(http,request)
-    return result
+    if result.body.to_s==''
+      return true
+    else
+      return result.body
+    end
+  end
+
+  def patchValidatedDevices(vd)
+    url=@url+ValidatedDevices::VALIDATED_DEVICES_LINK
+    http,request = setHeadersPatch(url,@token)
+    vd.devices=nil
+    json = vd.serialize_to_json
+    request.body = json
+    result=doPatch(http,request)
+    if result.body.to_s==''
+      return true
+    else
+      return result.body
+    end
+  end
+
+  def patchRiskFraudSettings(risk)
+    url=@url+RiskFraudSettings::RISK_FRAUD_PATCH_SETTINGS_LINK
+    http,request = setHeadersPatch(url,@token)
+    json = risk.serialize_to_json
+    request.body = json
+    result=doPatch(http,request)
+    if result.body.to_s==''
+      return true
+    else
+      return result.body
+    end
+  end
+
+  def getAllUserRoles()
+    url = @url+UserRole::ALL_USER_ROLE_LINK;
+    result=doGet(url,@token)
+    return nil if result==nil or result==""
+    result = JSON.parse(result)
+    response = UserRole.new
+    role_tmp=Array.new
+    if result['errors']==nil
+      result['userRoles'].each do |userRoles|
+        json=JSON.generate(userRoles)
+        response_tmp = Roles.from_json(json)
+        role_tmp.push(response_tmp)
+      end
+      response.userRoles=role_tmp
+      return response
+    else
+      elist = Array.new
+      result['errors'].each do |errors|
+        json=JSON.generate(errors)
+        response_tmp = Errors.from_json(json)
+        elist.push(response_tmp)
+      end
+      response.errors = elist
+      return response
+    end
+  end
+
+  def getUserRolesById(roleId)
+    if roleId.to_s=='' || roleId==nil
+      return nil
+    end
+    url=@url+RoleSettings::USER_ROLE_LINK+roleId
+    result=doGet(url,@token)
+    return nil if result==nil or result==""
+    result = JSON.parse(result)
+    response = RoleSettings.new
+    if result['errors']==nil
+      response = RoleSettings.from_json(JSON.generate(result))
+      return response
+    else
+      elist = Array.new
+      result['errors'].each do |errors|
+        json=JSON.generate(errors)
+        response_tmp = Errors.from_json(json)
+        elist.push(response_tmp)
+      end
+      response.errors = elist
+      return response
+    end
+  end
+
+  def patchUserRoles(roleSettings,roleId)
+    url=@url+RoleSettings::PATCH_USER_ROLE_LINK+roleId
+    http,request = setHeadersPatch(url,@token)
+    json = roleSettings.serialize_to_json
+    request.body = json
+    result=doPatch(http,request)
+    if result.body.to_s==''
+      return true
+    else
+      return result.body
+    end
+  end
+
+  def postUserRoles(role)
+    url=@url+RoleSettings::CREATE_USER_ROLE_LINK
+    http,request = setHeadersPost(url,@token)
+    json = role.serialize_to_json
+    request.body = json
+    result=doPostForRoles(http,request)
+    if result.body.to_s==''
+      return true
+    else
+      return result.body
+    end
   end
 
 end

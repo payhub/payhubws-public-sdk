@@ -58,7 +58,6 @@ class WsConnections
     request["content-type"] = 'application/json'
     request["accept"] = 'application/json'
     request["authorization"] = 'Bearer '+@token
-    request.body = "{ \n\t\"recurring_bill_status\": \"CANCELED\"\n}"
     return http,request
   end
   def doPost(http,request)
@@ -87,6 +86,14 @@ class WsConnections
     return response
   end
 
+  def doPatch(http,request)
+    response = http.request(request)
+    return response
+  end
+  def doPostForRoles(http,request)
+    response = http.request(request)
+    return response
+  end
   # @param [Object] http
   # @param [Object] request
   # @param [Object] parameters
@@ -96,15 +103,5 @@ class WsConnections
     response = http.request(request)
     return response.read_body
   end
-# @param [Object] http
-# @param [Object] request
-  def doPatch(http,request)
-    response = http.request(request)
-    case response.code.to_i
-      when 200..399
-        return true;
-      else
-        return false
-    end
-  end
+  
 end
