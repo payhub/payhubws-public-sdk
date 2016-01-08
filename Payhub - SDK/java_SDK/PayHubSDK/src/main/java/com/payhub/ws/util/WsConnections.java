@@ -45,6 +45,7 @@ public class WsConnections {
 		HttpURLConnection request = (HttpURLConnection)connection.openConnection();
 		request.setDoOutput(true);
         request.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+        request.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 5.1; rv:19.0) Gecko/20100101 Firefox/19.0");
         request.setRequestMethod("POST");
         request.setRequestProperty("Authorization", "Bearer " + token);
         request.setRequestProperty("Accept","application/json");
@@ -58,6 +59,7 @@ public class WsConnections {
 		HttpURLConnection request = (HttpURLConnection)connection.openConnection();
 		request.setDoOutput(true);
         request.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+        request.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 5.1; rv:19.0) Gecko/20100101 Firefox/19.0");
         request.setRequestMethod("GET");
         request.setRequestProperty("Authorization", "Bearer " + token);
         request.setRequestProperty("Accept","application/json");
@@ -68,6 +70,7 @@ public class WsConnections {
 		HttpURLConnection request = (HttpURLConnection)connection.openConnection();
 		request.setDoOutput(true);
         request.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+        request.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 5.1; rv:19.0) Gecko/20100101 Firefox/19.0");
         request.setRequestMethod("PUT");
         request.setRequestProperty("Authorization", "Bearer " + token);
         request.setRequestProperty("Accept","application/json");
