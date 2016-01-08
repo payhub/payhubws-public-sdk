@@ -412,22 +412,6 @@ class TransactionManager extends WsConnections
      * @return a RecurringBillingInformation object.
      * @see {@link com.payhub.ws.api.RecurringBillResponseInformation};
      */
-    public function getAllRecurringBillInformation()
-    {
-        $url = $this->getUrl() . RecurringBill::$RECURRENT_BILL_ID_LINK;
-        $request = $this->setHeadersGet($url, $this->_oauthToken);
-        $result = $this->doGet($request);
-        if($result['_embedded']['recurringbills']!=null) {
-            foreach ($result['_embedded']['recurringbills'] as $recurringBill) {
-                $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
-                $response_tmp->setTransactionManager($this);
-                $response[] = $response_tmp;
-            }
-            return $response;
-        }else{
-            return null;
-        }
-    }
     public function findRecurringBillInformationByMerchantOrganization($merchantId){
         if(is_null($merchantId) || $merchantId==""){
             return null;
@@ -435,14 +419,12 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().RecurringBill::$RECURRENT_BILL_ID_LINK."search/findByMerchantOrganizationId?organizationId=".$merchantId;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        if($result['_embedded']['recurringbills']!=null) {
-            foreach ($result['_embedded']['recurringbills'] as $recurringBill) {
-                $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
-                $response_tmp->setTransactionManager($this);
-                $response[] = $response_tmp;
-            }
-            return $response;
-        }else return null;
+        foreach ($result['_embedded']['recurring-bills'] as $recurringBill) {
+            $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
+            $response_tmp->setTransactionManager($this);
+            $response[] = $response_tmp;
+        }
+        return $response;
     }
     /**
      * Perform a new query that retrieves you the Recurring Bill Information from a Customer Id.
@@ -458,14 +440,12 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().RecurringBill::$RECURRENT_BILL_ID_LINK."search/findByCustomerRef?customerId=".$customerId;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        if($result['_embedded']['recurringbills']!=null) {
-            foreach ($result['_embedded']['recurringbills'] as $recurringBill) {
-                $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
-                $response_tmp->setTransactionManager($this);
-                $response[] = $response_tmp;
-            }
-            return $response;
-        }else return null;
+        foreach ($result['_embedded']['recurring-bills'] as $recurringBill) {
+            $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
+            $response_tmp->setTransactionManager($this);
+            $response[] = $response_tmp;
+        }
+        return $response;
     }
     /**
      * Perform a new query that retrieves you the list of bills for sales Information.
@@ -626,15 +606,167 @@ class TransactionManager extends WsConnections
             return true;
         }
     }
-    public function updateRecurringBillStatus($id){
-        if(is_null($id) || $id==""){
-            return false;
-        }
-        $url = $this->getUrl()."recurring-bill-status/".$id;
-        $request = $this->setHeadersPatch($url, $this->_oauthToken);
-        $result = $this->doPatch($request);
-        return $result;
 
+    public function getGeneralSettings()
+    {
+        $url = $this->getUrl().GeneralSettings::$GENERAL_SETTINGS_LINK;
+        $request = $this->setHeadersGet($url, $this->_oauthToken);
+        $result = $this->doGet($request);
+        $response_tmp = GeneralSettings::fromArray($result);
+        return $response_tmp;
+    }
+    public function getWebhookConfiguration()
+    {
+        $url = $this->getUrl().WebhookConfiguration::$WEBHOOK_LINK;
+        $request = $this->setHeadersGet($url, $this->_oauthToken);
+        $result = $this->doGet($request);
+        $response_tmp = WebhookConfiguration::fromArray($result['webhookConfiguration']);
+        return $response_tmp;
+    }
+    public function getValidatedDevices()
+    {
+        $url = $this->getUrl().ValidatedDevices::$VALIDATED_DEVICES_LINK;
+        $request = $this->setHeadersGet($url, $this->_oauthToken);
+        $result = $this->doGet($request);
+        $response_tmp = ValidatedDevices::fromArray($result);
+        return $response_tmp;
     }
 
+    public function getRiskFraudSettings()
+    {
+        $url = $this->getUrl().RiskFraudSettings::$RISK_FRAUD_SETTINGS_LINK;
+        $request = $this->setHeadersGet($url, $this->_oauthToken);
+        $result = $this->doGet($request);
+        $response_tmp = RiskFraudSettings::fromArray($result);
+        return $response_tmp;
+    }
+
+    public function patchWebhookConfiguration($wh)
+    {
+        $url = $this->getUrl().WebhookConfiguration::$WEBHOOK_LINK;
+        $request = $this->setHeadersPatch($url, $this->_oauthToken);
+        $json = json_encode($wh->object_unset_nulls_for_send());
+
+        $result = $this->doPatch($request,$json);
+
+        if(is_array($result)){
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            return true;
+        }
+    }
+    public function patchValidatedDevices($vd)
+    {
+        $url = $this->getUrl().ValidatedDevices::$VALIDATED_DEVICES_LINK;
+        $request = $this->setHeadersPatch($url, $this->_oauthToken);
+        $json = json_encode($vd->object_unset_nulls_for_send());
+
+        $result = $this->doPatch($request,$json);
+
+        if(is_array($result)){
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            return true;
+        }
+    }
+
+    public function patchRiskFraudSettings($risk)
+    {
+        $url = $this->getUrl().RiskFraudSettings::$RISK_FRAUD_PATCH_SETTINGS_LINK;
+        $request = $this->setHeadersPatch($url, $this->_oauthToken);
+        $json = json_encode($risk->object_unset_nulls_for_send());
+        $result = $this->doPatch($request,$json);
+
+        if(is_array($result)){
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            return true;
+        }
+    }
+
+    public function getAllUserRoles()
+    {
+    	$url = $this->getUrl().UserRoles::$ALL_USER_ROLE_LINK;
+        $request = $this->setHeadersGet($url, $this->_oauthToken);
+        $result = $this->doGet($request);
+        $response_tmp = UserRoles::fromArray($result);
+        return $response_tmp;
+    }
+
+    public function getUserRolesById($roleId)
+    {
+        if(is_null($roleId) || $roleId==""){
+            return null;
+        }
+        $url = $this->getUrl().RoleSettings::$USER_ROLE_LINK.$roleId;
+        $request = $this->setHeadersGet($url, $this->_oauthToken);
+        $result = $this->doGet($request);
+        $response_tmp = RoleSettings::fromArray($result);
+        return $response_tmp;
+    }
+
+    public function patchUserRoles($roleSettings, $roleId)
+    {
+        if(is_null($roleId) || $roleId==""){
+            return null;
+        }
+        if(is_null($roleSettings) || $roleSettings==""){
+            return null;
+        }
+
+        $url = $this->getUrl().RoleSettings::$PATCH_USER_ROLE_LINK.$roleId;
+        $request = $this->setHeadersPatch($url, $this->_oauthToken);
+        $json = json_encode($roleSettings->object_unset_nulls_for_send());
+        $result = $this->doPatch($request,$json);
+
+        if(is_array($result)){
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            return true;
+        }
+    }
+    public function postUserRoles($roleSettings)
+    {
+        if(is_null($roleSettings) || $roleSettings==""){
+            return null;
+        }
+
+        $url = $this->getUrl().RoleSettings::$CREATE_USER_ROLE_LINK;
+        $request = $this->setHeadersPost($url, $this->_oauthToken);
+        $json = json_encode($roleSettings->object_unset_nulls_for_send());
+
+        //var_dump($json);
+        $result = $this->doPostForRoles($request,$json);
+
+        if(is_array($result)){
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            return true;
+        }
+    }
 }

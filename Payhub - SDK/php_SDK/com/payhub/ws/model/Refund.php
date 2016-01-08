@@ -58,7 +58,7 @@ class Refund extends WsConnections
      */
     public function setUrl($url)
     {
-        $this->url = $url;
+        $this->url_basePath = $url;
     }
 
     /**
@@ -115,6 +115,22 @@ class Refund extends WsConnections
         $result = $this->doPost($request,$this->getUrl());
         $response = RefundInformation::fromArray($result);
         return $response;
+    }
+    private function object_unset_nulls($obj)
+    {
+        if(is_null($obj)){$obj=$this;}
+        $arrObj = is_object($obj) ? get_object_vars($obj) : $obj;
+        foreach($arrObj as $key => $val)
+        {
+            $val = (is_array($val) || is_object($val)) ? $this->object_unset_nulls($val) : $val;
+            if (is_array($obj))
+                $obj[$key] = $val;
+            else
+                $obj->$key = $val;
+            if($val == null)
+                unset($obj->$key);
+        }
+        return $obj;
     }
 
 }

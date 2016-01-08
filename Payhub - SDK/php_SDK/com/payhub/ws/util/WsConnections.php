@@ -97,6 +97,7 @@ class WsConnections
 
         return $request;
     }
+
     public function setHeadersPatch($WsURL,$token)
     {
         $this->token=$token;
@@ -108,13 +109,13 @@ class WsConnections
                 'Accept: application/json',
                 'Authorization: Bearer '. $this->token)
         );
-        curl_setopt($request, CURLOPT_POSTFIELDS,  "{ \n\t\"recurring_bill_status\": \"CANCELED\"\n}");
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($request, CURLOPT_HEADER, 1);
         curl_setopt($request, CURLOPT_SSL_VERIFYPEER, 0);
 
         return $request;
     }
+
     public function doPost($request, $_url){
         $response = curl_exec($request);
         $curl_info = curl_getinfo($request);
@@ -166,6 +167,28 @@ class WsConnections
         $data = json_decode($rawBody, true);
         return $data;
     }
+
+    public function doPatch($request,$json){
+        curl_setopt($request, CURLOPT_POSTFIELDS, $json);
+        $response = curl_exec($request);
+        $p = strpos($response, "\r\n\r\n");
+        if( $p !== false ) {
+            $rawBody = substr($response, $p + 4);
+        }
+        $data = json_decode($rawBody, true);
+        return $data;
+    }
+    public function doPostForRoles($request,$json){
+        curl_setopt($request, CURLOPT_POSTFIELDS, $json);
+
+        $response = curl_exec($request);
+        $header_size = curl_getinfo($request, CURLINFO_HEADER_SIZE);
+        $header = substr($response, 0, $header_size);
+        $body = substr($response, $header_size);
+        $data = json_decode($body, true);
+        return $data;
+
+    }
     public function findTransactionReports($request,$json){
         $json=preg_replace('/,\s*"[^"]+":null|"[^"]+":null,?/', '', $json);
         curl_setopt($request, CURLOPT_POSTFIELDS, $json);
@@ -179,15 +202,5 @@ class WsConnections
         }
         $data = json_decode($rawBody, true);
         return $data;
-    }
-    public function doPatch($request){
-        $response = curl_exec($request);
-        $httpcode = curl_getinfo($request, CURLINFO_HTTP_CODE);
-        curl_close($request);
-        if ($httpcode>=200 && $httpcode< 400){
-            return true;
-        } else {
-          return false;
-        }
     }
 }

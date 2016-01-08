@@ -21,11 +21,8 @@ class RefundInformation
      * RefundInformation constructor.
      * @param $transactionManager
      */
-    public function __construct($transactionManager)
+    public function __construct()
     {
-        if(!is_null($transactionManager)) {
-            $this->transactionManager = $transactionManager;
-        }
         $this->transactionType=TransactionType::Refund;
     }
 
