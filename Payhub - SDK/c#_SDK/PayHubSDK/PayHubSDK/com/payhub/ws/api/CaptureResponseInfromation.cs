@@ -13,17 +13,9 @@ namespace PayHubSDK.com.payhub.ws.api
     public class CaptureResponseInfromation
     {
         [DataMember(Name = "metaData")]
-        private Object metadata;
-        
-        public Object Metadata
-        {
-            get { return this.metadata.ToString(); }
-            set
-            {
-                if (value != null)
-                    this.metadata = value.ToString();
-            }
-        }
+        private string _metadata = "";
+
+        public string metaData { get { return this._metadata.ToString(); } set { if (value != null) { this._metadata = value.ToString(); } else { this._metadata = ""; } } }
          [DataMember]
         public CaptureResponse lastCaptureResponse { get; set; }
          [DataMember]

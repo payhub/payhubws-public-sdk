@@ -12,18 +12,10 @@ namespace PayHubSDK.com.payhub.ws.api
     [DataContract]
     public class VoidResponseInformation
     {
-            [DataMember(Name = "metaData")]
-            private Object metadata;
-            
-            public Object Metadata
-            {
-                get { return this.metadata.ToString(); }
-                set
-                {
-                    if (value != null)
-                        this.metadata = value.ToString();
-                }
-            }
+        [DataMember(Name = "metaData")]
+        private string _metadata = "";
+
+        public string metaData { get { return this._metadata.ToString(); } set { if (value != null) { this._metadata = value.ToString(); } else { this._metadata = ""; } } }
             [DataMember]
             public string transaction_id;
             public string TransactionId

@@ -11,8 +11,15 @@ namespace PayHubSDK.com.payhub.ws.model
     [DataContract]
     public class EncryptedTrackData
     {
-        [DataMember]
-        private string encrypted_track = "";
+        [DataMember(Name = "encrypted_track")]
+        private string _encrypted_track = "";
+        
+        public string encrypted_track{
+            get { return this._encrypted_track; }
+            set { this._encrypted_track = value; }
+        }
+        
+
         [DataMember]
         private string swiper_brand = "IDTECH";
         [DataMember]
@@ -21,8 +28,13 @@ namespace PayHubSDK.com.payhub.ws.model
 
         public EncryptedTrackData(string value)
         {
-            // TODO: Complete member initialization
-            this.encrypted_track = value;
+            if (value != null)
+            {
+                this._encrypted_track = value;
+            }
+            else {
+                this._encrypted_track = "";
+            }
         }
 
     }

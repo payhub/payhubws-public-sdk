@@ -49,13 +49,23 @@ namespace PayHubSDK.com.payhub.ws.model
         public string billing_state { get; set; }
          [DataMember]
         public string billing_zip { get; set; }
-         [DataMember]
-         private EncryptedTrackData encrypted_track_data;
-         public string Encrypted_track_data {
-             get { return this.encrypted_track_data.ToString(); }
-             set { if (value != null) {
-                 this.encrypted_track_data = new EncryptedTrackData(value);
-             } }
+        [DataMember(Name = "encrypted_track_data")]
+        private EncryptedTrackData _encrypted_track_data;
+        
+        public string encrypted_track_data {
+             get {
+                 if (this._encrypted_track_data != null)
+                 {
+                     return this._encrypted_track_data.encrypted_track;
+                 }
+                 else {
+                     return "";
+                 }
+             }
+             set {                  
+                 EncryptedTrackData enc = new EncryptedTrackData(value);
+                 this._encrypted_track_data = enc;                 
+             }
          }
 		
 

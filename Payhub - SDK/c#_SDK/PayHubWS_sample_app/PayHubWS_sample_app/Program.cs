@@ -12,9 +12,8 @@ namespace PayHubWS_sample_app
     {
         static void Main(string[] args)
         {
-            RecurringBillingSample rbs = new RecurringBillingSample();
-            rbs.findByMerchantSample();
-            rbs.findByCustomerSample();
+            SaleAndVoidSample sale = new SaleAndVoidSample();
+            sale.doSale();
         }
     }
 }

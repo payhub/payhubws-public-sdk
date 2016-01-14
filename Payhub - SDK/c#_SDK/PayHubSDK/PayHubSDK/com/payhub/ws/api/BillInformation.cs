@@ -25,27 +25,27 @@ namespace PayHubSDK.com.payhub.ws.api
        [DataMember(Name = "lastModifiedBy")]
         private string _lastModifiedBy;
         [DataMember(Name = "metaData")]
-        private Object _metaData;
+        private string _metaData="";
 	    private TransactionManager transactionManager;
         public TransactionManager TransactionManager { set { this.transactionManager = value; } }
-	    private TransactionType transactionType;
+        private TransactionType transactionType { get; set; }
 
         public string Version { get { return this._version; } set { this._version = value; } }
         public string CreatedAt { get { return this._createdAt; } set { this._createdAt = value; } }
         public string LastModified { get { return this._lastModified; } set { this._lastModified = value; } }
         public string CreatedBy { get { return this._createdBy; } set { this._createdBy = value; } }
         public string LastModifiedBy { get { return this._lastModifiedBy; } set { this._lastModifiedBy = value; } }
-        public Object metaData { get { return this._metaData.ToString(); } set { this._metaData = value.ToString(); } }
+        public string metaData { get { return this._metaData.ToString(); } set { if (value != null) { this._metaData = value.ToString(); } else { this._metaData = ""; } } }
         public string url { get; set; }
         public Bill bill { get; set; }
 
         public BillInformation() {
-            this.transactionType = TransactionType.Bill;
+            transactionType = TransactionType.Bill;
         }
         public BillInformation(TransactionManager t)
         {
             this.transactionManager = t;
-            this.transactionType = TransactionType.Bill;
+            transactionType = TransactionType.Bill;
         }
         private void convertData(String json)
         {

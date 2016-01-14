@@ -652,32 +652,6 @@ namespace PayHubSDK.com.payhub.ws.api
             response.transactionManager = this;
             return response;
         }
-
-        public List<RecurringBillInformation> getAllRecurringBillInformation()
-        {
-            String url = _url + RecurringBill.RECURRENT_BILL_ID_LINK;
-            HttpWebRequest request = setHeadersGet(url, this._oauthToken);
-            String result = doGet(request);
-            var node = JObject.Parse(result);
-            List<RecurringBillInformation> response = new List<RecurringBillInformation>();
-            try
-            {
-                int index = 0;
-                response = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                foreach (RecurringBillInformation rbi in response)
-                {
-                    rbi.rowData = node["_embedded"]["recurringbills"][index].ToString();
-                    index++;
-                    rbi.transactionManager = this;
-                }
-            }
-            catch
-            {
-                return null;
-            }
-            return response;
-        }
-
         /// <summary> 
         ///  Perform a new query that retrieves you the Recurring Bill Information from a Merchant Id.
         ///
@@ -689,29 +663,19 @@ namespace PayHubSDK.com.payhub.ws.api
         /// </returns>   
         /// <seealso cref="PayHubWS.com.payhub.ws.api.RecurringBillInformation"/>
         /// </summary> 
-        public List<RecurringBillInformation> findRecurringBillInformationByMerchantOrganization(string merchantId) 
+        public RecurringBillInformation findRecurringBillInformationByMerchantOrganization(string merchantId) 
         {
             if (merchantId.Equals("") || merchantId == null)
             {
                 return null;
             }
-            List<RecurringBillInformation> response = new List<RecurringBillInformation>();
+            RecurringBillInformation response = new RecurringBillInformation();
             var url = _url + "recurring-bill/search/findByMerchantOrganizationId?organizationId=" + merchantId;
             var request = setHeadersGet(url, this._oauthToken);
             string result = doGet(request);
-            var node = JObject.Parse(result);
-            try
-            {
-                response = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                foreach (RecurringBillInformation rbi in response)
-                {
-                    rbi.rowData = result;
-                    rbi.transactionManager = this;
-                }
-            }
-            catch {
-                return null;
-            }
+            response = JsonConvert.DeserializeObject<RecurringBillInformation>(result);
+            response.rowData = result;
+            response.transactionManager = this;
             return response;
         }
         /// <summary> 
@@ -725,30 +689,19 @@ namespace PayHubSDK.com.payhub.ws.api
         /// </returns>   
         /// <seealso cref="PayHubWS.com.payhub.ws.api.RecurringBillInformation"/>
         /// </summary> 
-        public List<RecurringBillInformation> findRecurringBillInformationByCustomer(string customerId)
+        public RecurringBillInformation findRecurringBillInformationByCustomer(string customerId)
         {
             if (customerId.Equals("") || customerId == null)
             {
                 return null;
             }
-            List<RecurringBillInformation> response = new List<RecurringBillInformation>();
+            RecurringBillInformation response = new RecurringBillInformation();
             var url = _url + "recurring-bill/search/findByCustomerRef?customerId=" + customerId;
             var request = setHeadersGet(url, this._oauthToken);
             string result = doGet(request);
-            var node = JObject.Parse(result);
-            try
-            {
-                response = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                foreach (RecurringBillInformation rbi in response)
-                {
-                    rbi.rowData = result;
-                    rbi.transactionManager = this;
-                }
-            }
-            catch
-            {
-                return null;
-            }
+            response = JsonConvert.DeserializeObject<RecurringBillInformation>(result);
+            response.rowData = result;
+            response.transactionManager = this;
             return response;
         }
         /// <summary> 
@@ -847,17 +800,16 @@ namespace PayHubSDK.com.payhub.ws.api
             }
         
         }
-        public Boolean updateRecurringBillStatus(String id){
-        if(id==null || id==""){
-            return false;
+        public Boolean updateRecurringBillStatus(String id)
+        {
+            if (id == null || id == "")
+            {
+                return false;
+            }
+            String url = _url + "recurring-bill-status/" + id;
+            HttpWebRequest request = setHeadersPatch(url, this._oauthToken);
+            Boolean result = doPatch(request);
+            return result;
         }
-         String url = _url + "recurring-bill-status/"+id;
-         HttpWebRequest request = setHeadersPatch(url, this._oauthToken);
-         Boolean result = doPatch(request);
-         return result;
-        }
-
-       
     }
-    
 }

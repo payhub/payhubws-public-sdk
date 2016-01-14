@@ -25,7 +25,7 @@ namespace PayHubSDK.com.payhub.ws.api
         [DataMember(Name = "lastModifiedBy")]
         private string _lastModifiedBy;
         [DataMember(Name = "metaData")]
-	    private Object _metaData;
+	    private string _metaData="";
 	    private TransactionManager transactionManager;
         public TransactionManager TransactionManager { set { this.transactionManager = value; } }
 	    private TransactionType transactionType;
@@ -36,7 +36,7 @@ namespace PayHubSDK.com.payhub.ws.api
         public string LastModified { get { return this._lastModified; } set { this._lastModified = value; } }
         public string CreatedBy { get { return this._createdBy; } set { this._createdBy = value; } }
         public string LastModifiedBy { get { return this._lastModifiedBy; } set { this._lastModifiedBy = value; } }
-        public Object metaData { get { return this._metaData.ToString(); } set { this._metaData = value.ToString(); } }
+        public string metaData { get { return this._metaData.ToString(); } set { if (value != null) { this._metaData = value.ToString(); } else { this._metaData = ""; } } }
         public string Url { get; set; }
 
         public CustomerInformation() {

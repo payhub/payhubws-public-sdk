@@ -95,7 +95,6 @@ namespace PayHubSDK.com.payhub.ws.api
             if ((string)node["createdBy"] != null) { this.CreatedBy = (string)node["createdBy"]; }
             if ((string)node["lastModifiedBy"] != null) { this.LastModifiedBy = (string)node["lastModifiedBy"]; }
             if ((string)node["metaData"] != null) { this.metaData = (string)node["metaData"]; }
-    
 	}
 	public abstract string getUrlForTransactionType(TransactionType type);
     }

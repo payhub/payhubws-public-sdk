@@ -15,17 +15,9 @@ namespace PayHubSDK.com.payhub.ws.api
     public class SaleResponseInformation
     {
         [DataMember(Name = "metaData")]
-        private Object metadata;
-        
-        public Object Metadata
-        {
-            get { return this.metadata.ToString(); }
-            set
-            {
-                if (value != null)
-                    this.metadata = value.ToString();
-            }
-        }
+        private string _metaData = "";
+
+        public string metaData { get { return this._metaData; } set { if (value != null) { this._metaData = value; } else { this._metaData = ""; } } }
         [DataMember]
         private SaleResponse saleResponse;
         public SaleResponse SaleResponse {

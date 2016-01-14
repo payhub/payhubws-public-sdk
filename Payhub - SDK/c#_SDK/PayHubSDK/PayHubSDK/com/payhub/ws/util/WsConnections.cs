@@ -47,9 +47,11 @@ namespace PayHubSDK.com.payhub.ws.util
             request.Method = "PATCH";
             request.Headers.Add("Authorization", "Bearer " + token);
             request.ContentType = "application/json";
-            request.Accept = "application/json";            
+            request.Accept = "application/json";
             return request;
         }
+
+
         public string doPost(HttpWebRequest request, string _url)
         {
             string result = null;
@@ -205,6 +207,7 @@ namespace PayHubSDK.com.payhub.ws.util
             return result;
         }
 
+
         public bool doPatch(HttpWebRequest request)
         {
             using (var streamWriter = new StreamWriter(request.GetRequestStream()))
@@ -222,10 +225,10 @@ namespace PayHubSDK.com.payhub.ws.util
             {
                 return true;
             }
-            else {
+            else
+            {
                 return false;
             }
         }
     }
-
 }

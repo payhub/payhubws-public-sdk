@@ -14,17 +14,9 @@ namespace PayHubSDK.com.payhub.ws.api
     public class RecurringBillInformation
     {
         [DataMember(Name = "metaData")]
-        private Object metadata;
-        
-        public Object Metadata
-        {
-            get { return this.metadata.ToString(); }
-            set
-            {
-                if (value != null)
-                    this.metadata = value.ToString();
-            }
-        }
+        private string _metadata = "";
+
+        public string metaData { get { return this._metadata.ToString(); } set { if (value != null) { this._metadata = value.ToString(); } else { this._metadata = ""; } } }
         [DataMember]
         public RecurringBillResponse lastRecurringBillResponse;         
         [DataMember]
@@ -108,9 +100,8 @@ namespace PayHubSDK.com.payhub.ws.api
                 return _scheduleInformation;
             }
         }
-
-        private StatusInformation _statusInformation;
-        public  StatusInformation statusInformation
+        public StatusInformation _statusInformation;
+        public StatusInformation statusInformation
         {
             get
             {

@@ -59,7 +59,7 @@ namespace PayHubWS.Samples
                 string datos = "{\"order\": {\"id\": 465, \"invoice\":\"MyIncoice\", \"lines\": [{\"City\": \"Cordoba\"}, {\"Neighborhood\": \"Nueva Cordoba\"}]}}";
                 transaction.addMetaData(datos, TransactionType.Sale, saleResponse.SaleResponse.SaleId);
                 SaleResponseInformation saleResponseMetadata = transaction.getSaleInformation(saleResponse.SaleResponse.SaleId);
-                Console.Write(saleResponseMetadata.Metadata);
+                Console.Write(saleResponseMetadata.metaData);
             }
 	        
 	    }

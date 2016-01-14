@@ -56,6 +56,7 @@
     <Compile Include="com\payhub\ws\api\RefundInformation.cs" />
     <Compile Include="com\payhub\ws\api\SaleResponseInformation.cs" />
     <Compile Include="com\payhub\ws\api\ScheduleInformation.cs" />
+    <Compile Include="com\payhub\ws\api\StatusInformation.cs" />
     <Compile Include="com\payhub\ws\api\TransactionManager.cs" />
     <Compile Include="com\payhub\ws\api\TransactionReportInformation.cs" />
     <Compile Include="com\payhub\ws\api\TransactionType.cs" />
