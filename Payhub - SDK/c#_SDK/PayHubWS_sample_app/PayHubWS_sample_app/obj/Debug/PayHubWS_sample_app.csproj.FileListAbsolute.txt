@@ -9,3 +9,11 @@ C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubW
 C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\Newtonsoft.Json.dll
 C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\Newtonsoft.Json.xml
 C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\obj\Debug\PayHubWS_sample_app.csprojResolveAssemblyReference.cache
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\PayHubWS_sample_app.exe.config
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\PayHubWS_sample_app.exe
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\PayHubWS_sample_app.pdb
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\PayHubSDK.dll
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\bin\Debug\PayHubSDK.pdb
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\obj\Debug\PayHubWS_sample_app.csprojResolveAssemblyReference.cache
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\obj\Debug\PayHubWS_sample_app.exe
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubWS_sample_app\PayHubWS_sample_app\obj\Debug\PayHubWS_sample_app.pdb

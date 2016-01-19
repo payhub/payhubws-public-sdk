@@ -4,3 +4,7 @@ C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubSDK\PayHubSDK\bin\Deb
 C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubSDK\PayHubSDK\bin\Debug\Newtonsoft.Json.xml
 C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubSDK\PayHubSDK\obj\Debug\PayHubSDK.dll
 C:\Users\agustin\Documents\payhubwsRepository\c#_SDK\PayHubSDK\PayHubSDK\obj\Debug\PayHubSDK.pdb
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubSDK\PayHubSDK\bin\Debug\PayHubSDK.dll
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubSDK\PayHubSDK\bin\Debug\PayHubSDK.pdb
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubSDK\PayHubSDK\obj\Debug\PayHubSDK.dll
+D:\Silice\PayHub\Workspace\payhubws-public-sdk\Payhub - SDK\c#_SDK\PayHubSDK\PayHubSDK\obj\Debug\PayHubSDK.pdb

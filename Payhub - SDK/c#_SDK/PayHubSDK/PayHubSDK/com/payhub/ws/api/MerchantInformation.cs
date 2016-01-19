@@ -19,7 +19,7 @@ namespace PayHubSDK.com.payhub.ws.api
 
         public MerchantInformation(TransactionManager transactionManager): base(transactionManager)
         {            
-            this.transactionType = TransactionType.CardData;
+            this.transactionType = TransactionType.Merchant;
         }
         public override void convertData(string json)
         {

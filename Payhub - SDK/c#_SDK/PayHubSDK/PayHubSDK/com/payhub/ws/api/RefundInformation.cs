@@ -16,20 +16,7 @@ namespace PayHubSDK.com.payhub.ws.api
         [DataMember(Name = "metaData")]
         private string _metadata = "";
 
-        public string metaData { get { return this._metadata.ToString(); } set { if (value != null) { this._metadata = value.ToString(); } else { this._metadata = ""; } } }
-        [DataMember]
-        private Merchant merchant;
-        public Merchant Merchant
-        {
-            get { return this.merchant; }
-            set
-            {
-                if (value != null)
-                {
-                    this.merchant = value;
-                }
-            }
-        }
+        public string metaData { get { return this._metadata; } set { if (value != null) { this._metadata = value; } else { this._metadata = ""; } } }       
         [DataMember]
         public string transaction_id;
         [DataMember]

@@ -57,6 +57,29 @@ namespace PayHubSDK.com.payhub.ws.model
             get { return this.record_format; }
             set { if (value != null)this.record_format = value; }
         }
+
+        [DataMember(Name = "bill")]
+        private Bill _bill;
+        public Bill bill
+        {
+            get { return this._bill; }
+            set { if (value != null)this._bill = value; }
+        }
+        [DataMember(Name = "customer")]
+        private Customer _customer;
+        public Customer customer
+        {
+            get { return this._customer; }
+            set { if (value != null)this._customer = value; }
+        }
+        [DataMember(Name = "card_data")]
+        private CardData _card_data;
+        public CardData card_data
+        {
+            get { return this._card_data; }
+            set { if (value != null)this._card_data = value; }
+        }
+
         public Refund(Merchant merchant, string transaction_id, string record_format)
         {
             // TODO: Complete member initialization
@@ -64,6 +87,25 @@ namespace PayHubSDK.com.payhub.ws.model
             this.transaction_id = transaction_id;
             this.record_format = record_format;
         }
+        public Refund(Merchant merchant, string transaction_id, string record_format,Bill bill)
+        {
+            // TODO: Complete member initialization
+            this.merchant = merchant;
+            this.transaction_id = transaction_id;
+            this.record_format = record_format;
+            this._bill = bill;
+        }
+
+        public Refund(Merchant merchant, string record_format, Bill bill,Customer customer,CardData card)
+        {
+            // TODO: Complete member initialization
+            this.merchant = merchant;
+            this.record_format = record_format;
+            this._bill = bill;
+            this._customer = customer;
+            this._card_data = card;
+        }
+
         public RefundInformation PerformRefund(string json, HttpWebRequest request)
         {
             RefundInformation responseObject = new RefundInformation();
