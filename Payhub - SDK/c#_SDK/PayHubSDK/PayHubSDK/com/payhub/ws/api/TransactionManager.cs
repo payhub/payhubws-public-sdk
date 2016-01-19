@@ -652,6 +652,41 @@ namespace PayHubSDK.com.payhub.ws.api
             response.transactionManager = this;
             return response;
         }
+
+        public List<RecurringBillInformation> getAllRecurringBillInformation()
+        {
+           
+            RecurringBillInformation response = new RecurringBillInformation();
+            var url = _url + RecurringBill.RECURRENT_BILL_ID_LINK;
+            var request = setHeadersGet(url, this._oauthToken);
+            string result = doGet(request);
+            if (result == null || result.Equals(""))
+                return null;
+            var node = JObject.Parse(result);
+            List<RecurringBillInformation> rb = null;
+            if (node["_embedded"] != null && node["_embedded"]["recurringbills"] != null)
+            {
+                rb = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                foreach (RecurringBillInformation recurringBillInformation in rb)
+                {
+                    recurringBillInformation.transactionManager = this;
+                }
+                return rb;
+            }
+            if (node["errors"] != null)
+            {
+                List<Errors> errors = JsonConvert.DeserializeObject<List<Errors>>(node["errors"].ToString());
+                RecurringBillInformation rbForErrors = new RecurringBillInformation();
+                rbForErrors.errors = errors;
+                rb.Add(rbForErrors);
+                return rb;
+            }
+
+            else
+            {
+                return null;
+            }
+        }
         /// <summary> 
         ///  Perform a new query that retrieves you the Recurring Bill Information from a Merchant Id.
         ///
@@ -663,7 +698,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// </returns>   
         /// <seealso cref="PayHubWS.com.payhub.ws.api.RecurringBillInformation"/>
         /// </summary> 
-        public RecurringBillInformation findRecurringBillInformationByMerchantOrganization(string merchantId) 
+        public List<RecurringBillInformation> findRecurringBillInformationByMerchantOrganization(string merchantId) 
         {
             if (merchantId.Equals("") || merchantId == null)
             {
@@ -673,10 +708,31 @@ namespace PayHubSDK.com.payhub.ws.api
             var url = _url + "recurring-bill/search/findByMerchantOrganizationId?organizationId=" + merchantId;
             var request = setHeadersGet(url, this._oauthToken);
             string result = doGet(request);
-            response = JsonConvert.DeserializeObject<RecurringBillInformation>(result);
-            response.rowData = result;
-            response.transactionManager = this;
-            return response;
+            var node = JObject.Parse(result);
+            List<RecurringBillInformation> rb=null;
+            if (node["_embedded"] != null && node["_embedded"]["recurringbills"] != null)
+            {
+                rb = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                foreach (RecurringBillInformation recurringBillInformation in rb)
+                {
+                    recurringBillInformation.transactionManager = this;
+                }
+                return rb;
+            }
+            if (node["errors"] != null)
+            {
+                List<Errors> errors = JsonConvert.DeserializeObject<List<Errors>>(node["errors"].ToString());
+                RecurringBillInformation rbForErrors = new RecurringBillInformation();
+                rbForErrors.errors = errors;
+                rb.Add(rbForErrors);
+                return rb;
+            }
+            
+            else {
+                return null;
+            }
+
+            
         }
         /// <summary> 
         ///  Perform a new query that retrieves you the Recurring Bill Information from a Customer Id.
@@ -689,7 +745,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// </returns>   
         /// <seealso cref="PayHubWS.com.payhub.ws.api.RecurringBillInformation"/>
         /// </summary> 
-        public RecurringBillInformation findRecurringBillInformationByCustomer(string customerId)
+        public List<RecurringBillInformation> findRecurringBillInformationByCustomer(string customerId)
         {
             if (customerId.Equals("") || customerId == null)
             {
@@ -699,10 +755,30 @@ namespace PayHubSDK.com.payhub.ws.api
             var url = _url + "recurring-bill/search/findByCustomerRef?customerId=" + customerId;
             var request = setHeadersGet(url, this._oauthToken);
             string result = doGet(request);
-            response = JsonConvert.DeserializeObject<RecurringBillInformation>(result);
-            response.rowData = result;
-            response.transactionManager = this;
-            return response;
+            var node = JObject.Parse(result);
+            List<RecurringBillInformation> rb = null;
+            if (node["_embedded"] != null && node["_embedded"]["recurringbills"] != null)
+            {
+                rb = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                foreach (RecurringBillInformation recurringBillInformation in rb)
+                {
+                    recurringBillInformation.transactionManager = this;
+                }
+                return rb;
+            }
+            if (node["errors"] != null)
+            {
+                List<Errors> errors = JsonConvert.DeserializeObject<List<Errors>>(node["errors"].ToString());
+                RecurringBillInformation rbForErrors = new RecurringBillInformation();
+                rbForErrors.errors = errors;
+                rb.Add(rbForErrors);
+                return rb;
+            }
+
+            else
+            {
+                return null;
+            }
         }
         /// <summary> 
         /// Perform a new query that retrieves you the Transaction results from a set of parameters.

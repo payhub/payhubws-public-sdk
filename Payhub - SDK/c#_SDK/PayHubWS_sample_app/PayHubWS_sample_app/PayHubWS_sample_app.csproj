@@ -54,6 +54,7 @@
     <Compile Include="Samples\GetTransactionsListSample.cs" />
     <Compile Include="Samples\MetadataSample.cs" />
     <Compile Include="Samples\RecurringBillingSample.cs" />
+    <Compile Include="Samples\RecurringBillStatusSample.cs" />
     <Compile Include="Samples\RefundSample.cs" />
     <Compile Include="Samples\SaleAndVoidSample.cs" />
     <Compile Include="Samples\TransactionReportSample.cs" />

@@ -26,7 +26,7 @@ namespace PayHubWS
 
 
             ScheduleSartAndEnd scheduleSartAndEnd = new ScheduleSartAndEnd();
-            scheduleSartAndEnd.Start_date = Convert.ToDateTime("2015-09-08");
+            scheduleSartAndEnd.Start_date = Convert.ToDateTime("2016-02-08");
             scheduleSartAndEnd.End_date = Convert.ToDateTime("2016-07-08");
             scheduleSartAndEnd.end_date_type = "O";
             MontlySchedule montlySchedule = new MontlySchedule();
