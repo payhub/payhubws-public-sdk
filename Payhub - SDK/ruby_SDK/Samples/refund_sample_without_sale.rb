@@ -38,22 +38,14 @@ customer.phone_number="(415) 479 1349"
 customer.phone_ext="123"
 customer.phone_type="M"
 
-object = Sale.new(merchant,customer,bill,card_data)
 
 transaction = TransactionManager.new(wsURL,oauth_token,merchant)
-response = transaction.doSale(object)
-if response.errors==nil
-	#'{someSaleId}' is the Id for the sale that is going to be refunded, each refund transaction will be valid only if the batch has been settled
-  puts response.saleResponse.inspect
-	transaction_id=response.saleResponse.saleId
-	#'{someRecordFormat}' like CREDIT_CARD
-	record_format="CREDIT_CARD"
-	responseRefund = transaction.doRefund(Refund.new(transaction_id,merchant,record_format))
-	if responseRefund.errors==nil
-		puts responseRefund.inspect
-	else
-		puts responseRefund.errors.inspect
-	end
+record_format="CREDIT_CARD"
+
+
+responseRefund = transaction.doRefund(Refund.new(nil,bill,customer,card_data,merchant,record_format))
+if responseRefund.errors==nil
+	puts responseRefund.inspect
 else
-	puts response.errors.inspect
+	puts responseRefund.errors.inspect
 end

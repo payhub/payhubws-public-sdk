@@ -37,12 +37,24 @@ class AbstractInfo
     end
   def convertAbstractData(json)
     obj = JSON.parse(json)
-    @version=obj['version']
-    @createdAt=obj['createdAt']
-    @lastModified=obj['lastModified']
-    @createdBy=obj['createdBy']
-    @lastModifiedBy=obj['lastModifiedBy']
-    @metaData=obj['metaData']
+    if (obj.key?("version"))
+      @version=obj['version']
+    end
+    if (obj.key?("createdAt"))
+      @version=obj['createdAt']
+    end
+    if (obj.key?("lastModified"))
+      @version=obj['lastModified']
+    end
+    if (obj.key?("createdBy"))
+      @version=obj['createdBy']
+    end
+    if (obj.key?("lastModifiedBy"))
+      @version=obj['lastModifiedBy']
+    end
+    if (obj.key?("metaData"))
+      @version=obj['metaData']
+    end
   end
 
 end

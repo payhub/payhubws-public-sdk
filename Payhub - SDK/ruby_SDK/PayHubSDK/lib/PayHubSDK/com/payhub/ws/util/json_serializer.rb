@@ -35,6 +35,8 @@ module JsonSerializer
           h[x] = JSON.generate(val)
         elsif val.is_a?(Customers)
           h[x] = Kernel.const_defined?(str) ? val.serialize_to_json : val
+        elsif val.is_a?(Customer)
+          h[x] = Kernel.const_defined?(str) ? val.serialize_to_json : val
         end
 
       elsif str=="Refund"

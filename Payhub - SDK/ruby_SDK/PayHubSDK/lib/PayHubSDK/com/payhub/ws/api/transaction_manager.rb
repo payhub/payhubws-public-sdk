@@ -606,35 +606,7 @@ class TransactionManager < WsConnections
     end
     return response
   end
-=begin
 
-  #
-  # Perform a new query that retrieves you the Recurring Bill Information from a Merchant Id.
-  #
-  # @param String customerId: the ID of a particular Merchant Organization.
-  # @return a RecurringBillingInformation object.
-  # @see {@link com.payhub.ws.api.RecurringBillResponseInformation}
-  #
-  def findRecurringBillInformationByMerchantOrganization(merchantId)
-    url=@url+RecurringBill::RECURRENT_BILL_ID_LINK+"search/findByMerchantOrganizationId?organizationId="+merchantId
-    result=doGet(url,@token)
-    return nil if result==nil or result==""
-    result = JSON.parse(result)
-    response ||= Array.new
-    if not (result.include?('errors') or result.include?('error') or result.include?('cause') or result.include?('message'))
-      result['_embedded']['recurring-bills'].each do |recurringBill|
-        json=JSON.generate(recurringBill)
-        response_tmp = RecurringBillResponseInformation.from_json(json)
-        response_tmp.transactionManager=self
-        response.push(response_tmp)
-      end
-    else
-        response_tmp = Errors.from_json(JSON.generate(result))
-        response.push(response_tmp)
-
-    end
-    return response
-  end
   #
   # Perform a new query that retrieves you the Recurring Bill Information from a Customer Id.
   #
@@ -660,12 +632,26 @@ class TransactionManager < WsConnections
     else
       response_tmp = Errors.from_json(JSON.generate(result))
       response.push(response_tmp)
-      end
     end
+
     return response
   end
-=end
 
+  def updateRecurringBillStatus(recurringBillId)
+    if recurringBillId.to_s=='' || recurringBillId==nil
+      return false
+    end
+    url=@url+"recurring-bill-status/"+recurringBillId.to_s
+    http,request = setHeadersPatch(url,@token)
+    informationToSend = {"recurring_bill_status"=>"CANCELED"}
+    request.body = JSON.generate(informationToSend)
+    result=doPatch(http,request)
+    if result.body.to_s==''
+      return true
+    else
+      return result.body
+    end
+  end
 
   def findTransactions(parameters)
     url=@url+"report/transactionReport/"

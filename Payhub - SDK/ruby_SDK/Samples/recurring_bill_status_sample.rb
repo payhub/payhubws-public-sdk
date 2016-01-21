@@ -28,7 +28,7 @@ customer.phone_number="844-217-1631"
 customer.phone_type="W"
 
 montly_s=MonthlySchedule.new("E",15)
-start=Date.new(2015,9,29)
+start=Date.new(2016,1,29)
 type="O"
 endDate=Date.new(2016,8,29)
 scheduleSandE=ScheduleStartAndEnd.new(start,type,endDate)
@@ -40,14 +40,14 @@ transaction = TransactionManager.new(wsURL,oauth_token,merchant)
 recurringBill = RecurringBill.new(merchant,customer,bill,card_data,schedule)
 response = transaction.doRecurringBill(recurringBill)
 if response.errors==nil
-  puts response.status.inspect
+  puts response.statusInformation.inspect
   id=response.lastRecurringBillResponse.recurringBillId
   canUpdate = transaction.updateRecurringBillStatus(id)
 
   if canUpdate
     responseUpdated=transaction.getRecurringBillInformation(id.to_s)
     if responseUpdated.errors==nil
-       puts responseUpdated.status.inspect
+       puts responseUpdated.statusInformation.inspect
     end
   end
 else

@@ -1,9 +1,9 @@
 class RecurringBillResponseInformation
   include JsonSerializer
-  ATTRS=[:status,:lastRecurringBillResponse,:_links,:errors,:metaData]
+  ATTRS=[:lastRecurringBillResponse,:_links,:errors,:metaData]
   attr_accessor *ATTRS
 
-  attr_reader :billInformation,:cardDataInformation,:customerInformation,:merchantInformation,:scheduleInformation
+  attr_reader :billInformation,:cardDataInformation,:customerInformation,:merchantInformation,:scheduleInformation,:statusInformation
   attr_writer :transactionManager
 
   def initialize
@@ -53,6 +53,15 @@ class RecurringBillResponseInformation
       @scheduleInformation=schedule
     end
     return @scheduleInformation
+  end
+
+  def statusInformation
+    if (@statusInformation==nil)
+      status=StatusInformation.new(@transactionManager)
+      status.getDataByTransaction(TransactionType::RecurringBill  ,@lastRecurringBillResponse.recurringBillId)
+      @statusInformation=status
+    end
+    return @statusInformation
   end
 
 end

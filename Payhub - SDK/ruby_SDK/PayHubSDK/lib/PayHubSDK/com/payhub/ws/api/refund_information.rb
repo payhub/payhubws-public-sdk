@@ -1,6 +1,6 @@
 class RefundInformation
   include JsonSerializer
-  ATTRS=[:transaction_id,:lastRefundResponse,:_links,:errors,:metaData]
+  ATTRS=[:transaction_id,:lastRefundResponse,:_links,:errors,:metaData,:merchantOrganizationId,:settlementStatus]
   attr_accessor *ATTRS
 
   attr_reader :merchantInformation
