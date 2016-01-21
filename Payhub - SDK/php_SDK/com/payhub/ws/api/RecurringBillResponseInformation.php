@@ -8,7 +8,7 @@
  */
 class RecurringBillResponseInformation
 {
-    public $status;
+    public $statusInformation;
     public $lastRecurringBillResponse;
     public $_links;
     public $errors;
@@ -21,21 +21,7 @@ class RecurringBillResponseInformation
     private $merchantInformation;
     private $scheduleInformation;
 
-    /**
-     * @return mixed
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
 
-    /**
-     * @param mixed $status
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    }
 
     /**
      * @return mixed
@@ -184,9 +170,22 @@ class RecurringBillResponseInformation
         }
         return $this->scheduleInformation;
     }
+    /**
+     * @param mixed $statusInformation
+     */
+    public function getStatusInformation()
+    {
+        if($this->statusInformation==null){
+            $s = new StatusInformation($this->transactionManager);
+            $s->getDataByTransaction(TransactionType::RecurringBill, $this->lastRecurringBillResponse->getRecurringBillId());
+            $this->statusInformation=$s;
+        }
+        return $this->statusInformation;
+    }
+
+
     public static function fromArray($data){
         $recurringBill = new RecurringBillResponseInformation();
-
         foreach ($data as $key => $value){
             if( property_exists( get_class($recurringBill), $key ) ) {
                 if($key=="lastRecurringBillResponse"){

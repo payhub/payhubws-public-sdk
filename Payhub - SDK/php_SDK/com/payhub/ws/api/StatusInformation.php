@@ -25,7 +25,7 @@ class StatusInformation extends AbstractInfo
      */
     public function getStatus()
 {
-    return $this->schedule;
+    return $this->status;
 }
 
     /**

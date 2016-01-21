@@ -51,12 +51,18 @@ abstract class AbstractInfo
 
 	public  function convertAbstractData($json){
         $obj = json_decode($json);
-        $this->version=$obj->{'version'};
-    	$this->createdAt=$obj->{'createdAt'};
-        $this->lastModified=$obj->{'lastModified'};
-        $this->createdBy=$obj->{'createdBy'};
-        $this->lastModifiedBy=$obj->{'lastModifiedBy'};
-        $this->metaData=$obj->{'metaData'};
+        if(array_key_exists('version',$obj))
+            $this->version = $obj->{'version'};
+        if(array_key_exists('createdAt',$obj))
+    	    $this->createdAt=$obj->{'createdAt'};
+        if(array_key_exists('lastModified',$obj))
+            $this->lastModified=$obj->{'lastModified'};
+        if(array_key_exists('createdBy',$obj))
+            $this->createdBy=$obj->{'createdBy'};
+        if(array_key_exists('lastModifiedBy',$obj))
+            $this->lastModifiedBy=$obj->{'lastModifiedBy'};
+        if(array_key_exists('metaData',$obj))
+            $this->metaData=$obj->{'metaData'};
 	}
 	public abstract function getUrlForTransactionType($type);
 }

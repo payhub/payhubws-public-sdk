@@ -16,6 +16,24 @@ class RefundInformation
     public $metaData;
     private $transactionManager;
     private $merchantInformation;
+    public $settlementStatus;
+    public $merchantOrganizationId;
+
+    /**
+     * @return mixed
+     */
+    public function getSettlementStatus()
+    {
+        return $this->settlementStatus;
+    }
+
+    /**
+     * @param mixed $settlementStatus
+     */
+    public function setSettlementStatus($settlementStatus)
+    {
+        $this->settlementStatus = $settlementStatus;
+    }
 
     /**
      * RefundInformation constructor.
@@ -153,20 +171,19 @@ class RefundInformation
     {
         if($this->merchantInformation==null){
             $m = new MerchantInformation($this->transactionManager);
-            $m.getDataByTransaction(TransactionType::Refund, $this->transaction_id);
+            $m->getDataByTransaction(TransactionType::Refund, $this->lastRefundResponse->getRefundTransactionId());
             $this->merchantInformation=$m;
         }
         return $this->merchantInformation;
     }
     public static function fromArray($data){
         $refund = new RefundInformation();
-
         foreach ($data as $key => $value){
             if( property_exists( get_class($refund), $key ) ) {
                 if($key=="errors"){
                     $refund->{$key}=Errors::fromArray($value);
                 }
-                if($key=="lastRecurringBillResponse"){
+                if($key=="lastRefundResponse"){
                     $refund->{$key}=RefundResponse::fromArray($value);
                 }
                 else{

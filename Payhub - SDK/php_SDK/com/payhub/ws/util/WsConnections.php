@@ -91,7 +91,7 @@ class WsConnections
                 'Accept: application/json',
                 'Authorization: Bearer '. $this->token)
         );
-        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($request, CURLOPT_HEADER, 1);
         curl_setopt($request, CURLOPT_SSL_VERIFYPEER, 0);
 
@@ -109,7 +109,7 @@ class WsConnections
                 'Accept: application/json',
                 'Authorization: Bearer '. $this->token)
         );
-        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($request, CURLOPT_HEADER, 1);
         curl_setopt($request, CURLOPT_SSL_VERIFYPEER, 0);
 
@@ -171,12 +171,13 @@ class WsConnections
     public function doPatch($request,$json){
         curl_setopt($request, CURLOPT_POSTFIELDS, $json);
         $response = curl_exec($request);
-        $p = strpos($response, "\r\n\r\n");
-        if( $p !== false ) {
-            $rawBody = substr($response, $p + 4);
+        $httpcode = curl_getinfo($request, CURLINFO_HTTP_CODE);
+        if ($httpcode>=200 && $httpcode< 400){
+            return true;
+        }else{
+            return false;
         }
-        $data = json_decode($rawBody, true);
-        return $data;
+
     }
     public function doPostForRoles($request,$json){
         curl_setopt($request, CURLOPT_POSTFIELDS, $json);

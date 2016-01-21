@@ -80,13 +80,20 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().Sale::$SALE_ID_LINK;
         $request = $this->setHeadersGet($url,$this->_oauthToken);
         $result = $this->doGet($request);
-        //var_dump($result);
-        foreach($result['_embedded']['sales'] as $sales){
-            $response_tmp = SaleResponseInformation::fromArray($sales);
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach($result['_embedded']['sales'] as $sales){
+                $response_tmp = SaleResponseInformation::fromArray($sales);
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
     }
     /**
      * Perform a new Authorization.
@@ -138,13 +145,20 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().AuthOnly::$AUTH_ID_LINK;
         $request = $this->setHeadersGet($url,$this->_oauthToken);
         $result = $this->doGet($request);
-        //var_dump($result);
-        foreach($result['_embedded']['authonlys'] as $authonlies){
-            $response_tmp = AuthorizationResponseInformation::fromArray($authonlies);
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach($result['_embedded']['authonlys'] as $authonlies){
+                $response_tmp = AuthorizationResponseInformation::fromArray($authonlies);
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
     }
 
     /**
@@ -196,12 +210,20 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl() . Capture::$CAPTURE_ID_LINK;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['captures'] as $captures) {
-            $response_tmp = CaptureResponseInformation::fromArray($captures);
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['captures'] as $captures) {
+                $response_tmp = CaptureResponseInformation::fromArray($captures);
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
     }
     /**
      * Perform a new Void Transaction.
@@ -253,12 +275,20 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl() . VoidTransaction::$VOID_ID_LINK;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['voids'] as $voids) {
-            $response_tmp = VoidResponseInformation::fromArray($voids);
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['voids'] as $voids) {
+                $response_tmp = VoidResponseInformation::fromArray($voids);
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
     }
     /**
      * Perform a new Verify.
@@ -308,12 +338,20 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl() . Verify::$VERIFY_ID_LINK;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['verifications'] as $verifications) {
-            $response_tmp = VerifyResponseInformation::fromArray($verifications);
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['verifications'] as $verifications) {
+                $response_tmp = VerifyResponseInformation::fromArray($verifications);
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
     }
     /**
      * Perform a new Refund.
@@ -362,12 +400,20 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl() . Refund::$REFUND_ID_LINK;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['refunds'] as $refunds) {
-            $response_tmp = RefundInformation::fromArray($refunds);
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['refunds'] as $refunds) {
+                $response_tmp = RefundInformation::fromArray($refunds);
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
     }
     /**
      * Perform a new RecurringBilling.
@@ -405,26 +451,25 @@ class TransactionManager extends WsConnections
         $response->setTransactionManager($this);
         return $response;
     }
-    /**
-     * Perform a new query that retrieves you the Recurring Bill Information from a Merchant Id.
-     *
-     * @param String customerId: the ID of a particular Merchant Organization.
-     * @return a RecurringBillingInformation object.
-     * @see {@link com.payhub.ws.api.RecurringBillResponseInformation};
-     */
-    public function findRecurringBillInformationByMerchantOrganization($merchantId){
-        if(is_null($merchantId) || $merchantId==""){
-            return null;
-        }
-        $url = $this->getUrl().RecurringBill::$RECURRENT_BILL_ID_LINK."search/findByMerchantOrganizationId?organizationId=".$merchantId;
+
+    public function getAllRecurringBillInformation(){
+        $url = $this->getUrl().RecurringBill::$RECURRENT_BILL_ID_LINK;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['recurring-bills'] as $recurringBill) {
-            $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['recurringbills'] as $recurringBill) {
+                $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
     }
     /**
      * Perform a new query that retrieves you the Recurring Bill Information from a Customer Id.
@@ -440,12 +485,20 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().RecurringBill::$RECURRENT_BILL_ID_LINK."search/findByCustomerRef?customerId=".$customerId;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['recurring-bills'] as $recurringBill) {
-            $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['recurringbills'] as $recurringBill) {
+                $response_tmp = RecurringBillResponseInformation::fromArray($recurringBill);
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
     }
     /**
      * Perform a new query that retrieves you the list of bills for sales Information.
@@ -457,12 +510,20 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl()."bill-for-sale/";
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['billforsale'] as $billForSale) {
-            $response_tmp = BillInformation::fromJson(json_encode($billForSale));
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['billforsale'] as $billForSale) {
+                $response_tmp = BillInformation::fromJson(json_encode($billForSale));
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
     }
     /**
      * Perform a new query that retrieves you the list of bills for recurring bills Information.
@@ -475,12 +536,20 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl()."bill-for-recurring-bill/";
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['billsforrecurringbill'] as $billForSale) {
-            $response_tmp = BillInformation::fromJson(json_encode($billForSale));
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['billsforrecurringbill'] as $billForSale) {
+                $response_tmp = BillInformation::fromJson(json_encode($billForSale));
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
     }
     /**
      * Perform a new query that retrieves you the list of Merchants.
@@ -493,11 +562,19 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl()."merchant/";
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['merchants'] as $billForSale) {
-            $response_tmp = MerchantInformation::fromJson(json_encode($billForSale));
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['merchants'] as $billForSale) {
+                $response_tmp = MerchantInformation::fromJson(json_encode($billForSale));
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
     }
     /**
      * Perform a new query that retrieves you the list of Card Data.
@@ -510,11 +587,20 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl()."carddata/";
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['carddata'] as $billForSale) {
-            $response_tmp = CardDataInformation::fromJson(json_encode($billForSale));
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['carddata'] as $billForSale) {
+                $response_tmp = CardDataInformation::fromJson(json_encode($billForSale));
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
+
     }
     /**
      * Perform a new query that retrieves you the list of Customers for sales.
@@ -527,12 +613,33 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl()."customer-for-sale/";
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['customerforsale'] as $billForSale) {
-            $response_tmp = CustomerInformation::fromJson(json_encode($billForSale));
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['customerforsale'] as $billForSale) {
+                $response_tmp = CustomerInformation::fromJson(json_encode($billForSale));
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+            $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
         }
-        return $response;
+    }
+
+    public function updateRecurringBillStatus($id){
+        if(is_null($id) || $id==""){
+            return false;
+        }
+        $url=$this->getUrl()."recurring-bill-status/".$id;
+        $request = $this->setHeadersPatch($url,$this->_oauthToken);
+
+        $data = array("recurring_bill_status" => "CANCELED");
+        $json = json_encode($data);
+        $result=$this->doPatch($request,$json);
+        return $result;
     }
     /**
      * Perform a new query that retrieves you the list of Customers for Recurring billings.
@@ -545,12 +652,20 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl()."customer/";
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        foreach ($result['_embedded']['customers'] as $billForSale) {
-            $response_tmp = CustomerInformation::fromJson(json_encode($billForSale));
-            $response_tmp->setTransactionManager($this);
-            $response[] = $response_tmp;
+        if(array_key_exists('_embedded',$result)) {
+            foreach ($result['_embedded']['customers'] as $customer) {
+                $response_tmp = CustomerInformation::fromJson(json_encode($customer));
+                $response_tmp->setTransactionManager($this);
+                $response[] = $response_tmp;
+            }
+        }else{
+                $errors_tmp = new Errors();
+                foreach ($result as $errorData) {
+                    $errors_tmp = Errors::fromArray($errorData);
+                }
+                $errors[]=$errors_tmp;
+                return $errors;
         }
-        return $response;
     }
     public function findTransactions($parameters){
         $url = $this->getUrl()."report/transactionReport/";
@@ -754,8 +869,6 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().RoleSettings::$CREATE_USER_ROLE_LINK;
         $request = $this->setHeadersPost($url, $this->_oauthToken);
         $json = json_encode($roleSettings->object_unset_nulls_for_send());
-
-        //var_dump($json);
         $result = $this->doPostForRoles($request,$json);
 
         if(is_array($result)){

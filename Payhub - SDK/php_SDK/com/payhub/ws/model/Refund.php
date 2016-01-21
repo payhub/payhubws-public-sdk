@@ -14,17 +14,34 @@ class Refund extends WsConnections
     public $transaction_id;
     public $merchant;
     public $record_format;
+    public $bill;
+    public $customer;
+    public $card_data;
 
     /**
      * Refund constructor.
      * @param $transaction_id
      * @param $merchant
      * @param $record_format
+     * @param null $bill
+     * @param null $customer
+     * @param $cardData
      */
-    public function __construct($transaction_id, $merchant, $record_format)
+    public function __construct($transaction_id=null, $merchant, $record_format,$bill=null,$customer=null,$cardData=null)
     {
-        $this->transaction_id = $transaction_id;
-        $this->merchant = $merchant;
+        if($transaction_id!=null){$this->transaction_id = $transaction_id;}
+        if ($merchant!=null && is_a($merchant, 'Merchant')) {
+            $this->merchant = $merchant;
+        }
+        if ($bill!=null && is_a($bill, 'Bill')) {
+            $this->bill = $bill;
+        }
+        if ($customer!=null && is_a($customer, 'Customer')) {
+            $customer->customer = $customer;
+        }
+        if ($cardData!=null && is_a($cardData, 'CardData')) {
+            $this->card_data = $cardData;
+        }
         $this->record_format = $record_format;
     }
 
@@ -108,6 +125,55 @@ class Refund extends WsConnections
     {
         $this->record_format = $record_format;
     }
+
+    /**
+     * @return null
+     */
+    public function getBill()
+    {
+        return $this->bill;
+    }
+
+    /**
+     * @param null $bill
+     */
+    public function setBill($bill)
+    {
+        $this->bill = $bill;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param mixed $customer
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCardData()
+    {
+        return $this->card_data;
+    }
+
+    /**
+     * @param mixed $cardData
+     */
+    public function setCardData($cardData)
+    {
+        $this->card_data = $cardData;
+    }
+
 
     public function performRefund($request){
         $json = json_encode($this->object_unset_nulls(null));

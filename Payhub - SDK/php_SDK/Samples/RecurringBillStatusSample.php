@@ -34,7 +34,7 @@ $montly_s = new MontlySchedule();
 $montly_s->monthly_type="E";
 $montly_s->monthly_each_days=array(15);
 
-$start=new DateTime("2015-9-29");
+$start=new DateTime("2016-1-29");
 $start=$start->format('Y-m-d');
 $type="O";
 $endDate=new DateTime("2016-8-29");

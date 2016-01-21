@@ -20,4 +20,5 @@ class TransactionType
     const Refund="forRefund";
     const VoidTransaction="forVoid";
     const Verify="forVerify";
+    const Status="forStatus";
 }
