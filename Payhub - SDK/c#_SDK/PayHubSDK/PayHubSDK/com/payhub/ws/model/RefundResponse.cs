@@ -19,5 +19,34 @@ namespace PayHubSDK.com.payhub.ws.model
         [DataMember]
         private string token;
         public string Token { get { return this.token; } set { this.token = value; } }
+        [DataMember]
+        public string approvalCode;
+        [DataMember]
+        public string processedDateTime;
+        [DataMember]
+        public string avsResultCode;
+        [DataMember]
+        public string verificationResultCode;
+        [DataMember]
+        public string batchId;
+        [DataMember]
+        public string responseCode;
+        [DataMember]
+        public string responseText;
+        [DataMember]
+        public string cisNote;
+        [DataMember]
+        public string riskStatusResponseText;
+        [DataMember]
+        public string riskStatusRespondeCode;
+        [DataMember]
+        public string refundDateTime;
+        [DataMember]
+        public string tokenizedCard;
+        [DataMember]
+        public BillingReferences billingReferences;
+        [DataMember]
+        public CustomerReference customerReference;
+
     }
 }

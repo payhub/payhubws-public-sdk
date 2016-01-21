@@ -62,26 +62,7 @@ namespace PayHubWS
             TransactionManager transaction = new TransactionManager(url, oauth, merchant);
             RecurringBillInformation response = transaction.doRecurringBill(recurringBill);
             Console.Write(response.rowData);
-        }
-        public void findByMerchantSample() {
-			/* The current url, oauth_token, orgId and Terminal Id provided in this example, are only for testing purposes
-			*  For development purposes you need to contact the Payhub Integration Support team. They will provide you with  *  all you need.
-			*  Thanks.
-			*/
-			//Defining the Web Service URL
-            string url = "https://sandbox-api.payhub.com/api/v2/";
-            string oauth = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
-           
-            Merchant merchant = new Merchant();
-            merchant.organization_id = 10074;
-            merchant.terminal_id = 134;
-
-
-            TransactionManager transaction = new TransactionManager(url, oauth, merchant);
-            List<RecurringBillInformation> response = transaction.findRecurringBillInformationByMerchantOrganization(merchant.organization_id.ToString());
-            if (response!= null) Console.Write(response[0].rowData);
-
-        }
+        }       
         public void findByCustomerSample()
         {
 			/* The current url, oauth_token, orgId and Terminal Id provided in this example, are only for testing purposes

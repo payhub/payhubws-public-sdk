@@ -12,8 +12,8 @@ namespace PayHubWS_sample_app
     {
         static void Main(string[] args)
         {
-            RefundSample sale = new RefundSample();
-            sale.doRefundWithOutSale();
+            RecurringBillStatusSample sale = new RecurringBillStatusSample();
+            sale.updateStatus();
         }
     }
 }

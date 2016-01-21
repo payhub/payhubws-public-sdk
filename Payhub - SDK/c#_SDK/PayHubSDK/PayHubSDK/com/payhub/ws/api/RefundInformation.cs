@@ -24,6 +24,8 @@ namespace PayHubSDK.com.payhub.ws.api
         [DataMember]
         public string merchantOrganizationId;
         [DataMember]
+        public string settlementStatus;
+        [DataMember]
         public Object _links;
 
         [DataMember]

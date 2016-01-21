@@ -687,53 +687,7 @@ namespace PayHubSDK.com.payhub.ws.api
                 return null;
             }
         }
-        /// <summary> 
-        ///  Perform a new query that retrieves you the Recurring Bill Information from a Merchant Id.
-        ///
-        /// <param name="recurringBillId"> 
-        /// String recurringBillId: the ID of a particular Recurring Bill Transaction.
-        /// </param>
-        /// <returns>
-        /// a RecurringBillingInformation object.
-        /// </returns>   
-        /// <seealso cref="PayHubWS.com.payhub.ws.api.RecurringBillInformation"/>
-        /// </summary> 
-        public List<RecurringBillInformation> findRecurringBillInformationByMerchantOrganization(string merchantId) 
-        {
-            if (merchantId.Equals("") || merchantId == null)
-            {
-                return null;
-            }
-            RecurringBillInformation response = new RecurringBillInformation();
-            var url = _url + "recurring-bill/search/findByMerchantOrganizationId?organizationId=" + merchantId;
-            var request = setHeadersGet(url, this._oauthToken);
-            string result = doGet(request);
-            var node = JObject.Parse(result);
-            List<RecurringBillInformation> rb=null;
-            if (node["_embedded"] != null && node["_embedded"]["recurringbills"] != null)
-            {
-                rb = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                foreach (RecurringBillInformation recurringBillInformation in rb)
-                {
-                    recurringBillInformation.transactionManager = this;
-                }
-                return rb;
-            }
-            if (node["errors"] != null)
-            {
-                List<Errors> errors = JsonConvert.DeserializeObject<List<Errors>>(node["errors"].ToString());
-                RecurringBillInformation rbForErrors = new RecurringBillInformation();
-                rbForErrors.errors = errors;
-                rb.Add(rbForErrors);
-                return rb;
-            }
-            
-            else {
-                return null;
-            }
-
-            
-        }
+        
         /// <summary> 
         ///  Perform a new query that retrieves you the Recurring Bill Information from a Customer Id.
         ///
