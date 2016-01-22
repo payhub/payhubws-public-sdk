@@ -19,5 +19,6 @@ public enum TransactionType {
 	Schedule,//forSchedule
 	Refund,//forRefund
 	VoidTransaction,
-	Verify//forVoid
+	Verify,//forVoid
+	Status
 }

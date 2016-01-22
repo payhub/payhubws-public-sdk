@@ -16,6 +16,7 @@ public class RefundInformation {
     private String transaction_id;
     private RefundResponse lastRefundResponse;
     private String merchantOrganizationId;
+    public String settlementStatus;
     public Object _links;
     private List<Errors> errors;
     public String rowData;

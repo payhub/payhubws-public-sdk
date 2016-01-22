@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package com.payhub.ws.api;
 
 import java.io.IOException;
@@ -11,11 +14,15 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payhub.ws.model.Status;
 
-
+/**
+ * @author agustin
+ *
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StatusInformation extends AbstractInfo{	
+
 	@JsonIgnore
-	Status status;
+	public Status status;
 	
 	public StatusInformation() {
 		super();

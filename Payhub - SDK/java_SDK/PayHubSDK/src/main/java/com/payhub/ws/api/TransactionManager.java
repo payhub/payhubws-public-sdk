@@ -629,31 +629,20 @@ public class TransactionManager extends WsConnections{
         return response;  
         
     }
-    /**
-     * Perform a new query that retrieves you the Recurring Bill Information from a Merchant Id.
-     *
-     * @param String customerId: the ID of a particular Merchant Organization.
-     * @return a RecurringBillingInformation object. 
-     * @see {@link com.payhub.ws.api.RecurringBillResponseInformation};
-     */
-    public RecurringBillResponseInformation findRecurringBillInformationByMerchantOrganization(String merchantId) throws IOException
+    public boolean updateRecurringBillStatus(String id) throws IOException
     {
-    	if(merchantId.equals("")|| merchantId==null){
-    		return null;
-    	}
-    	RecurringBillResponseInformation response = new RecurringBillResponseInformation();
-        String url = _url + "recurring-bill/search/findByMerchantOrganizationId?organizationId="+ merchantId;
-        HttpURLConnection request = setHeadersGet(url, this._oauthToken);
-        String result = doGet(request);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        response =  mapper.readValue(result, RecurringBillResponseInformation.class);
-        response.setRowData(result);
-        response.setTransactionManager(this);
-        return response;  
-        
+        if (id == null || id == "")
+        {
+            return false;
+        }
+        String url = _url + "recurring-bill-status/" + id;
+        String json = "{ \n\t\"recurring_bill_status\": \"CANCELED\"\n}";        
+        String result = doPatch(url,this._oauthToken,json);
+        if(StringUtils.isEmpty(result)){
+        	return true;
+        }
+        return false;
     }
-    
     /**
      * Perform a new query that retrieves you the Recurring Bill Information from a Customer Id.
      *

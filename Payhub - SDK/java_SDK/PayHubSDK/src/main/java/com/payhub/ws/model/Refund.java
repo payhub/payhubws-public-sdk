@@ -31,6 +31,9 @@ public class Refund extends WsConnections{
     private String transaction_id;
     private Merchant merchant;
     private String record_format;
+    private Bill bill;
+    private Customer customer;
+    private CardData card_data;
     
     private String getUrl_basePath() {
 		return url_basePath;
@@ -65,12 +68,74 @@ public class Refund extends WsConnections{
 	public void setRecord_format(String record_format) {
 		this.record_format = record_format;
 	}
+	
+	
+	
+	/**
+	 * @return the bill
+	 */
+	public Bill getBill() {
+		return bill;
+	}
+
+	/**
+	 * @param bill the bill to set
+	 */
+	public void setBill(Bill bill) {
+		this.bill = bill;
+	}
+
+	/**
+	 * @return the customer
+	 */
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	/**
+	 * @param customer the customer to set
+	 */
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	/**
+	 * @return the card_data
+	 */
+	public CardData getCard_data() {
+		return card_data;
+	}
+
+	/**
+	 * @param card_data the card_data to set
+	 */
+	public void setCard_data(CardData card_data) {
+		this.card_data = card_data;
+	}
+
 	public Refund(Merchant merchant, String transaction_id, String record_format)
     {
         // TODO: Complete member initialization
         this.merchant = merchant;
         this.transaction_id = transaction_id;
         this.record_format = record_format;
+    }
+	public Refund(Merchant merchant, String transaction_id, String record_format,Bill bill)
+    {
+        // TODO: Complete member initialization
+        this.merchant = merchant;
+        this.transaction_id = transaction_id;
+        this.record_format = record_format;
+        this.bill=bill;
+    }
+	public Refund(Merchant merchant, String record_format,Bill bill,Customer customer,CardData card)
+    {
+        // TODO: Complete member initialization
+        this.merchant = merchant;
+        this.record_format = record_format;
+        this.bill = bill;
+        this.customer = customer;
+        this.card_data = card;
     }
     public RefundInformation PerformRefund(String json, HttpURLConnection request)
     {
