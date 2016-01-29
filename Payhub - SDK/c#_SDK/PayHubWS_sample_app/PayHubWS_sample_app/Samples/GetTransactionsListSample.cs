@@ -11,21 +11,28 @@ namespace PayHubWS_sample_app.Samples
     class GetTransactionsListSample
     {
         public void getLists() {
-            string url = "https://staging-api.payhub.com/api/v2/";
-            string oauth = "107d74ab-4a18-4713-88ff-69bd05710086";
+            string url = "https://sandbox-api.payhub.com/api/v2/";
+            string oauth = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
 
             Merchant merchant = new Merchant();
-            merchant.organization_id = 10127;
-            merchant.terminal_id = 215;
+            merchant.organization_id = 10074;
+            merchant.terminal_id = 134;
+            
 
             TransactionManager transaction = new TransactionManager(url, oauth, merchant);
             // debug and see the result list for each transaction
-            var a = transaction.getAllBillForSaleInformation();
-            var b = transaction.getAllBillForRecurringBillInformation();
-            var c = transaction.getAllCardDataInformation();
-            var d = transaction.getAllCustomerForRecurringBillInformation();
-            var e = transaction.getAllCustomerForSalesInformation();
-            var f = transaction.getAllMerchantInformation();
+            var sales = transaction.getAllSalesInformation("0");
+            var auths = transaction.getAllAuthOnlyInformation("0");
+            var caps = transaction.getAllCaptureInformation("0");
+            var voids = transaction.getAllVoidResponseInformation("0");
+            var refunds = transaction.getAllRefundInformation("0");
+
+            var a = transaction.getAllBillForSaleInformation("0");
+            var b = transaction.getAllBillForRecurringBillInformation("0");
+            var c = transaction.getAllCardDataInformation("0");
+            var d = transaction.getAllCustomerForRecurringBillInformation("0");
+            var e = transaction.getAllCustomerForSalesInformation("0");
+            var f = transaction.getAllMerchantInformation("0");
             
         }
     }

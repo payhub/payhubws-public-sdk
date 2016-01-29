@@ -6,24 +6,24 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace PayHubSDK.com.payhub.ws.api
 {   [DataContract]
     public class VerifyResponseInformation
     {
         [DataMember(Name = "metaData")]
-        private string _metadata = "";
-
-        public string metaData { get { return this._metadata.ToString(); } set { if (value != null) { this._metadata = value.ToString(); } else { this._metadata = ""; } } }
+        private JToken _metaData = "";
+        public JToken metaData { get { return this._metaData.ToString(); } set { if (value != null) { this._metaData = value.ToObject<string>(); } else { this._metaData = ""; } } }
         [DataMember]
-        private VerifyResponse verifyResponse;
-        public VerifyResponse _verifyResponse
+        private VerifyResponse _verifyResponse;
+        public VerifyResponse verifyResponse
         {
-            get { return this.verifyResponse; }
+            get { return this._verifyResponse; }
             set
             {
                 if (value != null)
-                    this.verifyResponse = value;
+                    this._verifyResponse = value;
             }
         }
         [DataMember]

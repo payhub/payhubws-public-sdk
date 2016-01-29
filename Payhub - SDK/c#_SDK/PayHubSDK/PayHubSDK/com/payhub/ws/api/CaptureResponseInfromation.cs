@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace PayHubSDK.com.payhub.ws.api
 {
@@ -13,10 +14,9 @@ namespace PayHubSDK.com.payhub.ws.api
     public class CaptureResponseInfromation
     {
         [DataMember(Name = "metaData")]
-        private string _metadata = "";
-
-        public string metaData { get { return this._metadata.ToString(); } set { if (value != null) { this._metadata = value.ToString(); } else { this._metadata = ""; } } }
-         [DataMember]
+        private JToken _metaData = "";
+        public JToken metaData { get { return this._metaData.ToString(); } set { if (value != null) { this._metaData = value.ToObject<string>(); } else { this._metaData = ""; } } }
+        [DataMember]
         public CaptureResponse lastCaptureResponse { get; set; }
          [DataMember]
          public Object _links { get; set; }

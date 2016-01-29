@@ -25,10 +25,13 @@ namespace PayHubSDK.com.payhub.ws.api
         [DataMember(Name = "lastModifiedBy")]
         private string _lastModifiedBy;
         [DataMember(Name = "metaData")]
-	    private string _metaData="";
-	    private TransactionManager transactionManager;
+        private JToken _metaData = "";
+        public JToken metaData { get { return this._metaData.ToString(); } set { if (value != null) { this._metaData = value.ToObject<string>(); } else { this._metaData = ""; } } }
+        
+        private TransactionManager transactionManager;
         public TransactionManager TransactionManager { set { this.transactionManager = value; } }
-	    private TransactionType transactionType;
+	    
+        private TransactionType transactionType;
         public Customer customer{ get; set; }
 
         public string Version { get { return this._version; } set { this._version = value; } }
@@ -36,7 +39,7 @@ namespace PayHubSDK.com.payhub.ws.api
         public string LastModified { get { return this._lastModified; } set { this._lastModified = value; } }
         public string CreatedBy { get { return this._createdBy; } set { this._createdBy = value; } }
         public string LastModifiedBy { get { return this._lastModifiedBy; } set { this._lastModifiedBy = value; } }
-        public string metaData { get { return this._metaData.ToString(); } set { if (value != null) { this._metaData = value.ToString(); } else { this._metaData = ""; } } }
+        
         public string Url { get; set; }
 
         public CustomerInformation() {
@@ -55,7 +58,7 @@ namespace PayHubSDK.com.payhub.ws.api
             this.LastModified = (string)node["lastModified"];
             this.CreatedBy = (string)node["createdBy"];
             this.LastModifiedBy = (string)node["lastModifiedBy"];
-            this.metaData = (string)node["metaData"];
+            this.metaData = node["metaData"].ToObject<string>();
         }
 
          private void convertDataToCustomer(String json){

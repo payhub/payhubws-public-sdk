@@ -1,5 +1,6 @@
 ﻿using PayHubWS;
 using PayHubWS.Samples;
+using PayHubWS_sample_app.Samples;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace PayHubWS_sample_app
     {
         static void Main(string[] args)
         {
-            RecurringBillStatusSample sale = new RecurringBillStatusSample();
-            sale.updateStatus();
+            GetTransactionsListSample lists = new GetTransactionsListSample();
+            lists.getLists();
         }
     }
 }

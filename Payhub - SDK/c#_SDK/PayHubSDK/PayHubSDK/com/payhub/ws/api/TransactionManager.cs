@@ -119,17 +119,32 @@ namespace PayHubSDK.com.payhub.ws.api
      /// a SaleResponseInformation list object.
      /// </returns> 
     ///</summary>
-    public List<SaleResponseInformation> getAllSalesInformation()
+    public List<SaleResponseInformation> getAllSalesInformation(string page)
     {
     	//List<SaleResponseInformation> response = new ArrayList<SaleResponseInformation>();
-        String url = _url + Sale.SALE_ID_LINK ;
+        String url = _url + Sale.SALE_ID_LINK + "?page="+page;
         HttpWebRequest request = setHeadersGet(url, this._oauthToken);
         String result = doGet(request);
         var node = JObject.Parse(result);
-        List<SaleResponseInformation> response = JsonConvert.DeserializeObject<List<SaleResponseInformation>>(node["_embedded"]["sales"].ToString());           
-        foreach (SaleResponseInformation saleResponseInformation in response) {
-        	saleResponseInformation.transactionManager=this;
-		}
+        
+        List<SaleResponseInformation> response = new List<SaleResponseInformation>();
+        if (node["_embedded"] != null && node["_embedded"]["sales"] != null)
+        {
+            foreach (var authorizationResponseInformation in node["_embedded"]["sales"])
+            {
+                //billInformation.TransactionManager = this;
+                var a = JsonConvert.DeserializeObject<SaleResponseInformation>(authorizationResponseInformation.ToString());
+                if (authorizationResponseInformation["metaData"] != null)
+                {
+                    a.metaData = authorizationResponseInformation["metaData"].ToString();
+                }
+                a.transactionManager = this;
+                response.Add(a);
+
+            }
+        }
+
+
         return  response;
     }
         /// <summary> 
@@ -185,17 +200,29 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a AuthorizationResponseInformation list object.
         /// </returns> 
         ///</summary>
-        public List<AuthorizationResponseInformation> getAllAuthOnlyInformation()
+        public List<AuthorizationResponseInformation> getAllAuthOnlyInformation(string page)
         {
 
-            String url = _url + AuthOnly.AUTH_ID_LINK;
+            String url = _url + AuthOnly.AUTH_ID_LINK + "?page=" + page;
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
-            List<AuthorizationResponseInformation> response = JsonConvert.DeserializeObject<List<AuthorizationResponseInformation>>(node["_embedded"]["authonlys"].ToString(), new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore });
-            foreach (AuthorizationResponseInformation authorizationResponseInformation in response)
+            
+            List<AuthorizationResponseInformation> response = new List<AuthorizationResponseInformation>();
+            if (node["_embedded"] != null && node["_embedded"]["authonlys"] != null)
             {
-                authorizationResponseInformation.TransactionManager = this;
+                foreach (var authorizationResponseInformation in node["_embedded"]["authonlys"])
+                {
+                    //billInformation.TransactionManager = this;
+                    var a = JsonConvert.DeserializeObject<AuthorizationResponseInformation>(authorizationResponseInformation.ToString());
+                    if (authorizationResponseInformation["metaData"] != null)
+                    {
+                        a.metaData = authorizationResponseInformation["metaData"].ToString();
+                    }
+                    a.TransactionManager = this;
+                    response.Add(a);
+
+                }
             }
             return response;
         }
@@ -252,17 +279,29 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a LastCaptureResponseInfromation list object.
         /// </returns> 
         ///</summary>
-        public List<CaptureResponseInfromation> getAllCaptureInformation()
+        public List<CaptureResponseInfromation> getAllCaptureInformation(string page)
         {
 
-            String url = _url + Capture.CAPTURE_ID_LINK;
+            String url = _url + Capture.CAPTURE_ID_LINK + "?page=" + page;
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
-            List<CaptureResponseInfromation> response = JsonConvert.DeserializeObject<List<CaptureResponseInfromation>>(node["_embedded"]["authonlys"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-            foreach (CaptureResponseInfromation lastCaptureResponseInfromation in response)
+            
+            List<CaptureResponseInfromation> response = new List<CaptureResponseInfromation>();
+            if (node["_embedded"] != null && node["_embedded"]["captures"] != null)
             {
-                lastCaptureResponseInfromation.transactionManager = this;
+                foreach (var lastCaptureResponseInfromation in node["_embedded"]["captures"])
+                {
+                    //billInformation.TransactionManager = this;
+                    var a = JsonConvert.DeserializeObject<CaptureResponseInfromation>(lastCaptureResponseInfromation.ToString());
+                    if (lastCaptureResponseInfromation["metaData"] != null)
+                    {
+                        a.metaData = lastCaptureResponseInfromation["metaData"].ToString();
+                    }
+                    a.transactionManager = this;
+                    response.Add(a);
+
+                }
             }
             return response;
         }
@@ -319,17 +358,29 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a LastVoidResponseInformation list object.
         /// </returns> 
         ///</summary>
-        public List<VoidResponseInformation> getAllVoidResponseInformation()
+        public List<VoidResponseInformation> getAllVoidResponseInformation(string page)
         {
 
-            String url = _url + VoidTransaction.VOID_ID_LINK;
+            String url = _url + VoidTransaction.VOID_ID_LINK + "?page=" + page;
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
-            List<VoidResponseInformation> response = JsonConvert.DeserializeObject<List<VoidResponseInformation>>(node["_embedded"]["voids"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-            foreach (VoidResponseInformation lastVoidResponseInformation in response)
+            
+            List<VoidResponseInformation> response = new List<VoidResponseInformation>();
+            if (node["_embedded"] != null && node["_embedded"]["voids"] != null)
             {
-                lastVoidResponseInformation.transactionManager = this;
+                foreach (var lastVoidResponseInformation in node["_embedded"]["voids"])
+                {
+                    //billInformation.TransactionManager = this;
+                    var a = JsonConvert.DeserializeObject<VoidResponseInformation>(lastVoidResponseInformation.ToString());
+                    if (lastVoidResponseInformation["metaData"] != null)
+                    {
+                        a.metaData = lastVoidResponseInformation["metaData"].ToString();
+                    }
+                    a.transactionManager = this;
+                    response.Add(a);
+
+                }
             }
             return response;
         }
@@ -384,19 +435,31 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a VerifyResponseInformation list object.
         /// </returns> 
         ///</summary>
-        public List<VerifyResponseInformation> getAllVerifyResponseInformation()
+        public List<VerifyResponseInformation> getAllVerifyResponseInformation(string page)
         {
 
-            String url = _url + Verify.VERIFY_ID_LINK;
+            String url = _url + Verify.VERIFY_ID_LINK + "?page=" + page;
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
 
-            List<VerifyResponseInformation> response = JsonConvert.DeserializeObject<List<VerifyResponseInformation>>(node["_embedded"]["verifications"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-            foreach (VerifyResponseInformation verifyResponseInformation in response)
+            List<VerifyResponseInformation> response = new List<VerifyResponseInformation>();
+            if (node["_embedded"] != null && node["_embedded"]["verifications"] != null)
             {
-                verifyResponseInformation.transactionManager = this;
+                foreach (var verifyResponseInformation in node["_embedded"]["verifications"])
+                {
+                    //billInformation.TransactionManager = this;
+                    var a = JsonConvert.DeserializeObject<VerifyResponseInformation>(verifyResponseInformation.ToString());
+                    if (verifyResponseInformation["metaData"] != null)
+                    {
+                        a.metaData = verifyResponseInformation["metaData"].ToString();
+                    }
+                    a.transactionManager = this;
+                    response.Add(a);
+
+                }
             }
+
             return response;
         }
 
@@ -453,18 +516,32 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a RefundInformation list object.
         /// </returns> 
         ///</summary>
-        public List<RefundInformation> getAllRefundInformation()
+        public List<RefundInformation> getAllRefundInformation(string page)
         {
 
-            String url = _url + Refund.REFUND_ID_LINK;
+            String url = _url + Refund.REFUND_ID_LINK + "?page=" + page;
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
-            List<RefundInformation> response = JsonConvert.DeserializeObject<List<RefundInformation>>(node["_embedded"]["refunds"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-            foreach (RefundInformation refundInformation in response)
+            
+            List<RefundInformation> response = new List<RefundInformation>();
+            if (node["_embedded"] != null && node["_embedded"]["refunds"] != null)
             {
-                refundInformation.transactionManager = this;
+                foreach (var refundInformation in node["_embedded"]["refunds"])
+                {
+                    //billInformation.TransactionManager = this;
+                    var a = JsonConvert.DeserializeObject<RefundInformation>(refundInformation.ToString());
+                    if (refundInformation["metaData"] != null)
+                    {
+                        a.metaData = refundInformation["metaData"].ToString();
+                    }
+                    
+                    a.transactionManager = this;
+                    response.Add(a);
+
+                }
             }
+
             return response;
         }
         ///<summary> 
@@ -473,21 +550,32 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a BillInformation list object.
         /// </returns> 
         ///</summary>
-        public List<BillInformation> getAllBillForSaleInformation()
+        public List<BillInformation> getAllBillForSaleInformation(string page)
         {
 
-            String url = _url + "bill-for-sale/";
+            String url = _url + "bill-for-sale?page=" + page;
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
-            var node = JObject.Parse(result);
-            List<BillInformation> response = JsonConvert.DeserializeObject<List<BillInformation>>(node["_embedded"]["billforsale"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-            int index = 0;
-            foreach (BillInformation billInformation in response)
-            {                
-                billInformation.TransactionManager = this;
-                billInformation.bill = JsonConvert.DeserializeObject<Bill>(node["_embedded"]["billforsale"][index].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                index++;
+            var node = JObject.Parse(result);           
+            List<BillInformation> response = new List<BillInformation>();
+            if (node["_embedded"] != null && node["_embedded"]["billforsale"] != null)
+            {
+                foreach (var billInformation in node["_embedded"]["billforsale"])
+                {
+                    //billInformation.TransactionManager = this;
+                    var a = JsonConvert.DeserializeObject<BillInformation>(billInformation.ToString());
+                    if (billInformation["metaData"] != null)
+                    {
+                        a.metadata = billInformation["metaData"].ToString();
+                    }
+                    a.bill = JsonConvert.DeserializeObject<Bill>(billInformation.ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                    a.TransactionManager = this;
+                    response.Add(a);
+
+                }
             }
+
+
             return response;
         }
         ///<summary> 
@@ -496,20 +584,29 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a BillInformation list object.
         /// </returns> 
         ///</summary>
-        public List<BillInformation> getAllBillForRecurringBillInformation()
+        public List<BillInformation> getAllBillForRecurringBillInformation(string page)
         {
 
-            String url = _url + "bill-for-recurring-bill/";
+            String url = _url + "bill-for-recurring-bill?page=" + page;
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
-            List<BillInformation> response = JsonConvert.DeserializeObject<List<BillInformation>>(node["_embedded"]["billsforrecurringbill"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-            int index = 0;
-            foreach (BillInformation billInformation in response)
+            List<BillInformation> response = new List<BillInformation>();
+            if (node["_embedded"] != null && node["_embedded"]["billsforrecurringbill"] != null)
             {
-                billInformation.TransactionManager = this;
-                billInformation.bill = JsonConvert.DeserializeObject<Bill>(node["_embedded"]["billsforrecurringbill"][index].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                index++;
+                foreach (var billInformation in node["_embedded"]["billsforrecurringbill"])
+                {
+                    //billInformation.TransactionManager = this;
+                    var a = JsonConvert.DeserializeObject<BillInformation>(billInformation.ToString());
+                    if (billInformation["metaData"] != null)
+                    {
+                        a.metadata = billInformation["metaData"].ToString();
+                    }
+                    a.bill = JsonConvert.DeserializeObject<Bill>(billInformation.ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                    a.TransactionManager = this;
+                    response.Add(a);
+
+                }
             }
             return response;
         }
@@ -519,21 +616,30 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a MerchantInformation list object.
         /// </returns> 
         ///</summary>
-        public List<MerchantInformation> getAllMerchantInformation()
+        public List<MerchantInformation> getAllMerchantInformation(string page)
         {
 
-            String url = _url + "merchant/";
+            String url = _url + "merchant?page=" + page;
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
-            var node = JObject.Parse(result);
-            List<MerchantInformation> response = JsonConvert.DeserializeObject<List<MerchantInformation>>(node["_embedded"]["merchants"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-            int index = 0;
-            foreach (MerchantInformation merchantInformation in response)
+            var node = JObject.Parse(result);            
+            List<MerchantInformation> response = new List<MerchantInformation>();
+
+            if (node["_embedded"] != null && node["_embedded"]["merchants"] != null)
             {
-                merchantInformation.TransactionManager = this;
-                merchantInformation.merchant = JsonConvert.DeserializeObject<Merchant>(node["_embedded"]["merchants"][index].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                index++;
+                foreach (var merchantInformation in node["_embedded"]["merchants"])
+                {
+                    var m = JsonConvert.DeserializeObject<MerchantInformation>(merchantInformation.ToString());
+                    m.TransactionManager = this;
+                    if (merchantInformation["metaData"] != null)
+                    {
+                        m.metaData = merchantInformation["metaData"].ToString();
+                    }
+                    m.merchant = JsonConvert.DeserializeObject<Merchant>(merchantInformation.ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                    response.Add(m);
+                }
             }
+
             return response;
         }
         ///<summary> 
@@ -542,21 +648,32 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a CardDataInformation list object.
         /// </returns> 
         ///</summary>
-        public List<CardDataInformation> getAllCardDataInformation()
+        public List<CardDataInformation> getAllCardDataInformation(string page)
         {
 
-            String url = _url + "carddata/";
+            String url = _url + "carddata?page=" + page;
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
-            List<CardDataInformation> response = JsonConvert.DeserializeObject<List<CardDataInformation>>(node["_embedded"]["carddata"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-            int index = 0;
-            foreach (CardDataInformation cardDataInformation in response)
+            List<CardDataInformation> response = new List<CardDataInformation>();
+
+            if (node["_embedded"] != null && node["_embedded"]["carddata"] != null)
             {
-                cardDataInformation.TransactionManager = this;
-                cardDataInformation.cardData = JsonConvert.DeserializeObject<CardData>(node["_embedded"]["carddata"][index].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                index++;
+                foreach (var cardDataInformation in node["_embedded"]["carddata"])
+                {
+                    var card = JsonConvert.DeserializeObject<CardDataInformation>(cardDataInformation.ToString());
+                    card.TransactionManager = this;
+                    if (cardDataInformation["metaData"] != null)
+                    {
+                        card.metaData = cardDataInformation["metaData"].ToString();
+                    }
+                    card.cardData = JsonConvert.DeserializeObject<CardData>(cardDataInformation.ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                    response.Add(card);
+                }
             }
+
+            return response;
+
             return response;
         }
         ///<summary> 
@@ -565,21 +682,30 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a CustomerInformation list object.
         /// </returns> 
         ///</summary>
-        public List<CustomerInformation> getAllCustomerForSalesInformation()
+        public List<CustomerInformation> getAllCustomerForSalesInformation(string page)
         {
 
-            String url = _url + "customer-for-sale/";
+            String url = _url + "customer-for-sale?page=" + page;
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
-            List<CustomerInformation> response = JsonConvert.DeserializeObject<List<CustomerInformation>>(node["_embedded"]["customerforsale"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-            int index = 0;
-            foreach (CustomerInformation customerInformation in response)
+            List<CustomerInformation> response = new List<CustomerInformation>();
+
+            if (node["_embedded"] != null && node["_embedded"]["customerforsale"] != null)
             {
-                customerInformation.TransactionManager = this;
-                customerInformation.customer = JsonConvert.DeserializeObject<Customer>(node["_embedded"]["customerforsale"][index].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                index++;
+                foreach (var customerInformation in node["_embedded"]["customerforsale"])
+                {
+                    var customer = JsonConvert.DeserializeObject<CustomerInformation>(customerInformation.ToString());
+                    customer.TransactionManager = this;
+                    if (customerInformation["metaData"] != null)
+                    {
+                        customer.metaData = customerInformation["metaData"].ToString();
+                    }
+                    customer.customer = JsonConvert.DeserializeObject<Customer>(customerInformation.ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                    response.Add(customer);
+                }
             }
+
             return response;
         }
         ///<summary> 
@@ -588,21 +714,30 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a CustomerInformation list object.
         /// </returns> 
         ///</summary>
-        public List<CustomerInformation> getAllCustomerForRecurringBillInformation()
+        public List<CustomerInformation> getAllCustomerForRecurringBillInformation(string page)
         {
 
-            String url = _url + "customer";
+            String url = _url + "customer?page=" + page;
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
-            List<CustomerInformation> response = JsonConvert.DeserializeObject<List<CustomerInformation>>(node["_embedded"]["customers"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-            int index = 0;
-            foreach (CustomerInformation customerInformation in response)
-            {
-                customerInformation.TransactionManager = this;
-                customerInformation.customer = JsonConvert.DeserializeObject<Customer>(node["_embedded"]["customers"][index].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                index++;
+            List<CustomerInformation> response = new List<CustomerInformation>();
+
+            if (node["_embedded"] != null && node["_embedded"]["recurringbills"] != null)
+            {               
+                foreach (var customerInformation in node["_embedded"]["customers"])
+                {
+                    var customer = JsonConvert.DeserializeObject<CustomerInformation>(customerInformation.ToString());
+                    customer.TransactionManager = this;
+                    if (customerInformation["metaData"] != null)
+                    {
+                        customer.metaData = customerInformation["metaData"].ToString();
+                    }
+                    customer.customer = JsonConvert.DeserializeObject<Customer>(customerInformation.ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                    response.Add(customer);
+                }
             }
+
             return response;
         }
         /// <summary> 
@@ -653,17 +788,17 @@ namespace PayHubSDK.com.payhub.ws.api
             return response;
         }
 
-        public List<RecurringBillInformation> getAllRecurringBillInformation()
+        public List<RecurringBillInformation> getAllRecurringBillInformation(string page)
         {
            
             RecurringBillInformation response = new RecurringBillInformation();
-            var url = _url + RecurringBill.RECURRENT_BILL_ID_LINK;
+            var url = _url + RecurringBill.RECURRENT_BILL_ID_LINK+"?page=" + page;
             var request = setHeadersGet(url, this._oauthToken);
             string result = doGet(request);
             if (result == null || result.Equals(""))
                 return null;
             var node = JObject.Parse(result);
-            List<RecurringBillInformation> rb = null;
+            List<RecurringBillInformation> rb = new List<RecurringBillInformation>();
             if (node["_embedded"] != null && node["_embedded"]["recurringbills"] != null)
             {
                 rb = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
@@ -710,7 +845,7 @@ namespace PayHubSDK.com.payhub.ws.api
             var request = setHeadersGet(url, this._oauthToken);
             string result = doGet(request);
             var node = JObject.Parse(result);
-            List<RecurringBillInformation> rb = null;
+            List<RecurringBillInformation> rb = new List<RecurringBillInformation>();
             if (node["_embedded"] != null && node["_embedded"]["recurringbills"] != null)
             {
                 rb = JsonConvert.DeserializeObject<List<RecurringBillInformation>>(node["_embedded"]["recurringbills"].ToString(), new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });

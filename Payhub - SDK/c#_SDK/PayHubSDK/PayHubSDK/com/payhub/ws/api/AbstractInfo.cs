@@ -46,16 +46,10 @@ namespace PayHubSDK.com.payhub.ws.api
         {get{return this.lastModifiedBy;}
         set{this.lastModifiedBy=value;}
         }
-    [DataMember]
-	protected Object metaData
-    {
-    get{
-        return this.metaData.ToString();
-        }
-     set{
-        this.metaData=value.ToString();   
-     }
-    }
+    [DataMember(Name = "metaData")]
+    private JToken _metaData = "";
+    public JToken metaData { get { return this._metaData.ToString(); } set { if (value != null) { this._metaData = value.ToObject<string>(); } else { this._metaData = ""; } } }
+        
     protected TransactionManager transactionManager;
     public TransactionManager TransactionManager { set { this.transactionManager = value; } }
 	protected TransactionType transactionType{get;set;}
@@ -94,7 +88,7 @@ namespace PayHubSDK.com.payhub.ws.api
             if ((string)node["lastModified"] != null) { this.LastModified = (string)node["lastModified"]; }
             if ((string)node["createdBy"] != null) { this.CreatedBy = (string)node["createdBy"]; }
             if ((string)node["lastModifiedBy"] != null) { this.LastModifiedBy = (string)node["lastModifiedBy"]; }
-            if ((string)node["metaData"] != null) { this.metaData = (string)node["metaData"]; }
+            if ((string)node["metaData"] != null) { this.metaData = node["metaData"].ToObject<string>(); }
 	}
 	public abstract string getUrlForTransactionType(TransactionType type);
     }

@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using PayHubSDK.com.payhub.ws.api;
+using Newtonsoft.Json.Linq;
 
 namespace PayHubSDK.com.payhub.ws.api
 {
@@ -16,9 +17,8 @@ namespace PayHubSDK.com.payhub.ws.api
     public class AuthorizationResponseInformation
     {
         [DataMember(Name = "metaData")]
-        private string _metadata = "";
-
-        public string metaData { get { return this._metadata.ToString(); } set { if (value != null) { this._metadata = value.ToString(); } else { this._metadata = ""; } } }
+        private JToken _metaData = "";
+        public JToken metaData { get { return this._metaData.ToString(); } set { if (value != null) { this._metaData = value.ToObject<string>(); } else { this._metaData = ""; } } }
         [DataMember]
         private AuthOnlyResponse authOnlyResponse;
         public AuthOnlyResponse AuthOnlyResponse

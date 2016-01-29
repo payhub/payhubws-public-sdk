@@ -98,7 +98,7 @@ namespace PayHubWS
 
 
             TransactionManager transaction = new TransactionManager(url, oauth, merchant);
-            List<RecurringBillInformation> response = transaction.getAllRecurringBillInformation();
+            List<RecurringBillInformation> response = transaction.getAllRecurringBillInformation("0");
             if (response != null) Console.Write(response[0].rowData);
         }
     }

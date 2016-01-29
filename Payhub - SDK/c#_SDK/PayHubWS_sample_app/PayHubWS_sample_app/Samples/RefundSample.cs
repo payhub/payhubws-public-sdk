@@ -112,12 +112,12 @@ namespace PayHubWS.Samples
             *  Thanks.
             */
             //Defining the Web Service URL
-            string url = "http://localhost:8251/payhubws/api/v2/";
-            string oauth = "fc5c7719-8060-4b15-bb4e-d0cbcbfd80a7";
+            string url = "https://sandbox-api.payhub.com/api/v2/";
+            string oauth = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
 
             Merchant merchant = new Merchant();
-            merchant.organization_id = 10002;
-            merchant.terminal_id = 2;
+            merchant.organization_id = 10074;
+            merchant.terminal_id = 134;
 
             Bill bill = new Bill();
             bill.Base_amount = (decimal)7.00m;

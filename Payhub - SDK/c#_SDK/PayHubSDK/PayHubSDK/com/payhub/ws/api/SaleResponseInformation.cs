@@ -1,4 +1,5 @@
-﻿using PayHubSDK.com.payhub.ws.api;
+﻿using Newtonsoft.Json.Linq;
+using PayHubSDK.com.payhub.ws.api;
 using PayHubSDK.com.payhub.ws.model;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,8 @@ namespace PayHubSDK.com.payhub.ws.api
     public class SaleResponseInformation
     {
         [DataMember(Name = "metaData")]
-        private string _metaData = "";
-
-        public string metaData { get { return this._metaData; } set { if (value != null) { this._metaData = value; } else { this._metaData = ""; } } }
+        private JToken _metaData = "";
+        public JToken metaData { get { return this._metaData.ToString(); } set { if (value != null) { this._metaData = value.ToObject<string>(); } else { this._metaData = ""; } } }
         [DataMember]
         private SaleResponse saleResponse;
         public SaleResponse SaleResponse {
