@@ -119,7 +119,7 @@ namespace PayHubSDK.com.payhub.ws.api
      /// a SaleResponseInformation list object.
      /// </returns> 
     ///</summary>
-    public List<SaleResponseInformation> getAllSalesInformation(string page)
+    public List<SaleResponseInformation> getAllSalesInformation(int page)
     {
     	//List<SaleResponseInformation> response = new ArrayList<SaleResponseInformation>();
         String url = _url + Sale.SALE_ID_LINK + "?page="+page;
@@ -200,7 +200,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a AuthorizationResponseInformation list object.
         /// </returns> 
         ///</summary>
-        public List<AuthorizationResponseInformation> getAllAuthOnlyInformation(string page)
+        public List<AuthorizationResponseInformation> getAllAuthOnlyInformation(int page)
         {
 
             String url = _url + AuthOnly.AUTH_ID_LINK + "?page=" + page;
@@ -279,7 +279,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a LastCaptureResponseInfromation list object.
         /// </returns> 
         ///</summary>
-        public List<CaptureResponseInfromation> getAllCaptureInformation(string page)
+        public List<CaptureResponseInfromation> getAllCaptureInformation(int page)
         {
 
             String url = _url + Capture.CAPTURE_ID_LINK + "?page=" + page;
@@ -358,7 +358,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a LastVoidResponseInformation list object.
         /// </returns> 
         ///</summary>
-        public List<VoidResponseInformation> getAllVoidResponseInformation(string page)
+        public List<VoidResponseInformation> getAllVoidResponseInformation(int page)
         {
 
             String url = _url + VoidTransaction.VOID_ID_LINK + "?page=" + page;
@@ -435,7 +435,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a VerifyResponseInformation list object.
         /// </returns> 
         ///</summary>
-        public List<VerifyResponseInformation> getAllVerifyResponseInformation(string page)
+        public List<VerifyResponseInformation> getAllVerifyResponseInformation(int page)
         {
 
             String url = _url + Verify.VERIFY_ID_LINK + "?page=" + page;
@@ -516,7 +516,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a RefundInformation list object.
         /// </returns> 
         ///</summary>
-        public List<RefundInformation> getAllRefundInformation(string page)
+        public List<RefundInformation> getAllRefundInformation(int page)
         {
 
             String url = _url + Refund.REFUND_ID_LINK + "?page=" + page;
@@ -550,7 +550,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a BillInformation list object.
         /// </returns> 
         ///</summary>
-        public List<BillInformation> getAllBillForSaleInformation(string page)
+        public List<BillInformation> getAllBillForSaleInformation(int page)
         {
 
             String url = _url + "bill-for-sale?page=" + page;
@@ -584,7 +584,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a BillInformation list object.
         /// </returns> 
         ///</summary>
-        public List<BillInformation> getAllBillForRecurringBillInformation(string page)
+        public List<BillInformation> getAllBillForRecurringBillInformation(int page)
         {
 
             String url = _url + "bill-for-recurring-bill?page=" + page;
@@ -616,7 +616,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a MerchantInformation list object.
         /// </returns> 
         ///</summary>
-        public List<MerchantInformation> getAllMerchantInformation(string page)
+        public List<MerchantInformation> getAllMerchantInformation(int page)
         {
 
             String url = _url + "merchant?page=" + page;
@@ -648,7 +648,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a CardDataInformation list object.
         /// </returns> 
         ///</summary>
-        public List<CardDataInformation> getAllCardDataInformation(string page)
+        public List<CardDataInformation> getAllCardDataInformation(int page)
         {
 
             String url = _url + "carddata?page=" + page;
@@ -682,7 +682,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a CustomerInformation list object.
         /// </returns> 
         ///</summary>
-        public List<CustomerInformation> getAllCustomerForSalesInformation(string page)
+        public List<CustomerInformation> getAllCustomerForSalesInformation(int page)
         {
 
             String url = _url + "customer-for-sale?page=" + page;
@@ -714,7 +714,7 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a CustomerInformation list object.
         /// </returns> 
         ///</summary>
-        public List<CustomerInformation> getAllCustomerForRecurringBillInformation(string page)
+        public List<CustomerInformation> getAllCustomerForRecurringBillInformation(int page)
         {
 
             String url = _url + "customer?page=" + page;
@@ -788,7 +788,7 @@ namespace PayHubSDK.com.payhub.ws.api
             return response;
         }
 
-        public List<RecurringBillInformation> getAllRecurringBillInformation(string page)
+        public List<RecurringBillInformation> getAllRecurringBillInformation(int page)
         {
            
             RecurringBillInformation response = new RecurringBillInformation();
