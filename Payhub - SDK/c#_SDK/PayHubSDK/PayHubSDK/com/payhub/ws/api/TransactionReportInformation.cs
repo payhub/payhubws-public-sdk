@@ -48,6 +48,12 @@ namespace PayHubSDK.com.payhub.ws.api
         private string transactionStatus;
         [DataMember]
         private List<Errors> errors;
+        [DataMember]
+        private string voidedBy;
+        [DataMember]
+        private string refundedBy;
+        [DataMember]
+        private string isCaptured;
 
         public string TransactionID { get { return this.transactionID; } set { this.transactionID = value; } }
         public string BatchID { get { return this.batchID; } set { this.batchID = value; } }
@@ -68,5 +74,9 @@ namespace PayHubSDK.com.payhub.ws.api
         public string Note { get { return this.note; } set { this.note= value; } }
         public string TransactionStatus { get { return this.transactionStatus; } set { this.transactionStatus = value; } }
         public List<Errors> Errors { get { return this.errors; } set { this.errors = value; } }
+        private string VoidedBy { get { return this.voidedBy; } set { this.voidedBy= value; } }
+        private string RefundedBy { get { return this.refundedBy; } set { this.refundedBy = value; } }
+        private string IsCaptured { get { return this.isCaptured; } set { this.isCaptured = value; } }
+
     }
 }

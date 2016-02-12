@@ -32,6 +32,9 @@ public class TransactionReportInformation {
 	private String note;
 	private String transactionStatus;
 	private List<Errors> errors;
+	private String voidedBy;    
+    private String refundedBy;   
+    private String isCaptured;
 	/**
 	 * @return the transactionID
 	 */
@@ -259,6 +262,42 @@ public class TransactionReportInformation {
 	 */
 	public void setErrors(List<Errors> errors) {
 		this.errors = errors;
+	}
+	/**
+	 * @return the voidedBy
+	 */
+	public String getVoidedBy() {
+		return voidedBy;
+	}
+	/**
+	 * @param voidedBy the voidedBy to set
+	 */
+	public void setVoidedBy(String voidedBy) {
+		this.voidedBy = voidedBy;
+	}
+	/**
+	 * @return the refundedBy
+	 */
+	public String getRefundedBy() {
+		return refundedBy;
+	}
+	/**
+	 * @param refundedBy the refundedBy to set
+	 */
+	public void setRefundedBy(String refundedBy) {
+		this.refundedBy = refundedBy;
+	}
+	/**
+	 * @return the isCaptured
+	 */
+	public String getIsCaptured() {
+		return isCaptured;
+	}
+	/**
+	 * @param isCaptured the isCaptured to set
+	 */
+	public void setIsCaptured(String isCaptured) {
+		this.isCaptured = isCaptured;
 	}
 	
 	

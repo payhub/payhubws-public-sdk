@@ -27,6 +27,9 @@ class TransactionReportInformation
     public $note;
     public $transactionStatus;
     public $errors;
+	public $voidedBy;
+	public $refundedBy;
+	public $isCaptured;
 
     /**
      * @return mixed
@@ -331,6 +334,56 @@ class TransactionReportInformation
     {
         $this->errors = $errors;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getVoidedBy()
+    {
+        return $this->voidedBy;
+    }
+
+    /**
+     * @param mixed $voidedBy
+     */
+    public function setVoidedBy($voidedBy)
+    {
+        $this->voidedBy = $voidedBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRefundedBy()
+    {
+        return $this->refundedBy;
+    }
+
+    /**
+     * @param mixed $refundedBy
+     */
+    public function setRefundedBy($refundedBy)
+    {
+        $this->refundedBy = $refundedBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsCaptured()
+    {
+        return $this->isCaptured;
+    }
+
+    /**
+     * @param mixed $isCaptured
+     */
+    public function setIsCaptured($isCaptured)
+    {
+        $this->isCaptured = $isCaptured;
+    }
+
+
     public static function fromArray($data){
         if(!is_null($data)) {
             $err=null;

@@ -52,6 +52,10 @@ namespace PayHubSDK.com.payhub.ws.model
         private string note;
         [DataMember]
         private string transactionStatus;
+        [DataMember]
+        private string customerId;
+        
+
 
         public string BatchIdFrom { get { return this.batchIdFrom; } set { this.batchIdFrom = value; } }
         public string BatchIdTo { get { return this.batchIdTo; } set { this.batchIdTo = value; } }
@@ -75,6 +79,6 @@ namespace PayHubSDK.com.payhub.ws.model
         public string Email { get { return this.email; } set { this.email = value; } }
         public string Note { get { return this.note; } set { this.note = value; } }
         public string TransactionStatus { get { return this.transactionStatus; } set { this.transactionStatus = value; } }
-        
+        public string CustomerId { get { return this.customerId; } set { this.customerId = value; } }
     }
 }

@@ -29,4 +29,5 @@ class TransactionSearchParameters
     public $email   ;
     public $note ;
     public $transactionStatus;
+    public $customerId;
 }

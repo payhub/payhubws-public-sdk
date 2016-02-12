@@ -32,6 +32,7 @@ public class TransactionSearchParameters {
 	private String email   ;
 	private String note ;
 	private String transactionStatus;
+	private String customerId;
 	/**
 	 * @return the batchIdFrom
 	 */
@@ -283,6 +284,18 @@ public class TransactionSearchParameters {
 	 */
 	public void setTransactionStatus(String transactionStatus) {
 		this.transactionStatus = transactionStatus;
+	}
+	/**
+	 * @return the customerId
+	 */
+	public String getCustomerId() {
+		return customerId;
+	}
+	/**
+	 * @param customerId the customerId to set
+	 */
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 	
 	
