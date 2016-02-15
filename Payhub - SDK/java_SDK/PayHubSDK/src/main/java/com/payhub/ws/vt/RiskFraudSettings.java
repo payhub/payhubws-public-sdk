@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 public class RiskFraudSettings {
-	public static final String RISK_FRAUD_SETTINGS_LINK="adminSettings/riskFraud";
+	public static final String RISK_FRAUD_SETTINGS_LINK="adminSettings/riskFraudDetection";
 	public static final String RISK_FRAUD_PATCH_SETTINGS_LINK = "adminSettings/riskFraudDetection";
 	private TrnVolSet transaction_volume_settings;
 	 private CardFiltering card_filtering;

@@ -2,7 +2,7 @@ class RiskFraudSettings
   include JsonSerializer
   ATTRS=[:transaction_volume_settings,:card_filtering,:email,:credit_card_security_codes,:address_verification_system,:errors]
   attr_accessor *ATTRS
-  RISK_FRAUD_SETTINGS_LINK="adminSettings/riskFraud"
+  RISK_FRAUD_SETTINGS_LINK="adminSettings/riskFraudDetection"
   RISK_FRAUD_PATCH_SETTINGS_LINK = "adminSettings/riskFraudDetection"
   def initialize
   end

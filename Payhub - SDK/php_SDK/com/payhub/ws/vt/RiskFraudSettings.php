@@ -8,7 +8,7 @@
  */
 class RiskFraudSettings
 {
-    public static $RISK_FRAUD_SETTINGS_LINK="adminSettings/riskFraud";
+    public static $RISK_FRAUD_SETTINGS_LINK="adminSettings/riskFraudDetection";
     public static $RISK_FRAUD_PATCH_SETTINGS_LINK = "adminSettings/riskFraudDetection";
     public $transaction_volume_settings;
     public $card_filtering;
