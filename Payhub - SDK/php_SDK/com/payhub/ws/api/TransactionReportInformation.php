@@ -30,6 +30,8 @@ class TransactionReportInformation
 	public $voidedBy;
 	public $refundedBy;
 	public $isCaptured;
+    public $customerId;
+    public $recurringBillId;
 
     /**
      * @return mixed
@@ -383,6 +385,39 @@ class TransactionReportInformation
         $this->isCaptured = $isCaptured;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCustomerId()
+    {
+        return $this->customerId;
+    }
+
+    /**
+     * @param mixed $customerId
+     */
+    public function setCustomerId($customerId)
+    {
+        $this->customerId = $customerId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecurringBillId()
+    {
+        return $this->recurringBillId;
+    }
+
+    /**
+     * @param mixed $recurringBillId
+     */
+    public function setRecurringBillId($recurringBillId)
+    {
+        $this->recurringBillId = $recurringBillId;
+    }
+
+    
 
     public static function fromArray($data){
         if(!is_null($data)) {
