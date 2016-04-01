@@ -6,16 +6,13 @@
  * Date: 24/07/2015
  * Time: 11:26
  */
-class MontlySchedule
+class WeeklySchedule
 {
-    public $monthly_type;
-    public $monthly_each_days;
-    public $monthly_on_the_day_of_week_in_month;
-    public $monthly_day_of_week;
+    public $weekly_bill_days;
 
     public static function fromArray($data){
         if(!is_null($data)) {
-            $schedule = new MontlySchedule();
+            $schedule = new WeeklySchedule();
             foreach ($data as $key => $value) {
                 if (property_exists(get_class($schedule), $key)) {
                     $schedule->{$key} = $value;

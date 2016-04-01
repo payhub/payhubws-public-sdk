@@ -12,17 +12,18 @@ class Schedule
     public $bill_generation_interval;
     public $schedule_start_and_end;
     public $monthly_schedule;
+    public $yearly_schedule;
+    public $weekly_schedule;
+    public $specific_dates_schedule;
 
     /**
      * Schedule constructor.
-     * @param $schedule_start_and_end
-     * @param $monthly_schedule
+     * @param $schedule_type
      */
-    public function __construct($schedule_start_and_end, $monthly_schedule)
+    public function __construct($schedule_type)
     {
-        if(!is_null($schedule_start_and_end) && !is_null($monthly_schedule)) {
-            $this->schedule_start_and_end = $schedule_start_and_end;
-            $this->monthly_schedule = $monthly_schedule;
+        if(!is_null($schedule_type)) {
+            $this->schedule_type = $schedule_type;
         }
     }
     public static function fromArray($data){
@@ -34,7 +35,13 @@ class Schedule
                         $schedule->{$key} = ScheduleSartAndEnd::fromArray($value);
                     } elseif ($key == "monthly_schedule") {
                         $schedule->{$key} = MontlySchedule::fromArray($value);
-                    } else {
+                    } elseif ($key == "yearly_schedule") {
+                        $schedule->{$key} = YearlySchedule::fromArray($value);
+                    }elseif ($key == "weekly_schedule") {
+                        $schedule->{$key} = WeeklySchedule::fromArray($value);
+                    }elseif ($key == "specific_dates_schedule") {
+                        $schedule->{$key} = SpecificDatesSchedule::fromArray($value);
+                    }else {
                         $schedule->{$key} = $value;
                     }
                 }

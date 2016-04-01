@@ -11,6 +11,10 @@ module JsonSerializer
       str = "TransactionAmount" if str == "Base_amount" or  str == "Tax_amount" or  str == "Shipping_amount" or  str == "TotalAmount"
       str = "ScheduleStartAndEnd" if str == "Schedule_start_and_end"
       str = "MonthlySchedule" if str == "Monthly_schedule"
+      str = "ScheduleStartAndEnd" if str == "Schedule_start_and_end"
+      str = "WeeklySchedule" if str == "Weekly_schedule"
+      str = "SpecificDatesSchedule" if str == "Specific_dates_schedule"
+
       next if str=="TransactionType"
       if str=="TransactionAmount"
         if val.is_a?(TransactionAmount)
