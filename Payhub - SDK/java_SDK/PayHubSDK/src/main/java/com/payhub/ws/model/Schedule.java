@@ -15,10 +15,14 @@ public class Schedule {
 	        private int bill_generation_interval;
 	        private ScheduleSartAndEnd schedule_start_and_end;
 	        private MontlySchedule monthly_schedule;
+	        private YearlySchedule yearly_schedule;
+	        private WeeklySchedule weekly_schedule;
+	        private SpecificDatesChedule specific_dates_schedule;
+	        
 	        public Schedule(){}
-	        public Schedule(ScheduleSartAndEnd scheduleStartAndEnd, MontlySchedule monthlySchedule) { 
-	        	schedule_start_and_end=scheduleStartAndEnd;
-	            monthly_schedule = monthlySchedule;
+	        
+	        public Schedule(String schedule_type) { 
+	        	this.schedule_type=schedule_type;
 	        }
 			public String getSchedule_type() {
 				return schedule_type;

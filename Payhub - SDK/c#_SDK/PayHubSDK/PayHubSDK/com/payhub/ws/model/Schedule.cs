@@ -37,9 +37,32 @@ namespace PayHubSDK.com.payhub.ws.model
             get { return this.monthly_schedule; }
             set { if (value != null)this.monthly_schedule = value; }
         }
-        public Schedule(ScheduleSartAndEnd scheduleStartAndEnd, MontlySchedule monthlySchedule) { 
-            Schedule_start_and_end=scheduleStartAndEnd;
-            Monthly_schedule = monthlySchedule;
+        [DataMember]
+        private SpecificDatesSchedule specific_dates_schedule;
+        public SpecificDatesSchedule Specific_dates_schedule
+        {
+            get { return this.specific_dates_schedule; }
+            set { if (value != null)this.specific_dates_schedule = value; }
         }
+        [DataMember]
+        private WeeklySchedule weekly_schedule;
+        public WeeklySchedule Weekly_schedule
+        {
+            get { return this.weekly_schedule; }
+            set { if (value != null)this.weekly_schedule = value; }
+        }
+        [DataMember]
+        private YearlySchedule yearly_schedule;
+        public YearlySchedule Yearly_schedule
+        {
+            get { return this.yearly_schedule; }
+            set { if (value != null)this.yearly_schedule = value; }
+        }
+
+        public Schedule(string schedule_type)
+        {
+            this.schedule_type = schedule_type;
+        }
+        public Schedule() { }
     }
 }

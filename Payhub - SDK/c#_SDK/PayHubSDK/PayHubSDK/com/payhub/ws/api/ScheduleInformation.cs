@@ -13,12 +13,12 @@ namespace PayHubSDK.com.payhub.ws.api
         public Schedule schedule;
         public ScheduleInformation(): base()
         {
-            this.transactionType = TransactionType.CardData;
+            this.transactionType = TransactionType.Schedule;
         }
 
         public ScheduleInformation(TransactionManager transactionManager): base(transactionManager)
-        {            
-            this.transactionType = TransactionType.CardData;
+        {
+            this.transactionType = TransactionType.Schedule;
         }
         public override void convertData(string json)
         {
