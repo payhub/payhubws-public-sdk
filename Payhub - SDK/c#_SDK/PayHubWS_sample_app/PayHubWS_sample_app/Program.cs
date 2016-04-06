@@ -13,8 +13,8 @@ namespace PayHubWS_sample_app
     {
         static void Main(string[] args)
         {
-            GetTransactionsListSample lists = new GetTransactionsListSample();
-            lists.getLists();
+            SaleAndVoidSample lists = new SaleAndVoidSample();
+            lists.doSale();
         }
     }
 }

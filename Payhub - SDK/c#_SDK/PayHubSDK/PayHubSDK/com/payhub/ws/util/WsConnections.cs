@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using PayHubSDK.com.payhub.ws.api;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -93,7 +95,32 @@ namespace PayHubSDK.com.payhub.ws.util
                         using (var reader = new StreamReader(errorResponse.GetResponseStream()))
                         {
                             result = reader.ReadToEnd();
-                            return result;
+                            HttpStatusCode statusCode = GetHttpStatusCode(wex);
+                            if (HttpStatusCode.Unauthorized == statusCode)
+                            {
+                                Errors error = JsonConvert.DeserializeObject<Errors>(result);
+                                var _errors = new
+                                {
+                                    errors = new[] { error }
+                                };
+                                string json = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                                return json;
+                            }
+                            else {
+                                dynamic data = JsonConvert.DeserializeObject(result);
+                                if (data!=null && (data.cause != null || data.message != null)){
+                                    Errors error = JsonConvert.DeserializeObject<Errors>(result);
+                                    var _errors = new
+                                    {
+                                        errors = new[] { error }
+                                    };
+                                    string json = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                                    return json;
+                                }
+                                return result;
+                            }
+                            
+                            
                         }
                     }
                 }
@@ -102,12 +129,13 @@ namespace PayHubSDK.com.payhub.ws.util
         }
         public string doGet(HttpWebRequest responseDataRequest)
         {
+            string result=null;
             try
             {
                 var response = (HttpWebResponse)responseDataRequest.GetResponse();//You return this response.
                 using (var reader = new StreamReader(response.GetResponseStream()))
                 {
-                    string result = reader.ReadToEnd();                                      
+                    result = reader.ReadToEnd();                
                     return result;
 
                 }
@@ -120,7 +148,49 @@ namespace PayHubSDK.com.payhub.ws.util
                     {
                         using (var reader = new StreamReader(errorResponse.GetResponseStream()))
                         {
-                            return reader.ReadToEnd();                            
+                            result = reader.ReadToEnd();
+                            HttpStatusCode statusCode = GetHttpStatusCode(wex);
+                            if (HttpStatusCode.Unauthorized == statusCode)
+                            {
+                                Errors error = JsonConvert.DeserializeObject<Errors>(result);
+                                var _errors = new
+                                {
+                                    errors = new[] { error }
+                                };
+                                string json = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                                return json;
+                            }
+                            else
+                            {
+                                dynamic data = JsonConvert.DeserializeObject(result);
+
+                                if (data != null && (data.cause != null || data.message != null))
+                                {
+                                    Errors error = JsonConvert.DeserializeObject<Errors>(result);
+                                    var _errors = new
+                                    {
+                                        errors = new[] { error }
+                                    };
+                                    string json = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                                    return json;
+                                }
+                                else
+                                {
+                                    Errors error = new Errors();
+                                    error.Status = "BAD_REQUEST";
+                                    error.Code = "9995";
+                                    error.Location = "404 not found.";
+                                    error.Reason = "404 There aren't results";
+                                    error.Severity = "ERROR";
+                                    var _errors = new
+                                    {
+                                        errors = new[] { error }
+                                    };
+                                    string json = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                                    return json;
+
+                                }
+                            }
                         }
                     }
                 }
@@ -151,8 +221,6 @@ namespace PayHubSDK.com.payhub.ws.util
                 }
 		
     	    var response = (HttpWebResponse)responseDataRequest.GetResponse();
-            Console.WriteLine("\nSending 'Put' request to URL");
-            Console.WriteLine("Response Code : " + response.StatusCode);
             if (HttpStatusCode.OK == response.StatusCode)
             {
                 return "";
@@ -176,8 +244,6 @@ namespace PayHubSDK.com.payhub.ws.util
             try
             {
                 var response = (HttpWebResponse)request.GetResponse();
-                Console.WriteLine("\nSending 'Put' request to URL");
-                Console.WriteLine("Response Code : " + response.StatusCode);
                 if (HttpStatusCode.OK == response.StatusCode)
                 {
                     using (var reader = new StreamReader(response.GetResponseStream()))
@@ -200,6 +266,48 @@ namespace PayHubSDK.com.payhub.ws.util
                         using (var reader = new StreamReader(errorResponse.GetResponseStream()))
                         {
                             result = reader.ReadToEnd();
+                            HttpStatusCode statusCode = GetHttpStatusCode(wex);
+                            if (HttpStatusCode.Unauthorized == statusCode)
+                            {
+                                Errors error = JsonConvert.DeserializeObject<Errors>(result);
+                                var _errors = new
+                                {
+                                    errors = new[] { error }
+                                };
+                                string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                                return jsons;
+                            }
+                            else
+                            {
+                                dynamic data = JsonConvert.DeserializeObject(result);
+
+                                if (data != null && (data.cause != null || data.message != null))
+                                {
+                                    Errors error = JsonConvert.DeserializeObject<Errors>(result);
+                                    var _errors = new
+                                    {
+                                        errors = new[] { error }
+                                    };
+                                    string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                                    return jsons;
+                                }
+                                else
+                                {
+                                    Errors error = new Errors();
+                                    error.Status = "BAD_REQUEST";
+                                    error.Code = "9995";
+                                    error.Location = "404 not found.";
+                                    error.Reason = "404 There aren't results";
+                                    error.Severity = "ERROR";
+                                    var _errors = new
+                                    {
+                                        errors = new[] { error }
+                                    };
+                                    string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                                    return jsons;
+
+                                }
+                            }
                         }
                     }
                 }
@@ -230,5 +338,16 @@ namespace PayHubSDK.com.payhub.ws.util
                 return false;
             }
         }
+
+        HttpStatusCode GetHttpStatusCode(WebException we)
+        {
+            if (we.Response is HttpWebResponse)
+            {
+                HttpWebResponse response = (HttpWebResponse)we.Response;
+                return response.StatusCode;
+            }
+            return 0;
+        }
     }
+
 }

@@ -25,7 +25,7 @@ namespace PayHubWS.Samples
            
             Merchant merchant = new Merchant();
             merchant.organization_id = 10074;
-            merchant.terminal_id = 134;
+            //merchant.terminal_id = 134;
 
 
 
@@ -58,7 +58,7 @@ namespace PayHubWS.Samples
             Sale sale = new Sale(merchant, bill, card_data, customer);
 
             TransactionManager transaction = new TransactionManager(url, oauth, merchant);
-            SaleResponseInformation response = transaction.doSale(sale);
+            SaleResponseInformation response = transaction.getSaleInformation("1923");
             Console.Write(response.rowData);
             if (response.errors == null)
             {
@@ -68,7 +68,7 @@ namespace PayHubWS.Samples
                 Console.Write(voidInfo.rowData);
             }
             else {
-                Console.Write(response.errors);
+                Console.Write(response.errors[0]);
             }
         }
 

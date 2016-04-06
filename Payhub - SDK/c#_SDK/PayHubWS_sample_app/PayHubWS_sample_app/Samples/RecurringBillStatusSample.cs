@@ -34,7 +34,7 @@ namespace PayHubWS
             List<int> m = new List<int>();
             m.Add(15);
             montlySchedule.Monthly_each_days = m;
-            Schedule schedule = new Schedule(scheduleSartAndEnd, montlySchedule);
+            Schedule schedule = new Schedule("M");
             schedule.Schedule_type = "M";
             schedule.Bill_generation_interval = 1;
 

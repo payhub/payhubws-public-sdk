@@ -27,5 +27,21 @@ namespace PayHubSDK.com.payhub.ws.api
         [DataMember]
         private string severity;
         public string Severity { get { return this.severity; } set { if (value != null)this.severity = value; } }
+        [DataMember]
+        private string error{set{if (value != null)this.location = value; }}
+        [DataMember]
+        private string error_description{set{if (value != null)this.reason = value; }}
+        [DataMember]
+        private string cause { set { if (value != null)this.location = value; } }
+        [DataMember]
+        private string message { set { if (value != null)this.reason = value; } }
+        
+        
+            
+
+        
+
+
+
     }
 }
