@@ -86,6 +86,7 @@ class TransactionManager extends WsConnections
                 $response_tmp->setTransactionManager($this);
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -151,6 +152,7 @@ class TransactionManager extends WsConnections
                 $response_tmp->setTransactionManager($this);
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -216,6 +218,7 @@ class TransactionManager extends WsConnections
                 $response_tmp->setTransactionManager($this);
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -281,6 +284,7 @@ class TransactionManager extends WsConnections
                 $response_tmp->setTransactionManager($this);
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -344,6 +348,7 @@ class TransactionManager extends WsConnections
                 $response_tmp->setTransactionManager($this);
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -406,6 +411,7 @@ class TransactionManager extends WsConnections
                 $response_tmp->setTransactionManager($this);
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -462,6 +468,7 @@ class TransactionManager extends WsConnections
                 $response_tmp->setTransactionManager($this);
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -516,6 +523,7 @@ class TransactionManager extends WsConnections
                 $response_tmp->setTransactionManager($this);
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -542,6 +550,7 @@ class TransactionManager extends WsConnections
                 $response_tmp->setTransactionManager($this);
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -567,6 +576,7 @@ class TransactionManager extends WsConnections
                 $response_tmp = MerchantInformation::fromJson(json_encode($billForSale));
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -592,6 +602,7 @@ class TransactionManager extends WsConnections
                 $response_tmp = CardDataInformation::fromJson(json_encode($billForSale));
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -619,6 +630,7 @@ class TransactionManager extends WsConnections
                 $response_tmp->setTransactionManager($this);
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
             $errors_tmp = new Errors();
             foreach ($result as $errorData) {
@@ -658,6 +670,7 @@ class TransactionManager extends WsConnections
                 $response_tmp->setTransactionManager($this);
                 $response[] = $response_tmp;
             }
+            return $response;
         }else{
                 $errors_tmp = new Errors();
                 foreach ($result as $errorData) {

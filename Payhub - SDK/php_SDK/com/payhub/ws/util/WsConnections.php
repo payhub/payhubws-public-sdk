@@ -133,28 +133,40 @@ class WsConnections
             return $array;
         }
         //There was an error with the WS
-        else{
+        else {
             $p = strpos($response, "\r\n\r\n");
             if( $p !== false ) {
-                $rawHeades = substr($response, 0, $p);
                 $rawBody = substr($response, $p + 4);
             }
             $data = json_decode($rawBody, true);
-            return $data;
+            if ($httpcode == 401) {//this is an token error
+                return Errors::fromArrayForUnautenticated($data);
+            }elseif($httpcode == 400){
+                return Errors::fromArrayForBadRequest($data);
+            }else{
+                return $data;
+            }
         }
     }
     public function doGet($request){
         $response = curl_exec($request);
         $httpcode = curl_getinfo($request, CURLINFO_HTTP_CODE);
         curl_close($request);
+        $data = json_decode($response, true);
         if ($httpcode>=200 && $httpcode< 400){
-            $data = json_decode($response, true);
             return $data;
         } else {
-            $rawBody="{\"errors\":[{\"status\":\"BAD_REQUEST\",\"code\": \"9995\",\"location\": \"404 Page not found.\",\"reason\": \"\",\"severity\": \"ERROR\"}]}";
-            $data = json_decode($rawBody, true);
-            return $data;
+            if ($httpcode == 401) {
+                $data = json_decode($response, true);
+                return Errors::fromArrayForUnautenticated($data);
+
+            }else{
+                $rawBody="{\"errors\":[{\"status\":\"BAD_REQUEST\",\"code\": \"9995\",\"location\": \"404 Page not found.\",\"reason\": \"404 There aren't results for the query\",\"severity\": \"ERROR\"}]}";
+                $data = json_decode($rawBody, true);
+                return $data;
+            }
         }
+
     }
     public function doPut($request,$json){
         echo $json;
@@ -185,8 +197,19 @@ class WsConnections
         $response = curl_exec($request);
         $header_size = curl_getinfo($request, CURLINFO_HEADER_SIZE);
         $header = substr($response, 0, $header_size);
+        $httpcode = curl_getinfo($request, CURLINFO_HTTP_CODE);
         $body = substr($response, $header_size);
         $data = json_decode($body, true);
+
+//        var_dump($httpcode);
+//        var_dump($data);
+        if ($httpcode>=200 && $httpcode< 400){
+            return $data;
+        }elseif ($httpcode == 401) {//this is an token error
+            return Errors::fromArrayForUnautenticated($data);
+        }else{
+            return $data;
+        }
         return $data;
 
     }
@@ -202,6 +225,15 @@ class WsConnections
             $rawBody = substr($response, $p + 4);
         }
         $data = json_decode($rawBody, true);
-        return $data;
+        if ($httpcode>=200 && $httpcode< 400){
+            return $data;
+        }elseif ($httpcode == 401) {//this is an token error
+            return Errors::fromArrayForUnautenticated($data);
+        }elseif($httpcode == 400){
+            return Errors::fromArrayForBadRequest($data);
+        }else{
+            return $data;
+        }
+
     }
 }
