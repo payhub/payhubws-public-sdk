@@ -12,7 +12,16 @@ public class Errors {
     private String reason;
 
     private String severity;
-
+    
+    private String error;
+    
+    private String error_description;
+    
+    private String cause;
+    
+    private String message;
+    
+    
 	public String getStatus() {
 		return status;
 	}
@@ -51,6 +60,34 @@ public class Errors {
 
 	public void setSeverity(String severity) {
 		this.severity = severity;
+	}
+
+	/**
+	 * @param error the error to set
+	 */
+	public void setError(String error) {
+		this.location = error;
+	}
+
+	/**
+	 * @param error_description the error_description to set
+	 */
+	public void setError_description(String error_description) {
+		this.reason = error_description;
+	}
+
+	/**
+	 * @param cause the cause to set
+	 */
+	public void setCause(String cause) {
+		this.location = cause;
+	}
+
+	/**
+	 * @param message the message to set
+	 */
+	public void setMessage(String message) {
+		this.reason = message;
 	}
     
     

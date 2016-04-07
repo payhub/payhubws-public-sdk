@@ -11,10 +11,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.omg.CORBA.portable.OutputStream;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.payhub.ws.api.Errors;
+import com.payhub.ws.api.SaleResponseInformation;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -121,7 +128,43 @@ public class WsConnections {
 	 					// TODO Auto-generated catch block
 	 					System.out.println(e.getMessage());
 	 				}
-
+				   
+				   if(statusCode==401){
+					    JSONObject errors = new JSONObject();
+						ObjectMapper mapper = new ObjectMapper();
+					    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+				    	Errors _error  = mapper.readValue(result, Errors.class);
+				    	List<Errors>error = new ArrayList<Errors>();
+				    	error.add(_error);
+				    	errors.put("errors",error);
+				    	result = errors.toString();
+				   }if(statusCode==400 && StringUtils.isNotBlank(result)){
+					   JSONObject aux = new JSONObject(result);
+					   if(aux.get("errors")!=null){
+						   return result;
+					   }
+					    JSONObject errors = new JSONObject();
+						ObjectMapper mapper = new ObjectMapper();
+					    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+				    	Errors _error  = mapper.readValue(result, Errors.class);
+				    	List<Errors>error = new ArrayList<Errors>();
+				    	error.add(_error);
+				    	errors.put("errors",error);
+				    	result = errors.toString();
+				   }else{
+					   JSONObject errors = new JSONObject();
+					   Errors _error = new Errors();
+                       _error.setStatus("BAD_REQUEST");
+                       _error.setCode("9995");
+                       _error.setLocation("404 not found.");
+                       _error.setReason("404 There aren't results");
+                       _error.setSeverity("ERROR");
+                       List<Errors>error = new ArrayList<Errors>();
+				    	error.add(_error);
+				    	errors.put("errors",error);
+				    	result = errors.toString();
+				   }
+				   	
 	                return result;
 				}
         }
@@ -137,34 +180,95 @@ public class WsConnections {
     }
     public String doGet(HttpURLConnection responseDataRequest)
     {
-    	StringBuffer response = new StringBuffer();   	
+    	//StringBuffer response = new StringBuffer();  
+    	String result = null;
         try
         {
-        	BufferedReader in = new BufferedReader(new InputStreamReader(responseDataRequest.getInputStream()));
-        	String line;
-        	while ((line = in.readLine()) != null){ 
-        		response.append(line); 
-        	}
-        		in.close();
-                return response.toString();   	
+        	int statusCode=responseDataRequest.getResponseCode();
+        	InputStream is=null;
+        	if (statusCode >= 200 && statusCode < 400) {
+        		// Create an InputStream in order to extract the response object
+				is = responseDataRequest.getInputStream();
+	        	BufferedReader in = new BufferedReader(new InputStreamReader(is));
+	        	String line;
+	        	StringBuffer response = new StringBuffer();
+	        	while ((line = in.readLine()) != null){ 
+	        		response.append(line); 
+	        	}
+	        		in.close();
+	                return response.toString();
+        	}else{
+				is = responseDataRequest.getErrorStream();
+				StringBuffer response = new StringBuffer();   	
+				if(is!=null){
+					BufferedReader er = new BufferedReader(new InputStreamReader(is));	            	
+					   try {
+						     int c = 0;
+						     while((c = er.read()) != -1) {					         
+						          response.append((char)c);
+						     }
+		 						result = response.toString(); 
+		 				} catch (IOException e) {
+		 					// TODO Auto-generated catch block
+		 					System.out.println(e.getMessage());
+		 				}
+					   
+				}
+            	
+			   if(statusCode==401){
+				    JSONObject errors = new JSONObject();
+					ObjectMapper mapper = new ObjectMapper();
+				    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			    	Errors _error  = mapper.readValue(result, Errors.class);
+			    	List<Errors>error = new ArrayList<Errors>();
+			    	error.add(_error);
+			    	errors.put("errors",error);
+			    	result = errors.toString();
+			   }if(statusCode==400 && StringUtils.isNotBlank(result)){
+				   JSONObject errors = new JSONObject();
+					ObjectMapper mapper = new ObjectMapper();
+				    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			    	Errors _error  = mapper.readValue(result, Errors.class);
+			    	List<Errors>error = new ArrayList<Errors>();
+			    	error.add(_error);
+			    	errors.put("errors",error);
+			    	result = errors.toString();
+			   }else{
+				   JSONObject errors = new JSONObject();
+				   Errors _error = new Errors();
+                   _error.setStatus("BAD_REQUEST");
+                   _error.setCode("9995");
+                   _error.setLocation("404 not found.");
+                   _error.setReason("404 There aren't results");
+                   _error.setSeverity("ERROR");
+                   List<Errors>error = new ArrayList<Errors>();
+			    	error.add(_error);
+			    	errors.put("errors",error);
+			    	result = errors.toString();
+			   }
+			   	
+                return result;
+			}
         }
         catch (IOException wex)
              {
                  if (!wex.getMessage().isEmpty())
                  {
+                	 StringBuffer response = new StringBuffer();  
                 	 try {
-                 	BufferedReader er = new BufferedReader(new InputStreamReader(responseDataRequest.getErrorStream()));
-                 	String line;
-                 	
-                 		int c = 0;
-					     while((c = er.read()) != -1) {					         
-					          response.append((char)c);
-					     }					    
-     						 
-     				} catch (IOException e) {
-     					// TODO Auto-generated catch block
-     					e.printStackTrace();
-     				}
+       
+	                 	BufferedReader er = new BufferedReader(new InputStreamReader(responseDataRequest.getErrorStream()));
+	                 	String line;
+	                 	
+	                 		int c = 0;
+						     while((c = er.read()) != -1) {					         
+						          response.append((char)c);
+						     }					    
+	     						 
+	     				} catch (IOException e) {
+	     					// TODO Auto-generated catch block
+	     					e.printStackTrace();
+	     				}
                     return response.toString();
                  }
         }
