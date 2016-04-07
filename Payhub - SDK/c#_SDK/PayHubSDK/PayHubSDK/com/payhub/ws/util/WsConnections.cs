@@ -316,27 +316,46 @@ namespace PayHubSDK.com.payhub.ws.util
         }
 
 
-        public bool doPatch(HttpWebRequest request)
+        public bool doPatch(HttpWebRequest request,RecurringBillStatus status)
         {
             using (var streamWriter = new StreamWriter(request.GetRequestStream()))
             {
-                var json = "{ \n\t\"recurring_bill_status\": \"CANCELED\"\n}";
+                var json = "{ \n\t\"recurring_bill_status\": \""+status+"\"\n}";
                 streamWriter.Write(json);
                 streamWriter.Flush();
                 streamWriter.Close();
             }
-
-            var response = (HttpWebResponse)request.GetResponse();
-            Console.WriteLine("\nSending 'Patch' request to URL");
-            Console.WriteLine("Response Code : " + response.StatusCode);
-            if (HttpStatusCode.NoContent == response.StatusCode)
+            try {
+                var response = (HttpWebResponse)request.GetResponse();
+                Console.WriteLine("Response Code : " + response.StatusCode);
+                if (HttpStatusCode.NoContent == response.StatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    using (var reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        Console.WriteLine(reader.ReadToEnd());
+                    }
+                    return false;
+                }
+            }catch (WebException wex)
             {
-                return true;
-            }
-            else
-            {
+                if (wex.Response != null)
+                {
+                    using (var errorResponse = (HttpWebResponse)wex.Response)//You return wex.Response instead
+                    {
+                        using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+                        {
+                            Console.WriteLine(reader.ReadToEnd());                            
+                        }
+                    }
+                }
                 return false;
+            
             }
+            
         }
 
         HttpStatusCode GetHttpStatusCode(WebException we)

@@ -69,6 +69,7 @@
     <Compile Include="com\payhub\ws\model\Capture.cs" />
     <Compile Include="com\payhub\ws\model\CaptureResponse.cs" />
     <Compile Include="com\payhub\ws\model\CardData.cs" />
+    <Compile Include="com\payhub\ws\model\RecurringBillStatus.cs" />
     <Compile Include="com\payhub\ws\model\YearlySchedule.cs" />
     <Compile Include="com\payhub\ws\model\SpecificDatesSchedule.cs" />
     <Compile Include="com\payhub\ws\model\WeeklySchedule.cs" />

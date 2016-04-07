@@ -21,18 +21,18 @@ namespace PayHubWS_sample_app.Samples
 
             TransactionManager transaction = new TransactionManager(url, oauth, merchant);
             // debug and see the result list for each transaction
-            var sales = transaction.getAllSalesInformation(0);
-            var auths = transaction.getAllAuthOnlyInformation(0);
-            var caps = transaction.getAllCaptureInformation(0);
-            var voids = transaction.getAllVoidResponseInformation(0);
-            var refunds = transaction.getAllRefundInformation(0);
+            var sales = transaction.getAllSalesInformation(0,100);
+            var auths = transaction.getAllAuthOnlyInformation(0,100);
+            var caps = transaction.getAllCaptureInformation(0,100);
+            var voids = transaction.getAllVoidResponseInformation(0,100);
+            var refunds = transaction.getAllRefundInformation(0,100);
 
-            var a = transaction.getAllBillForSaleInformation(0);
-            var b = transaction.getAllBillForRecurringBillInformation(0);
-            var c = transaction.getAllCardDataInformation(0);
-            var d = transaction.getAllCustomerForRecurringBillInformation(0);
-            var e = transaction.getAllCustomerForSalesInformation(0);
-            var f = transaction.getAllMerchantInformation(0);
+            var a = transaction.getAllBillForSaleInformation(0,100);
+            var b = transaction.getAllBillForRecurringBillInformation(0,100);
+            var c = transaction.getAllCardDataInformation(0,100);
+            var d = transaction.getAllCustomerForRecurringBillInformation(0,100);
+            var e = transaction.getAllCustomerForSalesInformation(0,100);
+            var f = transaction.getAllMerchantInformation(0,100);
             
         }
     }

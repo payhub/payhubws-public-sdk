@@ -26,7 +26,7 @@ namespace PayHubWS
 
 
             ScheduleSartAndEnd scheduleSartAndEnd = new ScheduleSartAndEnd();
-            scheduleSartAndEnd.Start_date = Convert.ToDateTime("2016-02-08");
+            scheduleSartAndEnd.Start_date = Convert.ToDateTime("2016-04-08");
             scheduleSartAndEnd.End_date = Convert.ToDateTime("2016-07-08");
             scheduleSartAndEnd.end_date_type = "O";
             MontlySchedule montlySchedule = new MontlySchedule();
@@ -37,9 +37,10 @@ namespace PayHubWS
             Schedule schedule = new Schedule("M");
             schedule.Schedule_type = "M";
             schedule.Bill_generation_interval = 1;
-
+            schedule.Monthly_schedule = montlySchedule;
+            schedule.Schedule_start_and_end = scheduleSartAndEnd;
             Bill bill = new Bill();
-            bill.Base_amount = (decimal)19.99m;
+            bill.Base_amount = (decimal)1.99m;
             CardData card_data = new CardData();
             card_data.card_number = "4012881888818888";
             card_data.card_expiry_date = "202012"; //September 2018
@@ -60,7 +61,7 @@ namespace PayHubWS
             if (response.errors == null) {
                 var id = response.lastRecurringBillResponse.RecurringBillId.ToString();
                 Console.Write(response.statusInformation.status.recurring_bill_status);
-                var update = transaction.updateRecurringBillStatus(id);
+                var update = transaction.updateRecurringBillStatus(id,RecurringBillStatus.COMPLETED);
                 if (update)
                 {
                     RecurringBillInformation responseUpdated = transaction.getRecurringBillInformation(id);
