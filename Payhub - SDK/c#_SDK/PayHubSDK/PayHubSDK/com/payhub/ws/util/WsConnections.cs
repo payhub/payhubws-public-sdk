@@ -180,7 +180,7 @@ namespace PayHubSDK.com.payhub.ws.util
                                     error.Status = "BAD_REQUEST";
                                     error.Code = "9995";
                                     error.Location = "404 not found.";
-                                    error.Reason = "404 There aren't results";
+                                    error.Reason = "No records Found";
                                     error.Severity = "ERROR";
                                     var _errors = new
                                     {
@@ -297,7 +297,7 @@ namespace PayHubSDK.com.payhub.ws.util
                                     error.Status = "BAD_REQUEST";
                                     error.Code = "9995";
                                     error.Location = "404 not found.";
-                                    error.Reason = "404 There aren't results";
+                                    error.Reason = "No records Found";
                                     error.Severity = "ERROR";
                                     var _errors = new
                                     {

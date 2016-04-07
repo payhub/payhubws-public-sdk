@@ -21,8 +21,8 @@ namespace PayHubWS_sample_app.Samples
 
             TransactionManager transaction = new TransactionManager(url, oauth, merchant);
             // debug and see the result list for each transaction
-            var sales = transaction.getAllSalesInformation(0,100);
-            var auths = transaction.getAllAuthOnlyInformation(0,100);
+            var sales = transaction.getAllSalesInformation();
+            var auths = transaction.getAllAuthOnlyInformation();
             var caps = transaction.getAllCaptureInformation(0,100);
             var voids = transaction.getAllVoidResponseInformation(0,100);
             var refunds = transaction.getAllRefundInformation(0,100);

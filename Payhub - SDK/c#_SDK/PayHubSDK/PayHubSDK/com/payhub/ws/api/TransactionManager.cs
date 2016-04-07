@@ -12,6 +12,7 @@ using PayHubSDK.com.payhub.ws.api;
 using PayHubSDK.com.payhub.ws.model;
 using PayHubSDK.com.payhub.ws.util;
 using Newtonsoft.Json.Linq;
+using System.Runtime.InteropServices;
 namespace PayHubSDK.com.payhub.ws.api
 {
     ///  @author Agustin Breit 
@@ -119,10 +120,11 @@ namespace PayHubSDK.com.payhub.ws.api
      /// a SaleResponseInformation list object.
      /// </returns> 
     ///</summary>
-    public List<SaleResponseInformation> getAllSalesInformation(int page,int size)
+        public List<SaleResponseInformation> getAllSalesInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
     {
+        
     	//List<SaleResponseInformation> response = new ArrayList<SaleResponseInformation>();
-        String url = _url + Sale.SALE_ID_LINK + "?page="+page+"&size="+size;
+        String url = _url + Sale.SALE_ID_LINK + "?page="+page+"&size="+size + "&sort=id,desc";
         HttpWebRequest request = setHeadersGet(url, this._oauthToken);
         String result = doGet(request);
         var node = JObject.Parse(result);
@@ -200,10 +202,10 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a AuthorizationResponseInformation list object.
         /// </returns> 
         ///</summary>
-        public List<AuthorizationResponseInformation> getAllAuthOnlyInformation(int page, int size)
+        public List<AuthorizationResponseInformation> getAllAuthOnlyInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
 
-            String url = _url + AuthOnly.AUTH_ID_LINK + "?page="+page+"&size="+size;
+            String url = _url + AuthOnly.AUTH_ID_LINK + "?page="+page+"&size="+size + "&sort=id,desc";
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
@@ -279,10 +281,10 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a LastCaptureResponseInfromation list object.
         /// </returns> 
         ///</summary>
-        public List<CaptureResponseInfromation> getAllCaptureInformation(int page, int size)
+        public List<CaptureResponseInfromation> getAllCaptureInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
 
-            String url = _url + Capture.CAPTURE_ID_LINK + "?page="+page+"&size="+size;
+            String url = _url + Capture.CAPTURE_ID_LINK + "?page="+page+"&size="+size + "&sort=id,desc";
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
@@ -358,10 +360,10 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a LastVoidResponseInformation list object.
         /// </returns> 
         ///</summary>
-        public List<VoidResponseInformation> getAllVoidResponseInformation(int page,int size)
+        public List<VoidResponseInformation> getAllVoidResponseInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
 
-            String url = _url + VoidTransaction.VOID_ID_LINK + "?page="+page+"&size="+size;
+            String url = _url + VoidTransaction.VOID_ID_LINK + "?page="+page+"&size="+size + "&sort=id,desc";
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
@@ -435,10 +437,10 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a VerifyResponseInformation list object.
         /// </returns> 
         ///</summary>
-        public List<VerifyResponseInformation> getAllVerifyResponseInformation(int page,int size)
+        public List<VerifyResponseInformation> getAllVerifyResponseInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
 
-            String url = _url + Verify.VERIFY_ID_LINK + "?page="+page+"&size="+size;
+            String url = _url + Verify.VERIFY_ID_LINK + "?page="+page+"&size="+size + "&sort=id,desc";
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
@@ -516,10 +518,10 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a RefundInformation list object.
         /// </returns> 
         ///</summary>
-        public List<RefundInformation> getAllRefundInformation(int page,int size)
+        public List<RefundInformation> getAllRefundInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
 
-            String url = _url + Refund.REFUND_ID_LINK + "?page="+page+"&size="+size;
+            String url = _url + Refund.REFUND_ID_LINK + "?page="+page+"&size="+size + "&sort=id,desc";
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
@@ -550,10 +552,10 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a BillInformation list object.
         /// </returns> 
         ///</summary>
-        public List<BillInformation> getAllBillForSaleInformation(int page,int size)
+        public List<BillInformation> getAllBillForSaleInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
 
-            String url = _url + "bill-for-sale?page="+page+"&size="+size;
+            String url = _url + "bill-for-sale?page=" + page + "&size=" + size + "&sort=id,desc";
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);           
@@ -584,10 +586,10 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a BillInformation list object.
         /// </returns> 
         ///</summary>
-        public List<BillInformation> getAllBillForRecurringBillInformation(int page,int size)
+        public List<BillInformation> getAllBillForRecurringBillInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
 
-            String url = _url + "bill-for-recurring-bill?page="+page+"&size="+size;
+            String url = _url + "bill-for-recurring-bill?page="+page+"&size="+size + "&sort=id,desc";
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
@@ -616,10 +618,10 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a MerchantInformation list object.
         /// </returns> 
         ///</summary>
-        public List<MerchantInformation> getAllMerchantInformation(int page,int size)
+        public List<MerchantInformation> getAllMerchantInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
 
-            String url = _url + "merchant?page="+page+"&size="+size;
+            String url = _url + "merchant?page="+page+"&size="+size + "&sort=id,desc";
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);            
@@ -648,10 +650,10 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a CardDataInformation list object.
         /// </returns> 
         ///</summary>
-        public List<CardDataInformation> getAllCardDataInformation(int page,int size)
+        public List<CardDataInformation> getAllCardDataInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
 
-            String url = _url + "carddata?page="+page+"&size="+size;
+            String url = _url + "carddata?page="+page+"&size="+size + "&sort=id,desc";
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
@@ -682,10 +684,10 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a CustomerInformation list object.
         /// </returns> 
         ///</summary>
-        public List<CustomerInformation> getAllCustomerForSalesInformation(int page,int size)
+        public List<CustomerInformation> getAllCustomerForSalesInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
 
-            String url = _url + "customer-for-sale?page="+page+"&size="+size;
+            String url = _url + "customer-for-sale?page="+page+"&size="+size + "&sort=id,desc";
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
@@ -714,10 +716,10 @@ namespace PayHubSDK.com.payhub.ws.api
         /// a CustomerInformation list object.
         /// </returns> 
         ///</summary>
-        public List<CustomerInformation> getAllCustomerForRecurringBillInformation(int page,int size)
+        public List<CustomerInformation> getAllCustomerForRecurringBillInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
 
-            String url = _url + "customer?page="+page+"&size="+size;
+            String url = _url + "customer?page="+page+"&size="+size + "&sort=id,desc";
             HttpWebRequest request = setHeadersGet(url, this._oauthToken);
             String result = doGet(request);
             var node = JObject.Parse(result);
@@ -788,11 +790,11 @@ namespace PayHubSDK.com.payhub.ws.api
             return response;
         }
 
-        public List<RecurringBillInformation> getAllRecurringBillInformation(int page,int size)
+        public List<RecurringBillInformation> getAllRecurringBillInformation([Optional, DefaultParameterValue(0)]int page, [Optional, DefaultParameterValue(20)] int size)
         {
            
             RecurringBillInformation response = new RecurringBillInformation();
-            var url = _url + RecurringBill.RECURRENT_BILL_ID_LINK+"?page="+page+"&size="+size;
+            var url = _url + RecurringBill.RECURRENT_BILL_ID_LINK+"?page="+page+"&size="+size + "&sort=id,desc";
             var request = setHeadersGet(url, this._oauthToken);
             string result = doGet(request);
             if (result == null || result.Equals(""))
