@@ -1,6 +1,7 @@
 require 'uri'
 require 'net/http'
 require 'openssl'
+require 'json'
 
 class WsConnections
   # this is a set
@@ -62,37 +63,55 @@ class WsConnections
   end
   def doPost(http,request)
     response = http.request(request)
-    puts "post result: "+response.code
     case response.code.to_i
       when 200..399
         result = doGet(response['location'],@token)
         return result;
       else
-        return response.read_body
+        return generateErrorResponse(response)
     end
   end
 
   def doGet(url,token)
     http,request=setHeadersGet(url,token)
     response = http.request(request)
-    puts "get result: "+response.code
-    return response.read_body
+    case response.code.to_i
+      when 200..399
+        return response.read_body
+      else
+        return generateErrorResponse(response)
+    end
   end
 
 # @param [Object] http
 # @param [Object] request
   def doPut(http,request)
     response = http.request(request)
-    return response
+    case response.code.to_i
+      when 200..399
+        return response
+      else
+        return generateErrorResponse(response)
+    end
   end
 
   def doPatch(http,request)
     response = http.request(request)
-    return response
+    case response.code.to_i
+      when 200..399
+        return response
+      else
+        return generateErrorResponse(response)
+    end
   end
   def doPostForRoles(http,request)
     response = http.request(request)
-    return response
+    case response.code.to_i
+      when 200..399
+        return response
+      else
+        return generateErrorResponse(response)
+    end
   end
   # @param [Object] http
   # @param [Object] request
@@ -101,7 +120,53 @@ class WsConnections
     json = parameters.serialize_to_json #tojson
     request.body=json
     response = http.request(request)
-    return response.read_body
+    case response.code.to_i
+      when 200..399
+        return response.read_body
+      else
+        return generateErrorResponse(response)
+    end
   end
-  
+
+
+  def generateErrorResponse(response)
+    response2 = JSON.parse(response.read_body)
+    if response2.include?('errors')
+      return response.read_body
+    elsif response2.to_s.empty?
+      errors ||= Array.new
+      error=Errors.new
+      error.status="BAD_REQUEST"
+      error.code="9995"
+      error.severity="ERROR"
+      error.location="404 no results"
+      error.reason="No results for query"
+
+      error = {"status"=>error.status,"code"=>error.code,"severity"=>error.severity,"location"=>error.location,"reason"=>error.reason}
+      errors.push(error)
+      informationToSend = {"errors"=>errors}
+      result  = JSON.generate(informationToSend)
+      return result.gsub('\\','').gsub('"{','{').gsub('}"','}')
+    else
+      errors ||= Array.new
+      error=Errors.new
+      error.status="BAD_REQUEST"
+      error.code="9995"
+      error.severity="ERROR"
+      if response2.include?('cause') or response2.include?('message')
+        error.location=response2['cause']
+        error.reason=response2['message']
+      end
+
+      if response2.include?('error') or  response2.include?('error_description')
+        error.location=response2['error']
+        error.reason=response2['error_description']
+      end
+      error = {"status"=>error.status,"code"=>error.code,"severity"=>error.severity,"location"=>error.location,"reason"=>error.reason}
+      errors.push(error)
+      informationToSend = {"errors"=>errors}
+      result  = JSON.generate(informationToSend)
+      return result.gsub('\\','').gsub('"{','{').gsub('}"','}')
+    end
+  end
 end

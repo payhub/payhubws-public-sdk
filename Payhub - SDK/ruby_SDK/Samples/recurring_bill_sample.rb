@@ -23,14 +23,18 @@ customer.last_name="Contact"
 customer.phone_number="844-217-1631"
 customer.phone_type="W"
 
-montly_s=MonthlySchedule.new("E",15)
+montly_s=MonthlySchedule.new("E")
 start=Date.new(2015,8,29)
+montly_s.monthly_each_days=Array.new(15)
 type="O"
 endDate=Date.new(2016,8,29)
 scheduleSandE=ScheduleStartAndEnd.new(start,type,endDate)
-schedule = Schedule.new(scheduleSandE,montly_s)
-schedule.schedule_type="M"
+schedule = Schedule.new("M")
 schedule.bill_generation_interval=1
+schedule.monthly_schedule=montly_s
+schedule.schedule_start_and_end=scheduleSandE
+
+
 
 transaction = TransactionManager.new(wsURL,oauth_token,merchant)
 recurringBill = RecurringBill.new(merchant,customer,bill,card_data,schedule)
