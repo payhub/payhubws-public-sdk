@@ -653,6 +653,28 @@ class TransactionManager extends WsConnections
         $result=$this->doPatch($request,$json);
         return $result;
     }
+
+    public function updateRecurringBill($id, $recurringBill)
+    {
+        if(is_null($id) || $id==""){
+            return false;
+        }
+        $url=$this->getUrl()."recurring-bill/".$id;
+        $request = $this->setHeadersPatch($url,$this->_oauthToken);
+        $json = RecurringBill::toJson($recurringBill);
+        $result=$this->doPatch($request,$json);
+        if(is_array($result)){
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            return true;
+        }
+        return $result;
+    }
     /**
      * Perform a new query that retrieves you the list of Customers for Recurring billings.
      *
