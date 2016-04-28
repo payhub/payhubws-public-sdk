@@ -104,6 +104,7 @@ namespace PayHubSDK.com.payhub.ws.model
             this.schedule = schedule;
             this.bill = bill;
         }
+        public RecurringBill(){ }
 
         public RecurringBillInformation PerformRecurringBill(string json, System.Net.HttpWebRequest request)
         {

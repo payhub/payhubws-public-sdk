@@ -975,8 +975,25 @@ namespace PayHubSDK.com.payhub.ws.api
             }
             String url = _url + "recurring-bill-status/" + id;
             HttpWebRequest request = setHeadersPatch(url, this._oauthToken);
-            Boolean result = doPatch(request,status);
-            return result;
+            var json = "{ \n\t\"recurring_bill_status\": \"" + status + "\"\n}";
+            String result = doPatch(request,json);
+            if (result == null) { return true; }
+            Console.Write(result);
+            return false;
+        }
+        public Boolean updateRecurringBill(String id, RecurringBill recurringBill)
+        {
+            if (id == null || id == "")
+            {
+                return false;
+            }
+            String url = _url + "recurring-bill/" + id;
+            HttpWebRequest request = setHeadersPatch(url, this._oauthToken);
+            string json = JsonConvert.SerializeObject(recurringBill, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+            String result = doPatch(request, json);
+            if (result == null) { return true; }
+            Console.Write(result);
+            return false;
         }
     }
 }
