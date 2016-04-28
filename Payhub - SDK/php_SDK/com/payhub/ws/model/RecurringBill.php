@@ -25,15 +25,22 @@ class RecurringBill extends WsConnections
      * @param $card_data
      * @param $schedule
      */
-    public function __construct($merchant, $customer, $bill, $card_data, $schedule)
-    {
-        $this->merchant = $merchant;
-        $this->customer = $customer;
-        $this->bill = $bill;
-        $this->card_data = $card_data;
-        $this->schedule = $schedule;
+    public function __construct(){
+        $parameters = func_get_args();
+        foreach ($parameters as $parameter) {
+            if($parameter instanceof  Merchant){
+                $this->merchant = $parameter;
+            }elseif($parameter instanceof Customer){
+                $this->customer = $parameter;
+            }elseif($parameter instanceof Bill){
+                $this->bill = $parameter;
+            }elseif($parameter instanceof CardData){
+                $this->card_data = $parameter;
+            }elseif($parameter instanceof Schedule){
+                $this->schedule = $parameter;
+            }
+        }
     }
-
     /**
      * @return mixed
      */
@@ -169,6 +176,10 @@ class RecurringBill extends WsConnections
                 unset($obj->$key);
         }
         return $obj;
+    }
+    public static function toJson($recurringBill){
+        $json = json_encode($recurringBill->object_unset_nulls(null));
+        return $json;
     }
 
 }

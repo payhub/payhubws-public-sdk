@@ -316,11 +316,12 @@ namespace PayHubSDK.com.payhub.ws.util
         }
 
 
-        public bool doPatch(HttpWebRequest request,RecurringBillStatus status)
+        public string doPatch(HttpWebRequest request,string status)
         {
+            string result = null;
             using (var streamWriter = new StreamWriter(request.GetRequestStream()))
             {
-                var json = "{ \n\t\"recurring_bill_status\": \""+status+"\"\n}";
+                var json = status;
                 streamWriter.Write(json);
                 streamWriter.Flush();
                 streamWriter.Close();
@@ -330,15 +331,15 @@ namespace PayHubSDK.com.payhub.ws.util
                 Console.WriteLine("Response Code : " + response.StatusCode);
                 if (HttpStatusCode.NoContent == response.StatusCode)
                 {
-                    return true;
+                    return null;
                 }
                 else
                 {
                     using (var reader = new StreamReader(response.GetResponseStream()))
                     {
-                        Console.WriteLine(reader.ReadToEnd());
+                        result = reader.ReadToEnd();
                     }
-                    return false;
+                    return result;
                 }
             }catch (WebException wex)
             {
@@ -348,12 +349,53 @@ namespace PayHubSDK.com.payhub.ws.util
                     {
                         using (var reader = new StreamReader(errorResponse.GetResponseStream()))
                         {
-                            Console.WriteLine(reader.ReadToEnd());                            
+                            result = reader.ReadToEnd();
+                            HttpStatusCode statusCode = GetHttpStatusCode(wex);
+                            if (HttpStatusCode.Unauthorized == statusCode)
+                            {
+                                Errors error = JsonConvert.DeserializeObject<Errors>(result);
+                                var _errors = new
+                                {
+                                    errors = new[] { error }
+                                };
+                                string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                                return jsons;
+                            }
+                            else
+                            {
+                                dynamic data = JsonConvert.DeserializeObject(result);
+
+                                if (data != null && (data.cause != null || data.message != null))
+                                {
+                                    Errors error = JsonConvert.DeserializeObject<Errors>(result);
+                                    var _errors = new
+                                    {
+                                        errors = new[] { error }
+                                    };
+                                    string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                                    return jsons;
+                                }
+                                else
+                                {
+                                    Errors error = new Errors();
+                                    error.Status = "BAD_REQUEST";
+                                    error.Code = "9995";
+                                    error.Location = "404 not found.";
+                                    error.Reason = "No records Found";
+                                    error.Severity = "ERROR";
+                                    var _errors = new
+                                    {
+                                        errors = new[] { error }
+                                    };
+                                    string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                                    return jsons;
+
+                                }
+                            }
                         }
                     }
                 }
-                return false;
-            
+                return result;
             }
             
         }
