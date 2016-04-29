@@ -37,18 +37,20 @@ class TransactionManager < WsConnections
       return nil
     end
     url=@url+Sale::SALE_ID_LINK+saleId
-    result=doGet(url,@token)
-    return nil if result==nil or result==""
-    result = JSON.parse(result)
-    response = SaleResponseInformation.new
-    if result['error']==nil
-      response = SaleResponseInformation.from_json(JSON.generate(result))
-      response.transactionManager = self
-      return response
+    response=JSON.parse(doGet(url,@token))
+    puts response.inspect
+    result=SaleResponseInformation.new
+    if not response.include?('errors')
+      result=SaleResponseInformation.from_json(JSON.generate(response))
     else
-      response.errors = Errors.from_json(JSON.generate(result))
-      return response
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      result.errors=errors
     end
+    return result
   end
   # Perform a new query that retrieves you the list of Sales Information.
   #
@@ -61,12 +63,12 @@ class TransactionManager < WsConnections
     result = JSON.parse(result)
     #convertir a array el result
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['sales'].each do |sales|
         response_tmp = SaleResponseInformation.from_json(JSON.generate(sales))#sales #SaleResponseInformation::fromArray(sales)
         response_tmp.transactionManager=self
         response.push(response_tmp)
-    end
+      end
     else
       result['errors'].each do |error|
         response_tmp = Errors.from_json(JSON.generate(error))
@@ -102,18 +104,19 @@ class TransactionManager < WsConnections
       return nil
     end
     url=@url+AuthOnly::AUTH_ID_LINK+authorizationId
-    result=doGet(url,@token)
-    return nil if result==nil or result==""
-    result = JSON.parse(result)
-    response = AuthorizationResponseInformation.new
-    if result['error']==nil
-      response = AuthorizationResponseInformation.from_json(JSON.generate(result))
-      response.transactionManager = self
-      return response
+    response=JSON.parse(doGet(url,@token))
+    result=AuthorizationResponseInformation.new
+    if not response.include?('errors')
+      result=AuthorizationResponseInformation.from_json(JSON.generate(response))
     else
-      response.errors = Errors.from_json(JSON.generate(result))
-      return response
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      result.errors=errors
     end
+    return result
   end
   #
   # Perform a new query that retrieves you the list of Authorizations Information.
@@ -127,7 +130,7 @@ class TransactionManager < WsConnections
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['authonlys'].each do |authonlys|
         response_tmp = AuthorizationResponseInformation.from_json(JSON.generate(authonlys))
         response_tmp.transactionManager=self
@@ -166,20 +169,19 @@ class TransactionManager < WsConnections
       return nil
     end
     url=@url+Capture::CAPTURE_ID_LINK+captureId
-    result=doGet(url,@token)
-    return nil if result==nil or result==""
-    result = JSON.parse(result)
-    response = CaptureResponseInformation.new
-    return nil if result==nil
-
-    if result['error']==nil
-      response = CaptureResponseInformation.from_json(JSON.generate(result))
-      response.transactionManager = self
-      return response
+    response=JSON.parse(doGet(url,@token))
+    result=CaptureResponseInformation.new
+    if not response.include?('errors')
+      result=CaptureResponseInformation.from_json(JSON.generate(response))
     else
-      response.errors = Errors.from_json(JSON.generate(result))
-      return response
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      result.errors=errors
     end
+    return result
   end
   #
   # Perform a new query that retrieves you the list of Captures Information.
@@ -192,7 +194,7 @@ class TransactionManager < WsConnections
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['captures'].each do |captures|
         response_tmp = CaptureResponseInformation.from_json(JSON.generate(captures))
         response_tmp.transactionManager=self
@@ -232,18 +234,20 @@ class TransactionManager < WsConnections
       return nil
     end
     url=@url+VoidTransaction::VOID_ID_LINK+voidId
-    result=doGet(url,@token)
-    return nil if result==nil or result==""
-    result = JSON.parse(result)
-    response = VoidResponseInformation.new
-    if result['error']==nil
-      response = VoidResponseInformation.from_json(JSON.generate(result))
-      response.transactionManager = self
-      return response
+    response=JSON.parse(doGet(url,@token))
+    result=VoidResponseInformation.new
+    if not response.include?('errors')
+      result=VoidResponseInformation.from_json(JSON.generate(response))
     else
-      response.errors = Errors.from_json(JSON.generate(result))
-      return response
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      result.errors=errors
     end
+    return result
+
   end
   #
   # Perform a new query that retrieves you the list of Voids Information.
@@ -257,7 +261,7 @@ class TransactionManager < WsConnections
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['voids'].each do |voids|
         response_tmp = VoidResponseInformation.from_json(JSON.generate(voids))
         response_tmp.transactionManager=self
@@ -296,18 +300,20 @@ class TransactionManager < WsConnections
       return nil
     end
     url=@url+Verify::VERIFY_ID_LINK+verifyId
-    result=doGet(url,@token)
-    return nil if result==nil or result==""
-    result = JSON.parse(result)
-    response = VerfyResponseInformation.new
-    if result['error']==nil
-      response = VerfyResponseInformation.from_json(JSON.generate(result))
-      response.transactionManager = self
-      return response
+    response=JSON.parse(doGet(url,@token))
+    return nil if response==nil or response==""
+    result=VerfyResponseInformation.new
+    if not response.include?('errors')
+      result=VerfyResponseInformation.from_json(JSON.generate(response))
     else
-      response.errors = Errors.from_json(JSON.generate(result))
-      return response
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      result.errors=errors
     end
+    return result
   end
   #
   # Perform a new query that retrieves you the list of Verify Information.
@@ -321,7 +327,7 @@ class TransactionManager < WsConnections
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['verifications'].each do |verifications|
         response_tmp = VerfyResponseInformation.from_json(JSON.generate(verifications))
         response_tmp.transactionManager=self
@@ -361,18 +367,20 @@ class TransactionManager < WsConnections
       return nil
     end
     url=@url+Refund::REFUND_ID_LINK+refundId
-    result=doGet(url,@token)
-    return nil if result==nil or result==""
-    result = JSON.parse(result)
-    response = RefundInformation.new
-    if result['error']==nil
-      response = RefundInformation.from_json(JSON.generate(result))
-      response.transactionManager = self
-      return response
+    response=JSON.parse(doGet(url,@token))
+    return nil if response==nil or response==""
+    result=RefundInformation.new
+    if not response.include?('errors')
+      result=RefundInformation.from_json(JSON.generate(response))
     else
-      response.errors = Errors.from_json(JSON.generate(result))
-      return response
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      result.errors=errors
     end
+    return result
   end
   #
   # Perform a new query that retrieves you the list of Refund Information.
@@ -386,7 +394,7 @@ class TransactionManager < WsConnections
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['refunds'].each do |refunds|
         response_tmp = RefundInformation.from_json(JSON.generate(refunds))
         response_tmp.transactionManager=self
@@ -425,18 +433,21 @@ class TransactionManager < WsConnections
       return nil
     end
     url=@url+RecurringBill::RECURRENT_BILL_ID_LINK+recurringBillId
-    result=doGet(url,@token)
-    return nil if result==nil or result==""
-    result = JSON.parse(result)
-    response = RecurringBillResponseInformation.new
-    if result['error']==nil
-      response = RecurringBillResponseInformation.from_json(JSON.generate(result))
+    response=JSON.parse(doGet(url,@token))
+    return nil if response==nil or response==""
+    result=RecurringBillResponseInformation.new
+    if not response.include?('errors')
+      result=RecurringBillResponseInformation.from_json(JSON.generate(response))
       response.transactionManager = self
-      return response
     else
-      response.errors = Errors.from_json(JSON.generate(result))
-      return response
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      result.errors=errors
     end
+    return result
   end
   #
   # Perform a new query that retrieves you the list of bills for sales Information.
@@ -450,7 +461,7 @@ class TransactionManager < WsConnections
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['billforsale'].each do |billforsale|
         json=JSON.generate(billforsale)
         response_tmp = BillInformation.from_json(json)
@@ -478,7 +489,7 @@ class TransactionManager < WsConnections
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['billsforrecurringbill'].each do |billsforrecurringbill|
         json=JSON.generate(billsforrecurringbill)
         response_tmp = BillInformation.from_json(json)
@@ -506,7 +517,7 @@ class TransactionManager < WsConnections
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['merchants'].each do |merchants|
         json=JSON.generate(merchants)
         response_tmp = MerchantInformation.from_json(json)
@@ -534,7 +545,7 @@ class TransactionManager < WsConnections
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['carddata'].each do |carddata|
         json=JSON.generate(carddata)
         response_tmp = CardDataInformation.from_json(json)
@@ -562,7 +573,7 @@ class TransactionManager < WsConnections
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['customerforsale'].each do |customerforsale|
         json=JSON.generate(customerforsale)
         response_tmp = CustomerInformation.from_json(json)
@@ -590,7 +601,7 @@ class TransactionManager < WsConnections
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response ||= Array.new
-    if result['error']==nil
+    if result['errors']==nil
       result['_embedded']['customers'].each do |customers|
         json=JSON.generate(customers)
         response_tmp = CustomerInformation.from_json(json)
@@ -646,10 +657,39 @@ class TransactionManager < WsConnections
     informationToSend = {"recurring_bill_status"=>"CANCELED"}
     request.body = JSON.generate(informationToSend)
     result=doPatch(http,request)
-    if result.body.to_s==''
+    if result==true
       return true
     else
-      return result.body
+      response = JSON.parse(result)
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      return errors
+    end
+  end
+
+  def updateRecurringBill(recurringBillId,recurringBill)
+    if recurringBillId.to_s=='' || recurringBillId==nil
+      return false
+    end
+    url=@url+"recurring-bill/"+recurringBillId.to_s
+    http,request = setHeadersPatch(url,@token)
+    informationToSend = recurringBill.serialize_to_json
+    request.body = informationToSend
+    result=doPatch(http,request)
+    if result==true
+      return true
+    else
+      response = JSON.parse(result)
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      return errors
+
     end
   end
 
@@ -685,27 +725,27 @@ class TransactionManager < WsConnections
   def addMetaData(datos, type, operationId)
     metadataUrl=nil
     if TransactionType::Sale==type
-        metadataUrl=url+"metadata/forSale/"+operationId
+      metadataUrl=url+"metadata/forSale/"+operationId
     elsif TransactionType::AuthOnly==type
-        metadataUrl=url+"metadata/forAuthOnly/"+operationId
+      metadataUrl=url+"metadata/forAuthOnly/"+operationId
     elsif TransactionType::Capture==type
-        metadataUrl=url+"metadata/forCapture/"+operationId
+      metadataUrl=url+"metadata/forCapture/"+operationId
     elsif TransactionType::Bill==type
-        metadataUrl=url+"metadata/forBill/"+operationId
+      metadataUrl=url+"metadata/forBill/"+operationId
     elsif TransactionType::CardData==type
-        metadataUrl=url+"metadata/forCardData/"+operationId
+      metadataUrl=url+"metadata/forCardData/"+operationId
     elsif TransactionType::Customer==type
-        metadataUrl=url+"metadata/forCustomer/"+operationId
+      metadataUrl=url+"metadata/forCustomer/"+operationId
     elsif TransactionType::Merchant==type
-        metadataUrl=url+"metadata/forMerchant/"+operationId
+      metadataUrl=url+"metadata/forMerchant/"+operationId
     elsif TransactionType::RecurringBill==type
-        metadataUrl=url+"metadata/forRecurringBill/"+operationId
+      metadataUrl=url+"metadata/forRecurringBill/"+operationId
     elsif TransactionType::Schedule==type
-        metadataUrl=url+"metadata/forSchedule/"+operationId
+      metadataUrl=url+"metadata/forSchedule/"+operationId
     elsif TransactionType::Refund==type
-        metadataUrl=url+"metadata/forRefund/"+operationId
+      metadataUrl=url+"metadata/forRefund/"+operationId
     elsif TransactionType::VoidTransaction==type
-        metadataUrl=url+"metadata/forVoid/"+operationId
+      metadataUrl=url+"metadata/forVoid/"+operationId
     end
     http,request = setHeadersPut(metadataUrl,@token)
     request.body=datos
@@ -824,11 +864,18 @@ class TransactionManager < WsConnections
     json = webhook.serialize_to_json
     request.body = json
     result=doPatch(http,request)
-    if result.body.to_s==''
+    if result==true
       return true
     else
-      return result.body
+      response = JSON.parse(result)
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      return errors
     end
+
   end
 
   def patchValidatedDevices(vd)
@@ -838,10 +885,16 @@ class TransactionManager < WsConnections
     json = vd.serialize_to_json
     request.body = json
     result=doPatch(http,request)
-    if result.body.to_s==''
+    if result==true
       return true
     else
-      return result.body
+      response = JSON.parse(result)
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      return errors
     end
   end
 
@@ -851,10 +904,16 @@ class TransactionManager < WsConnections
     json = risk.serialize_to_json
     request.body = json
     result=doPatch(http,request)
-    if result.body.to_s==''
+    if result==true
       return true
     else
-      return result.body
+      response = JSON.parse(result)
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      return errors
     end
   end
 
@@ -915,10 +974,16 @@ class TransactionManager < WsConnections
     json = roleSettings.serialize_to_json
     request.body = json
     result=doPatch(http,request)
-    if result.body.to_s==''
+    if result==true
       return true
     else
-      return result.body
+      response = JSON.parse(result)
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      return errors
     end
   end
 

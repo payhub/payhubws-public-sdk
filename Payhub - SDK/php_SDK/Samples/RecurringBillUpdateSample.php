@@ -7,16 +7,14 @@ $path_to_IncludeClases="../com/payhub/ws/extra/includeClasses.php";
 include_once $path_to_IncludeClases;
 
 //Defining the Web Service URL
-//$WsURL="https://sandbox-api.payhub.com/api/v2/";
-//$oauth_token = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
-$WsURL="http://localhost:8251/payhubws/api/v2/";
-$oauth_token = "43d50993-cc59-4f01-8e93-a53e0e2e59c0";
+$WsURL="https://sandbox-api.payhub.com/api/v2/";
+$oauth_token = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
 
 //Defining data for the SALE transaction
 // Merchant data (obtained from the payHub Virtual Terminal (3rd party integration)
 $merchant = new Merchant();
-$merchant->setOrganizationId(10002);
-$merchant->setTerminalId(2);
+$merchant->setOrganizationId(10074);
+$merchant->setTerminalId(134);
 
 $bill= new Bill();
 $bill->setBaseAmount(1.00);
@@ -58,7 +56,7 @@ $response = $transaction->doRecurringBill($recurringBill);
 if($response->getErrors()==null){
     $transactionId = $response->getLastRecurringBillResponse()->getRecurringBillId();
     $bill->setBaseAmount(2.00);
-    $recurringBill2 = new RecurringBill($bill);
+    $recurringBill2 = new RecurringBill($merchant,$bill);
     $canUpdate=$transaction->updateRecurringBill($transactionId,$recurringBill2);
     if(!is_array($canUpdate)){
         $statusUpdated = $transaction->getRecurringBillInformation($transactionId);

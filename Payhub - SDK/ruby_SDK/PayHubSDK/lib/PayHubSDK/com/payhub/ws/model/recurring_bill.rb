@@ -5,13 +5,29 @@ class RecurringBill  < WsConnections
   @url=""
   RECURRENT_BILL_ID_LINK= "recurring-bill/"
 
-  def initialize(merchant, customer, bill, card_data, schedule)
-    Util::validate_params(self.class.name, merchant, customer, bill, card_data, schedule)
-    @merchant=merchant
-    @customer=customer
-    @bill=bill
-    @card_data=card_data
-    @schedule=schedule
+  # def initialize(merchant, customer, bill, card_data, schedule)
+  #   Util::validate_params(self.class.name, merchant, customer, bill, card_data, schedule)
+  #   @merchant=merchant
+  #   @customer=customer
+  #   @bill=bill
+  #   @card_data=card_data
+  #   @schedule=schedule
+  # end
+
+  def initialize(*args)
+      args.each do |argument|
+        if argument.instance_of?(Merchant)
+          @merchant=argument
+        elsif argument.instance_of?(Customer)
+          @customer=argument
+        elsif argument.instance_of?(Bill)
+          @bill=argument
+        elsif argument.instance_of?(CardData)
+          @card_data=argument
+        elsif argument.instance_of?(Schedule)
+          @schedule=argument
+        end
+      end
   end
 
   def url=(str)
@@ -26,17 +42,7 @@ class RecurringBill  < WsConnections
     json = self.serialize_to_json
     request.body = json
     response = JSON.parse(doPost(http,request))
-    result=RecurringBillResponseInformation.new
-    if not response.include?('errors')
-      result=RecurringBillResponseInformation.from_json(JSON.generate(response))
-    else
-      errors ||= Array.new
-      response['errors'].each do |error|
-        errors_aux=Errors.from_json(JSON.generate(error))
-        errors.push(errors_aux)
-      end
-      result.errors=errors
-    end
+    result=RecurringBillResponseInformation.from_json(JSON.generate(response))
     return result
   end
 end

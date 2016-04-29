@@ -99,7 +99,7 @@ class WsConnections
     response = http.request(request)
     case response.code.to_i
       when 200..399
-        return response
+        return true
       else
         return generateErrorResponse(response)
     end

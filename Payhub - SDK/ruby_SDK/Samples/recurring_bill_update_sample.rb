@@ -7,6 +7,7 @@ merchant = Merchant.new
 merchant.organization_id=10127
 merchant.terminal_id=215
 
+
 # bill data
 bill= Bill.new
 bill.base_amount=1.00
@@ -24,11 +25,11 @@ customer.phone_number="844-217-1631"
 customer.phone_type="W"
 
 montly_s=MonthlySchedule.new("E")
-start=Date.new(2015,8,29)
+start=Date.new(2016,8,29)
 montly_s.monthly_each_days=Array.new
 montly_s.monthly_each_days.push(15)
 type="O"
-endDate=Date.new(2016,8,29)
+endDate=Date.new(2017,8,29)
 scheduleSandE=ScheduleStartAndEnd.new(start,type,endDate)
 schedule = Schedule.new("M")
 schedule.bill_generation_interval=1
@@ -39,7 +40,15 @@ schedule.schedule_start_and_end=scheduleSandE
 
 transaction = TransactionManager.new(wsURL,oauth_token,merchant)
 recurringBill = RecurringBill.new(merchant,customer,bill,card_data,schedule)
-
-puts recurringBill.inspect
 response = transaction.doRecurringBill(recurringBill)
-puts response.inspect
+if response.errors==nil
+  id=response.lastRecurringBillResponse.recurringBillId
+  bill.base_amount=2.00
+  recForUpdate=RecurringBill.new()
+  recForUpdate.bill=bill
+  canUpdate = transaction.updateRecurringBill(id,recForUpdate)
+  #if can update is an array, then there is an error, if not, the update was successful
+  if canUpdate.is_a?(Array)
+    puts canUpdate.inspect
+  end
+end

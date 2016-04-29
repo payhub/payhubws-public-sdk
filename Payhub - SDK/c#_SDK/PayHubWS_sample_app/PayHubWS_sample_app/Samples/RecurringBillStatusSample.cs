@@ -81,18 +81,12 @@ namespace PayHubWS
             *  Thanks.
             */
             //Defining the Web Service URL
-            //string url = "https://sandbox-api.payhub.com/api/v2/";
-            //string oauth = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
-
-            string url = "http://localhost:8251/payhubws/api/v2/";
-            string oauth = "43d50993-cc59-4f01-8e93-a53e0e2e59c0";
+            string url = "https://sandbox-api.payhub.com/api/v2/";
+            string oauth = "2a5d6a73-d294-4fba-bfba-957a4948d4a3";
 
             Merchant merchant = new Merchant();
-            //merchant.organization_id = 10074;
-            //merchant.terminal_id = 134;
-
-            merchant.organization_id = 10002;
-            merchant.terminal_id = 2;
+            merchant.organization_id = 10074;
+            merchant.terminal_id = 134;
 
             ScheduleSartAndEnd scheduleSartAndEnd = new ScheduleSartAndEnd();
             scheduleSartAndEnd.Start_date = Convert.ToDateTime("2017-04-08");
@@ -131,7 +125,7 @@ namespace PayHubWS
             {
                 var id = response.lastRecurringBillResponse.RecurringBillId.ToString();
                 RecurringBill recurringBillForUpdate = new RecurringBill();
-
+                recurringBillForUpdate.Merchant = merchant;
                 recurringBillForUpdate.Card_data = card_data;
                 bill.Base_amount = (decimal)2.99m;
                 recurringBillForUpdate.Bill = bill;
