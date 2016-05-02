@@ -981,19 +981,19 @@ namespace PayHubSDK.com.payhub.ws.api
             Console.Write(result);
             return false;
         }
-        public Boolean updateRecurringBill(String id, RecurringBill recurringBill)
+        public RecurringBillInformation updateRecurringBill(String id, RecurringBill recurringBill)
         {
             if (id == null || id == "")
             {
-                return false;
+                return null;
             }
             String url = _url + "recurring-bill/" + id;
             HttpWebRequest request = setHeadersPatch(url, this._oauthToken);
             string json = JsonConvert.SerializeObject(recurringBill, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
             String result = doPatch(request, json);
-            if (result == null) { return true; }
-            Console.Write(result);
-            return false;
+            if (result == null) { return null; }
+            return JsonConvert.DeserializeObject<RecurringBillInformation>(result);
+             
         }
     }
 }

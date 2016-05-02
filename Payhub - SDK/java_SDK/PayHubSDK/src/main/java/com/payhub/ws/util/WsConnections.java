@@ -354,25 +354,44 @@ public class WsConnections {
     	  .addHeader("cache-control", "no-cache")
     	  .build();
 
-    	Response response = client.newCall(request).execute();   
-    	if(response.code()>=200 && response.code()<400){
+    	Response responseDataRequest = client.newCall(request).execute();   
+    	int statusCode = responseDataRequest.code();
+    	if (statusCode >= 200 && statusCode < 400) {
     		return "";
-    	}else{    		
-	    	StringBuffer responseB = new StringBuffer();   	
-	    	BufferedReader er = new BufferedReader(new InputStreamReader(response.body().byteStream()));
-	     	String line;
-	     	try {
-	     		int c = 0;
-			     while((c = er.read()) != -1) {					         
-			    	 responseB.append((char)c);
-			     }					    
-						 
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	        return responseB.toString();
-    	}
+    	}else{
+			String bodys = responseDataRequest.body().toString();			
+		   if(statusCode==401){
+			    JSONObject errors = new JSONObject();
+				ObjectMapper mapper = new ObjectMapper();
+			    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		    	Errors _error  = mapper.readValue(bodys, Errors.class);
+		    	List<Errors>error = new ArrayList<Errors>();
+		    	error.add(_error);
+		    	errors.put("errors",error);
+		    	return errors.toString();
+		   }if(statusCode==400 && StringUtils.isNotBlank(bodys)){
+			   JSONObject errors = new JSONObject();
+				ObjectMapper mapper = new ObjectMapper();
+			    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		    	Errors _error  = mapper.readValue(bodys, Errors.class);
+		    	List<Errors>error = new ArrayList<Errors>();
+		    	error.add(_error);
+		    	errors.put("errors",error);
+		    	return errors.toString();
+		   }else{
+			   JSONObject errors = new JSONObject();
+			   Errors _error = new Errors();
+               _error.setStatus("BAD_REQUEST");
+               _error.setCode("9995");
+               _error.setLocation("404 not found.");
+               _error.setReason("404 There aren't results");
+               _error.setSeverity("ERROR");
+               List<Errors>error = new ArrayList<Errors>();
+		    	error.add(_error);
+		    	errors.put("errors",error);
+		    	return errors.toString();
+		   }		   	
+		}
     }
     public String doPostForUserRole(String url,String token,String json) throws IOException
     {

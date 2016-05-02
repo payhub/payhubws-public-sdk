@@ -361,8 +361,10 @@ namespace PayHubSDK.com.payhub.ws.util
                                 string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
                                 return jsons;
                             }
-                            else
-                            {
+                            if(HttpStatusCode.BadRequest == statusCode){                                
+                                return result;
+                            }
+                            
                                 dynamic data = JsonConvert.DeserializeObject(result);
 
                                 if (data != null && (data.cause != null || data.message != null))
@@ -391,7 +393,7 @@ namespace PayHubSDK.com.payhub.ws.util
                                     return jsons;
 
                                 }
-                            }
+                            
                         }
                     }
                 }

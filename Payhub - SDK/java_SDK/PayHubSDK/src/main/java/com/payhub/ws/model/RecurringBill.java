@@ -98,7 +98,10 @@ public class RecurringBill extends WsConnections{
         this.schedule = schedule;
         this.bill = bill;
     }
-
+	public RecurringBill(){
+		
+	}
+	
     public RecurringBillResponseInformation PerformRecurringBill(String json, HttpURLConnection request)
     {
     	RecurringBillResponseInformation responseObject = new RecurringBillResponseInformation();

@@ -643,6 +643,23 @@ public class TransactionManager extends WsConnections{
         }
         return false;
     }
+    
+    
+    public boolean updateRecurringBill(String id,RecurringBill recurringBill) throws Exception
+    {
+        if (id == null || id == "")
+        {
+            return false;
+        }
+        String url = _url + "recurring-bill/" + id;
+        ObjectMapper mapper = new ObjectMapper();
+   		String json = mapper.writeValueAsString(recurringBill);       
+        String result = doPatch(url,this._oauthToken,json);
+        if(StringUtils.isNotBlank(result)){
+        	throw new Exception(result);
+        }
+        return true;
+    }
     /**
      * Perform a new query that retrieves you the Recurring Bill Information from a Customer Id.
      *

@@ -130,13 +130,20 @@ namespace PayHubWS
                 bill.Base_amount = (decimal)2.99m;
                 recurringBillForUpdate.Bill = bill;
 
-                var update = transaction.updateRecurringBill(id, recurringBillForUpdate);
-                if (update)
+                var recurringBillResponse = transaction.updateRecurringBill(id, recurringBillForUpdate);
+                //if the object recurringBillResponse is null, then, the patch method returned a 201OK code, if not, 
+                //the errors are stored in the object.
+                if (recurringBillResponse==null)
                 {
                     RecurringBillInformation responseUpdated = transaction.getRecurringBillInformation(id);
                     if (responseUpdated.errors == null)
                     {
                         Console.Write(responseUpdated.billInformation.bill.Base_amount);
+                    }
+                }
+                else {
+                    foreach (Errors e in recurringBillResponse.errors) {
+                        Console.Write(e.Reason);
                     }
                 }
             }
