@@ -94,33 +94,7 @@ namespace PayHubSDK.com.payhub.ws.util
                     {
                         using (var reader = new StreamReader(errorResponse.GetResponseStream()))
                         {
-                            result = reader.ReadToEnd();
-                            HttpStatusCode statusCode = GetHttpStatusCode(wex);
-                            if (HttpStatusCode.Unauthorized == statusCode)
-                            {
-                                Errors error = JsonConvert.DeserializeObject<Errors>(result);
-                                var _errors = new
-                                {
-                                    errors = new[] { error }
-                                };
-                                string json = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                                return json;
-                            }
-                            else {
-                                dynamic data = JsonConvert.DeserializeObject(result);
-                                if (data!=null && (data.cause != null || data.message != null)){
-                                    Errors error = JsonConvert.DeserializeObject<Errors>(result);
-                                    var _errors = new
-                                    {
-                                        errors = new[] { error }
-                                    };
-                                    string json = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                                    return json;
-                                }
-                                return result;
-                            }
-                            
-                            
+                            return generateErrors(reader, wex);
                         }
                     }
                 }
@@ -148,49 +122,7 @@ namespace PayHubSDK.com.payhub.ws.util
                     {
                         using (var reader = new StreamReader(errorResponse.GetResponseStream()))
                         {
-                            result = reader.ReadToEnd();
-                            HttpStatusCode statusCode = GetHttpStatusCode(wex);
-                            if (HttpStatusCode.Unauthorized == statusCode)
-                            {
-                                Errors error = JsonConvert.DeserializeObject<Errors>(result);
-                                var _errors = new
-                                {
-                                    errors = new[] { error }
-                                };
-                                string json = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                                return json;
-                            }
-                            else
-                            {
-                                dynamic data = JsonConvert.DeserializeObject(result);
-
-                                if (data != null && (data.cause != null || data.message != null))
-                                {
-                                    Errors error = JsonConvert.DeserializeObject<Errors>(result);
-                                    var _errors = new
-                                    {
-                                        errors = new[] { error }
-                                    };
-                                    string json = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                                    return json;
-                                }
-                                else
-                                {
-                                    Errors error = new Errors();
-                                    error.Status = "BAD_REQUEST";
-                                    error.Code = "9995";
-                                    error.Location = "404 not found.";
-                                    error.Reason = "No records Found";
-                                    error.Severity = "ERROR";
-                                    var _errors = new
-                                    {
-                                        errors = new[] { error }
-                                    };
-                                    string json = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                                    return json;
-
-                                }
-                            }
+                            return generateErrors(reader, wex);
                         }
                     }
                 }
@@ -265,49 +197,7 @@ namespace PayHubSDK.com.payhub.ws.util
                     {
                         using (var reader = new StreamReader(errorResponse.GetResponseStream()))
                         {
-                            result = reader.ReadToEnd();
-                            HttpStatusCode statusCode = GetHttpStatusCode(wex);
-                            if (HttpStatusCode.Unauthorized == statusCode)
-                            {
-                                Errors error = JsonConvert.DeserializeObject<Errors>(result);
-                                var _errors = new
-                                {
-                                    errors = new[] { error }
-                                };
-                                string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                                return jsons;
-                            }
-                            else
-                            {
-                                dynamic data = JsonConvert.DeserializeObject(result);
-
-                                if (data != null && (data.cause != null || data.message != null))
-                                {
-                                    Errors error = JsonConvert.DeserializeObject<Errors>(result);
-                                    var _errors = new
-                                    {
-                                        errors = new[] { error }
-                                    };
-                                    string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                                    return jsons;
-                                }
-                                else
-                                {
-                                    Errors error = new Errors();
-                                    error.Status = "BAD_REQUEST";
-                                    error.Code = "9995";
-                                    error.Location = "404 not found.";
-                                    error.Reason = "No records Found";
-                                    error.Severity = "ERROR";
-                                    var _errors = new
-                                    {
-                                        errors = new[] { error }
-                                    };
-                                    string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                                    return jsons;
-
-                                }
-                            }
+                            return generateErrors(reader, wex);
                         }
                     }
                 }
@@ -349,51 +239,7 @@ namespace PayHubSDK.com.payhub.ws.util
                     {
                         using (var reader = new StreamReader(errorResponse.GetResponseStream()))
                         {
-                            result = reader.ReadToEnd();
-                            HttpStatusCode statusCode = GetHttpStatusCode(wex);
-                            if (HttpStatusCode.Unauthorized == statusCode)
-                            {
-                                Errors error = JsonConvert.DeserializeObject<Errors>(result);
-                                var _errors = new
-                                {
-                                    errors = new[] { error }
-                                };
-                                string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                                return jsons;
-                            }
-                            if(HttpStatusCode.BadRequest == statusCode){                                
-                                return result;
-                            }
-                            
-                                dynamic data = JsonConvert.DeserializeObject(result);
-
-                                if (data != null && (data.cause != null || data.message != null))
-                                {
-                                    Errors error = JsonConvert.DeserializeObject<Errors>(result);
-                                    var _errors = new
-                                    {
-                                        errors = new[] { error }
-                                    };
-                                    string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                                    return jsons;
-                                }
-                                else
-                                {
-                                    Errors error = new Errors();
-                                    error.Status = "BAD_REQUEST";
-                                    error.Code = "9995";
-                                    error.Location = "404 not found.";
-                                    error.Reason = "No records Found";
-                                    error.Severity = "ERROR";
-                                    var _errors = new
-                                    {
-                                        errors = new[] { error }
-                                    };
-                                    string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-                                    return jsons;
-
-                                }
-                            
+                            return generateErrors(reader, wex);
                         }
                     }
                 }
@@ -411,6 +257,117 @@ namespace PayHubSDK.com.payhub.ws.util
             }
             return 0;
         }
+
+        public string doPostForUserRoles(string _url, string _token,string _json)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(_url);
+            request.ContentType = "text/json";
+            request.Method = "POST";
+            request.Headers.Add("Authorization", "Bearer " + _token);
+            request.ContentType = "application/json";
+            request.Accept = "application/json";
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                streamWriter.Write(_json);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            string result = null;
+            try
+            {
+                var response = (HttpWebResponse)request.GetResponse();//You return this response.
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    result = reader.ReadToEnd();
+
+                    // if status is 200 then get the data from refund response;
+                    if (HttpStatusCode.Created == response.StatusCode)
+                    {
+                        string completePath = response.Headers["Location"];
+                        int lastSlash = completePath.LastIndexOf("/");
+                        string transactionId = completePath.Substring(lastSlash + 1);
+
+                        var responseDataRequest = setResponseDataURI(_url + transactionId, request);
+                        //responseObject = getResponseData(responseDataRequest);
+
+                        return null;
+
+
+                    }
+                    else
+                    {
+                        return result;
+                    }
+
+                }
+            }
+            catch (WebException wex)
+            {
+                if (wex.Response != null)
+                {
+                    using (var errorResponse = (HttpWebResponse)wex.Response)//You return wex.Response instead
+                    {
+                        using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+                        {
+                            return generateErrors(reader, wex);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+
+        string generateErrors(StreamReader reader, WebException wex)
+        {
+            var result = reader.ReadToEnd();
+            HttpStatusCode statusCode = GetHttpStatusCode(wex);
+            if (HttpStatusCode.Unauthorized == statusCode)
+            {
+                Errors error = JsonConvert.DeserializeObject<Errors>(result);
+                var _errors = new
+                {
+                    errors = new[] { error }
+                };
+                string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                return jsons;
+            }
+            if (HttpStatusCode.BadRequest == statusCode)
+            {
+                return result;
+            }
+
+            dynamic data = JsonConvert.DeserializeObject(result);
+
+            if (data != null && (data.cause != null || data.message != null))
+            {
+                Errors error = JsonConvert.DeserializeObject<Errors>(result);
+                var _errors = new
+                {
+                    errors = new[] { error }
+                };
+                string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                return jsons;
+            }
+            else
+            {
+                Errors error = new Errors();
+                error.Status = "BAD_REQUEST";
+                error.Code = "9995";
+                error.Location = "404 not found.";
+                error.Reason = "No records Found";
+                error.Severity = "ERROR";
+                var _errors = new
+                {
+                    errors = new[] { error }
+                };
+                string jsons = JsonConvert.SerializeObject(_errors, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+                return jsons;
+
+            }
+        }
+    
     }
 
 }

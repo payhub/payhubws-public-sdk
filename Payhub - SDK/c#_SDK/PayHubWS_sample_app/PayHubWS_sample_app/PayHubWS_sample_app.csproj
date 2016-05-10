@@ -51,6 +51,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Samples\AuthOnlyAndCaptureSample.cs" />
+    <Compile Include="Samples\EmailConfigurationSample.cs" />
     <Compile Include="Samples\GetTransactionsListSample.cs" />
     <Compile Include="Samples\MetadataSample.cs" />
     <Compile Include="Samples\RecurringBillingSample.cs" />

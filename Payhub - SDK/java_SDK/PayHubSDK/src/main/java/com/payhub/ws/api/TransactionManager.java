@@ -35,6 +35,7 @@ import com.payhub.ws.model.TransactionSearchParameters;
 import com.payhub.ws.model.Verify;
 import com.payhub.ws.model.VoidTransaction;
 import com.payhub.ws.util.WsConnections;
+import com.payhub.ws.vt.EmailConfiguration;
 import com.payhub.ws.vt.GeneralSettings;
 import com.payhub.ws.vt.RiskFraudSettings;
 import com.payhub.ws.vt.RoleSettings;
@@ -878,5 +879,28 @@ public class TransactionManager extends WsConnections{
         }
         return;
     }
+	
+	public EmailConfiguration getEmailConfiguration() throws IOException {
+		String url = _url +EmailConfiguration.EMAIL_LINK ;
+        HttpURLConnection request = setHeadersGet(url, this._oauthToken);
+        String result = doGet(request);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        ObjectNode node = mapper.readValue(result,ObjectNode.class);
+        EmailConfiguration emailConfiguration = mapper.readValue(node.get("emailConfiguration").toString(),EmailConfiguration.class);        
+        return emailConfiguration;
+	}
+	public void patchEmailConfiguration(EmailConfiguration emailConfiguration) throws Exception {
+		String url = _url +EmailConfiguration.EMAIL_LINK;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.setSerializationInclusion(Include.NON_NULL);
+        String json = mapper.writeValueAsString(emailConfiguration);
+        String result = doPatch(url, this._oauthToken, json);
+        if(!StringUtils.isEmpty(result)){
+        	throw new Exception(result);
+        }
+        return;
+	}
 	 
 }

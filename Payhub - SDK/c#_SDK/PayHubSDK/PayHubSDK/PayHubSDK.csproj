@@ -97,6 +97,13 @@
     <Compile Include="com\payhub\ws\model\VoidResponse.cs" />
     <Compile Include="com\payhub\ws\model\VoidTransaction.cs" />
     <Compile Include="com\payhub\ws\util\WsConnections.cs" />
+    <Compile Include="com\payhub\ws\vt\RoleSettings.cs" />
+    <Compile Include="com\payhub\ws\vt\UserRoles.cs" />
+    <Compile Include="com\payhub\ws\vt\RiskFraudSettings.cs" />
+    <Compile Include="com\payhub\ws\vt\GeneralSettings.cs" />
+    <Compile Include="com\payhub\ws\vt\ValidatedDevices.cs" />
+    <Compile Include="com\payhub\ws\vt\WebhookConfiguration.cs" />
+    <Compile Include="com\payhub\ws\vt\EmailConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

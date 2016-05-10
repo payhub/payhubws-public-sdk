@@ -13,6 +13,7 @@ using PayHubSDK.com.payhub.ws.model;
 using PayHubSDK.com.payhub.ws.util;
 using Newtonsoft.Json.Linq;
 using System.Runtime.InteropServices;
+using PayHubSDK.com.payhub.ws.vt;
 namespace PayHubSDK.com.payhub.ws.api
 {
     ///  @author Agustin Breit 
@@ -675,8 +676,6 @@ namespace PayHubSDK.com.payhub.ws.api
             }
 
             return response;
-
-            return response;
         }
         ///<summary> 
         /// Perform a new query that retrieves you the list of Customers for sales.
@@ -995,5 +994,186 @@ namespace PayHubSDK.com.payhub.ws.api
             return JsonConvert.DeserializeObject<RecurringBillInformation>(result);
              
         }
+
+        public EmailConfiguration getEmailConfiguration()
+        {
+            EmailConfiguration response = new EmailConfiguration();
+            var url = _url + EmailConfiguration.EMAIL_LINK;
+            var request = setHeadersGet(url, this._oauthToken);
+            string result = doGet(request);
+            if (result == null || result.Equals(""))
+                return null;
+            var node = JObject.Parse(result);
+            if (node["errors"] != null)
+            {
+                response = JsonConvert.DeserializeObject<EmailConfiguration>(result);
+            }
+            else {
+                response = JsonConvert.DeserializeObject<EmailConfiguration>(node["emailConfiguration"].ToString()); 
+            }          
+            return response;
+        }
+
+        public EmailConfiguration updateEmailConfiguration(EmailConfiguration emailConfig)
+        {
+            var url = _url + EmailConfiguration.EMAIL_LINK;
+            
+            var request = setHeadersPatch(url, this._oauthToken);
+            string json = JsonConvert.SerializeObject(emailConfig, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            String result = doPatch(request, json);
+            if (result == null || result.Equals("")) { return null; }
+            EmailConfiguration email = new EmailConfiguration();
+            var node = JObject.Parse(result);
+            if (node["errors"] != null)
+            {
+                email = JsonConvert.DeserializeObject<EmailConfiguration>(result);
+            }
+            else
+            {
+                email = JsonConvert.DeserializeObject<EmailConfiguration>(node["emailConfiguration"].ToString());
+            }
+            return email;
+
+        }
+
+        public WebhookConfiguration getWebhookConfiguration()
+        {
+            WebhookConfiguration response = new WebhookConfiguration();
+            var url = _url + WebhookConfiguration.WEBHOOK_LINK;
+            var request = setHeadersGet(url, this._oauthToken);
+            string result = doGet(request);
+            if (result == null || result.Equals(""))
+                return null;
+            WebhookConfiguration email = new WebhookConfiguration();
+            var node = JObject.Parse(result);
+            if (node["errors"] != null)
+            {
+                email = JsonConvert.DeserializeObject<WebhookConfiguration>(result);
+            }
+            else
+            {
+                email = JsonConvert.DeserializeObject<WebhookConfiguration>(node["webhookConfiguration"].ToString());
+            }
+            return email;
+        }
+
+        public WebhookConfiguration updateWebhookConfiguration(WebhookConfiguration webhookConfiguration)
+        {
+            var url = _url + WebhookConfiguration.WEBHOOK_LINK;
+            var request = setHeadersPatch(url, this._oauthToken);
+            string json = JsonConvert.SerializeObject(webhookConfiguration, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            String result = doPatch(request, json);
+            if (result == null || result.Equals("")) { return null; } 
+            return JsonConvert.DeserializeObject<WebhookConfiguration>(result);
+        }
+
+        public ValidatedDevices getValidatedDevices()
+        {
+            ValidatedDevices response = new ValidatedDevices();
+            var url = _url + ValidatedDevices.VALIDATED_DEVICES_LINK;
+            var request = setHeadersGet(url, this._oauthToken);
+            string result = doGet(request);
+            if (result == null || result.Equals(""))
+                return null;
+            response = JsonConvert.DeserializeObject<ValidatedDevices>(result);
+            return response;
+        }
+
+        public ValidatedDevices updateValidatedDevices(ValidatedDevices validatedDevices)
+        {
+            var url = _url + ValidatedDevices.VALIDATED_DEVICES_LINK;
+            var request = setHeadersPatch(url, this._oauthToken);
+            string json = JsonConvert.SerializeObject(validatedDevices, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            String result = doPatch(request, json);
+            if (result == null) { return null; }
+            return JsonConvert.DeserializeObject<ValidatedDevices>(result);
+        }
+        public GeneralSettings getGeneralSettings()
+        {
+            GeneralSettings response = new GeneralSettings();
+            var url = _url + GeneralSettings.GENERAL_SETTINGS_LINK;
+            var request = setHeadersGet(url, this._oauthToken);
+            string result = doGet(request);
+            if (result == null || result.Equals(""))
+                return null;
+            response = JsonConvert.DeserializeObject<GeneralSettings>(result);
+            return response;
+        }
+
+        public RiskFraudSettings getRiskFraudSettings()
+        {
+            RiskFraudSettings response = new RiskFraudSettings();
+            var url = _url + RiskFraudSettings.RISK_FRAUD_PATCH_SETTINGS_LINK;
+            var request = setHeadersGet(url, this._oauthToken);
+            string result = doGet(request);
+            if (result == null || result.Equals(""))
+                return null;
+            response = JsonConvert.DeserializeObject<RiskFraudSettings>(result);
+            return response;
+        }
+
+        public RiskFraudSettings updateRiskFraudSettings(RiskFraudSettings riskFraudSettings)
+        {
+            var url = _url + RiskFraudSettings.RISK_FRAUD_PATCH_SETTINGS_LINK;
+            var request = setHeadersPatch(url, this._oauthToken);
+            string json = JsonConvert.SerializeObject(riskFraudSettings, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            String result = doPatch(request, json);
+            if (result == null) { return null; }
+            return JsonConvert.DeserializeObject<RiskFraudSettings>(result);
+        }
+
+        public UserRoles getUserRoles()
+        {
+            UserRoles response = new UserRoles();
+            var url = _url + UserRoles.ALL_USER_ROLE_LINK;
+            var request = setHeadersGet(url, this._oauthToken);
+            string result = doGet(request);
+            if (result == null || result.Equals(""))
+                return null;
+            response = JsonConvert.DeserializeObject<UserRoles>(result);
+            return response;
+        }
+
+        public RoleSettings getUserRolesById(string roleId)
+        {
+		    if(roleId==null || roleId.Equals("")){
+    		    return null;
+    	    }
+            RoleSettings response = new RoleSettings();
+            var url = _url + RoleSettings.USER_ROLE_LINK+roleId;
+            var request = setHeadersGet(url, this._oauthToken);
+            string result = doGet(request);
+            if (result == null || result.Equals(""))
+                return null;
+            response = JsonConvert.DeserializeObject<RoleSettings>(result);
+            return response;
+        }
+        public RoleSettings updateRoleSettings(string roleId, RoleSettings roleSettings)
+        {
+            if (roleId == null || roleId.Equals(""))
+            {
+                return null;
+            }
+            var url = _url + RoleSettings.PATCH_USER_ROLE_LINK+roleId;
+            var request = setHeadersPatch(url, this._oauthToken);
+            string json = JsonConvert.SerializeObject(roleSettings, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            String result = doPatch(request, json);
+            if (result == null) { return null; }
+            return JsonConvert.DeserializeObject<RoleSettings>(result);
+        }
+
+        public RoleSettings createRoleSettings(RoleSettings roleSettings)
+        {
+            if (roleSettings == null)
+            {
+                return null;
+            }
+            var url = _url + RoleSettings.CREATE_USER_ROLE_LINK;
+            string json = JsonConvert.SerializeObject(roleSettings, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            String result = doPostForUserRoles(url,this._oauthToken, json);
+            if (result == null) { return null; }
+            return JsonConvert.DeserializeObject<RoleSettings>(result);
+        }
+
     }
 }

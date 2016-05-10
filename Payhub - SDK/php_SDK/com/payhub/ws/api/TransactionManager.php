@@ -917,4 +917,33 @@ class TransactionManager extends WsConnections
             return true;
         }
     }
+
+    public function getEmailConfiguration()
+    {
+        $url = $this->getUrl().EmailConfiguration::$EMAIL_LINK;
+        $request = $this->setHeadersGet($url, $this->_oauthToken);
+        $result = $this->doGet($request);
+        $response_tmp = EmailConfiguration::fromArray($result['emailConfiguration']);
+        return $response_tmp;
+    }
+
+    public function patchEmailConfiguration($ec)
+    {
+        $url = $this->getUrl().EmailConfiguration::$EMAIL_LINK;
+        $request = $this->setHeadersPatch($url, $this->_oauthToken);
+        $json = json_encode($ec->object_unset_nulls_for_send());
+
+        $result = $this->doPatch($request,$json);
+
+        if(is_array($result)){
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            return true;
+        }
+    }
 }

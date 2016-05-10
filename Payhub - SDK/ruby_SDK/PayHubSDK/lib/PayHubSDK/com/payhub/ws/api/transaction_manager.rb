@@ -1000,4 +1000,44 @@ class TransactionManager < WsConnections
     end
   end
 
+  def getEmailConfiguration()
+    url=@url+EmailConfiguration::EMAIL_LINK
+    result=doGet(url,@token)
+    return nil if result==nil or result==""
+    result = JSON.parse(result)
+    response = EmailConfiguration.new
+    if result['errors']==nil
+      response = EmailConfiguration.from_json(JSON.generate(result["emailConfiguration"]))
+      return response
+    else
+      elist = Array.new
+      result['errors'].each do |errors|
+        json=JSON.generate(errors)
+        response_tmp = Errors.from_json(json)
+        elist.push(response_tmp)
+      end
+      response.errors = elist
+      return response
+    end
+  end
+
+  def patchEmailConfiguration(emailConfig)
+    url=@url+EmailConfiguration::EMAIL_LINK
+    http,request = setHeadersPatch(url,@token)
+    json = emailConfig.serialize_to_json
+    request.body = json
+    result=doPatch(http,request)
+    if result==true
+      return true
+    else
+      response = JSON.parse(result)
+      errors ||= Array.new
+      response['errors'].each do |error|
+        errors_aux=Errors.from_json(JSON.generate(error))
+        errors.push(errors_aux)
+      end
+      return errors
+    end
+
+  end
 end
