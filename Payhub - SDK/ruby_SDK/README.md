@@ -1,7 +1,8 @@
 # PayHubSDK
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/PayHubSDK`. To experiment with that code, run `bin/console` for an interactive prompt.
-[Download the Master Repo] (https://github.com/payhub/payhubws-public-sdk)
+<br><br>
+[Download the Master Repo] (https://github.com/payhub/payhubws-public-sdk/archive/master.zip)
 ## Installation
 
 Add this line to your application's Gemfile:
