@@ -5,7 +5,7 @@ Welcome! In this directory, you'll find the files you need to be able to package
 [Download the Master Repo] (https://github.com/payhub/payhubws-public-sdk)
 
 ## Usage
-* Navigate to Payhub-SDK->c#_SDK and extract both folders: PayHubSDK and PayHubWS_sample_app.
+* Navigate to Payhub-SDK->c#_SDK in the Master Repo, and extract both folders: PayHubSDK and PayHubWS_sample_app.
 * Open your Visual Studio and go to File->Open->New Project/Solution.
 * Go to the directory where you saved the folders.
 * Go to PayHubWS_sample_app, select PayHubWS_sample_app.sln and open it.
