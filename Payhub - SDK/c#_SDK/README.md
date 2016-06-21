@@ -1,8 +1,8 @@
 # PayHubSDK
 
 Welcome! In this directory, you'll find the files you need to be able to package up your C# library into your server.
-
-[Download the Master Repo] (https://github.com/payhub/payhubws-public-sdk)
+<br><br>
+[Download the Master Repo] (https://github.com/payhub/payhubws-public-sdk/archive/master.zip)
 
 ## Usage
 * Navigate to Payhub-SDK->c#_SDK in the Master Repo, and extract both folders: PayHubSDK and PayHubWS_sample_app.
