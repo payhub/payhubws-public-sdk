@@ -1,6 +1,7 @@
 # PayHubSDK
 
 Welcome! In this directory, you'll find the files you need to be able to package up your PHP library into your server. 
+[Download the Master Repo] (https://github.com/payhub/payhubws-public-sdk)
 
 ## Installation
 
@@ -14,7 +15,7 @@ include_once ($path."/payhub/ws/extra/includeClasses.php");
 
 ## Development
 
-* Copy both folders ``com`` and `Samples` into your server.
+* Navigate to Payhub-SDK->php_SDK in the Master Repo, and extract both folders ``com`` and `Samples` into your server.
 * Go to http://localhost/your_app/Samples
 * Execute the sample that you choose.
 
