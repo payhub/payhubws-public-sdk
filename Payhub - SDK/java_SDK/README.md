@@ -1,10 +1,11 @@
 # PayHubSDK
 
 Welcome! In this directory, you'll find the files you need to be able to package up our Java library into your server. 
+[Download the Master Repo] (https://github.com/payhub/payhubws-public-sdk)
 
 ## Usage
-* Download the Samples folder.
-* Download PayHubSDK.jar
+* Navigate to Payhub-SDK->java_SDK in the Master Repo, and extract the Samples folder.
+* Extract PayHubSDK.jar
 * Open your Eclipse environment and Create a new Maven Project.
 * Go to the directory where you saved the Samples folder and add it to your Project.
 * Go to Project->Properties->Java Build Path->Libraries and add the PayHubSDK.jar as an external Library.
