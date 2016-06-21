@@ -1,7 +1,8 @@
 # PayHubSDK
 
 Welcome! In this directory, you'll find the files you need to be able to package up your PHP library into your server. 
-[Download the Master Repo] (https://github.com/payhub/payhubws-public-sdk)
+<br><br>
+[Download the Master Repo] (https://github.com/payhub/payhubws-public-sdk/archive/master.zip)
 
 ## Installation
 
