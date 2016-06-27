@@ -1,0 +1,25 @@
+{
+  "name": "payhub_sdk",
+  "version": "1.0.0",
+  "description": "A library providing methods for running transactions by using your payhub credentials",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/adminSettings.js && node test/authOnly.js && node test/recurring-bills.js && node test/sale.js && node test/transactionReports.js && node test/verify.js && node test/voids.js"
+  },
+  "dependencies":{
+    "sync-request":"*"
+  },
+  "author": "Agustin Breit",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/payhubbuilder/payhub-nodejs-sdk.git"
+  },
+  "keywords": [
+    "payhub",
+    "sdk",
+    "transactions",
+    "payments",
+    "online"
+  ]
+}
