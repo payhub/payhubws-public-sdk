@@ -5,7 +5,6 @@ module JsonSerializer
     self.class::ATTRS.each do |x|
       val = instance_variable_get "@#{x}"
       next if val.nil?
-
       str = x.to_s[0].upcase + x.to_s[1..-1]
       str = "CardData" if str == "Card_data"
       str = "TransactionAmount" if str == "Base_amount" or  str == "Tax_amount" or  str == "Shipping_amount" or  str == "TotalAmount"
@@ -98,6 +97,8 @@ module JsonSerializer
             elsif k=="customer" and obj.is_a?(RoleSettings)
               obj.instance_variable_set "@#{k}", Kernel.const_get(str+'s').from_json(JSON.generate(v))
             elsif k=="refund" and obj.is_a?(SingleOptions)
+              obj.instance_variable_set "@#{k}",v
+            elsif k=="email" and obj.is_a?(TransactionReportInformation)
               obj.instance_variable_set "@#{k}",v
             else
               obj.instance_variable_set "@#{k}", Kernel.const_get(str).from_json(JSON.generate(v))

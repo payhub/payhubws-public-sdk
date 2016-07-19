@@ -169,4 +169,13 @@ class WsConnections
       return result.gsub('\\','').gsub('"{','{').gsub('}"','}')
     end
   end
+  def doPatchForBatch(http,request)
+    response = http.request(request)
+    case response.code.to_i
+      when 200..399
+        return response.read_body
+      else
+        return generateErrorResponse(response)
+    end
+  end
 end

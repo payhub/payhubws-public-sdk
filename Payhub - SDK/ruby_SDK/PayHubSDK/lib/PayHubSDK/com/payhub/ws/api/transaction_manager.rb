@@ -719,6 +719,7 @@ class TransactionManager < WsConnections
     return response
   end
 
+
   # @param [Object] datos
   # @param [Object] type
   # @param [Object] operationId
@@ -1009,7 +1010,7 @@ class TransactionManager < WsConnections
     if result['errors']==nil
       response = EmailConfiguration.from_json(JSON.generate(result["emailConfiguration"]))
       return response
-    else
+      else
       elist = Array.new
       result['errors'].each do |errors|
         json=JSON.generate(errors)
@@ -1040,4 +1041,107 @@ class TransactionManager < WsConnections
     end
 
   end
+
+  def closeBatch(batchId)
+    if batchId.to_s=='' || batchId==nil
+      return nil
+    end
+    url=@url+Batch::BATCH_LINK+batchId.to_s
+    http,request = setHeadersPatch(url,@token)
+    result=doGet(url,@token)
+    return nil if result==nil or result==""
+    result = JSON.parse(result)
+    response = Batch.new
+    if result['errors']==nil
+      response = Batch.from_json(JSON.generate(result))
+      return response
+    else
+      elist = Array.new
+      result['errors'].each do |errors|
+        json=JSON.generate(errors)
+        response_tmp = Errors.from_json(json)
+        elist.push(response_tmp)
+      end
+      response.errors = elist
+      return response
+    end
+
+  end
+
+  def getBatchInformation(batchId)
+    if batchId.to_s=='' || batchId==nil
+      return nil
+    end
+    url=@url+Batch::BATCH_LINK+batchId.to_s
+    result=doGet(url,@token)
+    return nil if result==nil or result==""
+    result = JSON.parse(result)
+    response = Batch.new
+    credit_list=Array.new
+    transaction_list=Array.new
+    if result['errors']==nil
+      response = BatchResponseInformation.from_json(JSON.generate(result))
+      result['batch_info']['credit_cards'].each do |creditCards|
+        json=JSON.generate(creditCards)
+        response_tmp = Credit_cards.from_json(json)
+        credit_list.push(response_tmp)
+      end
+      result['transactions_detail'].each do |trnDetails|
+        json=JSON.generate(trnDetails)
+        response_tmp = TransactionReportInformation.from_json(json)
+        transaction_list.push(response_tmp)
+      end
+
+      response.batch_info.credit_cards=credit_list
+      response.transactions_detail=transaction_list
+      return response
+    else
+      elist = Array.new
+      result['errors'].each do |errors|
+        json=JSON.generate(errors)
+        response_tmp = Errors.from_json(json)
+        elist.push(response_tmp)
+      end
+      response.errors = elist
+      return response
+    end
+
+  end
+
+  def findTotals(parameters)
+    url=@url+"report/transactionTotals/"
+    http,request = setHeadersPost(url,@token)
+    transactionReports=findTransactionReports(http,request,parameters)
+    return nil if transactionReports==nil or transactionReports==""
+    result = JSON.parse(transactionReports)
+    credit_list=Array.new
+    response = TransactionTotals.new
+    if result[0]['errors']==nil
+      result.each do |batches|
+        batches['credit_cards'].each do |creditCards|
+          json=JSON.generate(creditCards)
+          response_tmp = Credit_cards.from_json(json)
+          credit_list.push(response_tmp)
+        end
+        json=JSON.generate(batches['all_transactions'])
+        response_tmp = All_transactions.from_json(json)
+
+        response.all_transactions=response_tmp
+        response.credit_cards=credit_list
+      end
+      return response
+    else
+      elist = Array.new
+      result['errors'].each do |errors|
+        json=JSON.generate(errors)
+        response_tmp = Errors.from_json(json)
+        elist.push(response_tmp)
+      end
+      response.errors = elist
+      return response
+    end
+
+
+  end
+
 end
