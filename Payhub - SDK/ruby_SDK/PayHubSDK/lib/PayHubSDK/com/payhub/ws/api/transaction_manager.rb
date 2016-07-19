@@ -1048,7 +1048,7 @@ class TransactionManager < WsConnections
     end
     url=@url+Batch::BATCH_LINK+batchId.to_s
     http,request = setHeadersPatch(url,@token)
-    result=doGet(url,@token)
+    result=doPatchForBatch(http,request)
     return nil if result==nil or result==""
     result = JSON.parse(result)
     response = Batch.new

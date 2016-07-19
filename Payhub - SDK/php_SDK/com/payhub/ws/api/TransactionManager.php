@@ -762,24 +762,54 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().GeneralSettings::$GENERAL_SETTINGS_LINK;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        $response_tmp = GeneralSettings::fromArray($result);
-        return $response_tmp;
+
+        if(array_key_exists('errors',$result)) {
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            $response_tmp = GeneralSettings::fromArray($result);
+            return $response_tmp;
+        }
     }
     public function getWebhookConfiguration()
     {
         $url = $this->getUrl().WebhookConfiguration::$WEBHOOK_LINK;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        $response_tmp = WebhookConfiguration::fromArray($result['webhookConfiguration']);
-        return $response_tmp;
+        if(array_key_exists('errors',$result)) {
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            $response_tmp = WebhookConfiguration::fromArray($result['webhookConfiguration']);
+            return $response_tmp;
+        }
+
     }
     public function getValidatedDevices()
     {
         $url = $this->getUrl().ValidatedDevices::$VALIDATED_DEVICES_LINK;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        $response_tmp = ValidatedDevices::fromArray($result);
-        return $response_tmp;
+
+        if(array_key_exists('errors',$result)) {
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            $response_tmp = ValidatedDevices::fromArray($result);
+            return $response_tmp;
+        }
     }
 
     public function getRiskFraudSettings()
@@ -787,8 +817,18 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().RiskFraudSettings::$RISK_FRAUD_SETTINGS_LINK;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        $response_tmp = RiskFraudSettings::fromArray($result);
-        return $response_tmp;
+
+        if(array_key_exists('errors',$result)) {
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            $response_tmp = RiskFraudSettings::fromArray($result);
+            return $response_tmp;
+        }
     }
 
     public function patchWebhookConfiguration($wh)
@@ -854,8 +894,17 @@ class TransactionManager extends WsConnections
     	$url = $this->getUrl().UserRoles::$ALL_USER_ROLE_LINK;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        $response_tmp = UserRoles::fromArray($result);
-        return $response_tmp;
+
+        if(array_key_exists('errors',$result)) {
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            return UserRoles::fromArray($result);
+        }
     }
 
     public function getUserRolesById($roleId)
@@ -866,8 +915,16 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().RoleSettings::$USER_ROLE_LINK.$roleId;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        $response_tmp = RoleSettings::fromArray($result);
-        return $response_tmp;
+        if(array_key_exists('errors',$result)) {
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            return RoleSettings::fromArray($result);
+        }
     }
 
     public function patchUserRoles($roleSettings, $roleId)
@@ -923,7 +980,17 @@ class TransactionManager extends WsConnections
         $url = $this->getUrl().EmailConfiguration::$EMAIL_LINK;
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
-        $response_tmp = EmailConfiguration::fromArray($result['emailConfiguration']);
+        if(array_key_exists('errors',$result)) {
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            $response_tmp = EmailConfiguration::fromArray($result['emailConfiguration']);
+        }
+
         return $response_tmp;
     }
 
@@ -946,4 +1013,48 @@ class TransactionManager extends WsConnections
             return true;
         }
     }
+
+    public function closeBatch($id){
+        if(is_null($id) || $id==""){
+            return null;
+        }
+        $url = $this->getUrl().Batch::$BATCH_LINK.$id;
+        $request = $this->setHeadersPatch($url, $this->_oauthToken);
+
+        $result = $this->doPatchForBatch($request);
+
+        if(array_key_exists('errors',$result)) {
+            $errors_tmp = new Errors();
+            foreach ($result as $errorData) {
+                $errors_tmp = Errors::fromArray($errorData);
+            }
+            $errors[]=$errors_tmp;
+            return $errors;
+        }else{
+            $response = Batch::fromArray($result);
+            return $response;
+        }
+    }
+
+    public function getBatchInformation($id){
+        if(is_null($id) || $id==""){
+            return null;
+        }
+        $url = $this->getUrl().Batch::$BATCH_LINK.$id;
+        $request = $this->setHeadersGet($url, $this->_oauthToken);
+
+        $result = $this->doGet($request);
+        $response = BatchResponseInformation::fromArray($result);
+        return $response;
+
+    }
+
+    public function findTotals($parameters){
+        $url = $this->getUrl()."report/transactionTotals/";
+        $request = $this->setHeadersPost($url, $this->_oauthToken);
+        $result = $this->findTransactionReports($request,json_encode($parameters));
+        $response = TransactionTotals::fromArray($result);
+        return $response;
+    }
+
 }

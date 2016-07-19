@@ -250,4 +250,36 @@ class WsConnections
         }
 
     }
+
+    public function doPatchForBatch($request){
+        $response = curl_exec($request);
+        $httpcode = curl_getinfo($request, CURLINFO_HTTP_CODE);
+        curl_close($request);
+        $p = strpos($response, "\r\n\r\n");
+
+        if ($httpcode>=200 && $httpcode< 400){
+            if( $p !== false ) {
+                $rawBody = substr($response, $p + 4);
+            }
+            $data = json_decode($rawBody, true);
+            return $data;
+        }else {
+            $p = strpos($response, "\r\n\r\n");
+            $rawBody="";
+            if( $p !== false ) {
+                $rawBody = substr($response, $p + 4);
+            }
+            if ($httpcode == 401) {
+                $data = json_decode($rawBody, true);
+                return Errors::fromArrayForUnautenticated($data);
+            }else{
+                if($rawBody==""){
+                    $rawBody="{\"errors\":[{\"status\":\"BAD_REQUEST\",\"code\": \"9995\",\"location\": \"404 Page not found.\",\"reason\": \"404 There aren't results for the query\",\"severity\": \"ERROR\"}]}";
+                }
+                $data = json_decode($rawBody, true);
+                return $data;
+            }
+        }
+
+    }
 }
