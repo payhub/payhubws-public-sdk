@@ -35,6 +35,8 @@ public class TransactionReportInformation {
 	private String voidedBy;    
     private String refundedBy;   
     private String isCaptured;
+    private String recurringBillId;
+    private String customerId;
 	/**
 	 * @return the transactionID
 	 */
@@ -298,6 +300,30 @@ public class TransactionReportInformation {
 	 */
 	public void setIsCaptured(String isCaptured) {
 		this.isCaptured = isCaptured;
+	}
+	/**
+	 * @return the recurringBillId
+	 */
+	public String getRecurringBillId() {
+		return recurringBillId;
+	}
+	/**
+	 * @param recurringBillId the recurringBillId to set
+	 */
+	public void setRecurringBillId(String recurringBillId) {
+		this.recurringBillId = recurringBillId;
+	}
+	/**
+	 * @return the customerId
+	 */
+	public String getCustomerId() {
+		return customerId;
+	}
+	/**
+	 * @param customerId the customerId to set
+	 */
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 	
 	
