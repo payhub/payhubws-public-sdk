@@ -23,7 +23,7 @@ tsp.amountTo="5.00";
 var transactionManager = new trnManager.TransactionManager(merchant,WsURL,oauth_token);
 var transactionReportReponse = transactionManager.findTransactions(tsp);
 console.log(transactionReportReponse[0]);
-var transactionTotals = transactionManager.findTransactionsTotals(tsp);
+var transactionTotals = transactionManager.findTotals(tsp);
 console.log(transactionTotals);
 
 

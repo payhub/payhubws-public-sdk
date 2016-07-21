@@ -358,7 +358,7 @@ function TransactionManager(merchant,url,token){
         return response;
     }
 
-    this.findTransactionsTotals=function(parameters){
+    this.findTotals=function(parameters){
         var url = _url+"report/transactionTotals";
         var response = wsConnections.postRptRequest(parameters,url,_token);
         return response;
@@ -474,5 +474,25 @@ function TransactionManager(merchant,url,token){
         var response = wsConnections.postUsrRoles(role,url,_token);
         return response;
     }
+
+
+    //BATCH METHODS//
+    this.closeBatch=function(id){
+        if(arguments.length>1 || !arguments[0] || !(parseInt(arguments[0]))){
+            if(arguments.length>1)throw "Parameter don't match: Id. is required";
+        }
+        var url=_url+"batch/"+id;
+        var response = wsConnections.doPatchForBatch(url,_token);
+        return response;
+    }
+    this.getBatchInformation=function(id){
+        if(arguments.length>1 || !arguments[0] || !(parseInt(arguments[0]))){
+            if(arguments.length>1)throw "Parameters don't match: Id. is required";
+        }
+        var url=_url+"batch/"+id;
+        var response = wsConnections.getTrnRequest(role,url,_token);
+        return response;
+    }
+
 }
 
