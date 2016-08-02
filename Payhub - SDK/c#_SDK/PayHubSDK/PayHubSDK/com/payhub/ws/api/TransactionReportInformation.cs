@@ -54,6 +54,10 @@ namespace PayHubSDK.com.payhub.ws.api
         private string refundedBy;
         [DataMember]
         private string isCaptured;
+        [DataMember]
+        private string recurringBillId;
+        [DataMember]
+        private string customerId;
 
         public string TransactionID { get { return this.transactionID; } set { this.transactionID = value; } }
         public string BatchID { get { return this.batchID; } set { this.batchID = value; } }
@@ -77,6 +81,7 @@ namespace PayHubSDK.com.payhub.ws.api
         private string VoidedBy { get { return this.voidedBy; } set { this.voidedBy= value; } }
         private string RefundedBy { get { return this.refundedBy; } set { this.refundedBy = value; } }
         private string IsCaptured { get { return this.isCaptured; } set { this.isCaptured = value; } }
-
+        private string RecurringBillId { get { return this.recurringBillId; } set { this.recurringBillId = value; } }
+        private string CustomerId { get { return this.customerId; } set { this.customerId = value; } }
     }
 }

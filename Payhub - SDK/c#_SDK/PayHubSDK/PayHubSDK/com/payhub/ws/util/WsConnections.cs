@@ -367,6 +367,37 @@ namespace PayHubSDK.com.payhub.ws.util
 
             }
         }
+
+
+        public string doPatchForBatch(HttpWebRequest request)
+        {
+            string result = null;
+            try
+            {
+                var response = (HttpWebResponse)request.GetResponse();                
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    result = reader.ReadToEnd();
+                }
+                return result;                
+            }
+            catch (WebException wex)
+            {
+                if (wex.Response != null)
+                {
+                    using (var errorResponse = (HttpWebResponse)wex.Response)//You return wex.Response instead
+                    {
+                        using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+                        {
+                            return generateErrors(reader, wex);
+                        }
+                    }
+                }
+                return result;
+            }
+
+        }
+
     
     }
 

@@ -49,6 +49,7 @@
     <Compile Include="com\payhub\ws\api\BillInformation.cs" />
     <Compile Include="com\payhub\ws\api\CaptureResponseInfromation.cs" />
     <Compile Include="com\payhub\ws\api\CardDataInformation.cs" />
+    <Compile Include="com\payhub\ws\api\BatchResponseInformation.cs" />
     <Compile Include="com\payhub\ws\api\CustomerInformation.cs" />
     <Compile Include="com\payhub\ws\api\Errors.cs" />
     <Compile Include="com\payhub\ws\api\MerchantInformation.cs" />
@@ -97,6 +98,10 @@
     <Compile Include="com\payhub\ws\model\VoidResponse.cs" />
     <Compile Include="com\payhub\ws\model\VoidTransaction.cs" />
     <Compile Include="com\payhub\ws\util\WsConnections.cs" />
+    <Compile Include="com\payhub\ws\vt\AllTransactions.cs" />
+    <Compile Include="com\payhub\ws\vt\Batch.cs" />
+    <Compile Include="com\payhub\ws\vt\CreditCards.cs" />
+    <Compile Include="com\payhub\ws\vt\TransactionTotals.cs" />
     <Compile Include="com\payhub\ws\vt\RoleSettings.cs" />
     <Compile Include="com\payhub\ws\vt\UserRoles.cs" />
     <Compile Include="com\payhub\ws\vt\RiskFraudSettings.cs" />

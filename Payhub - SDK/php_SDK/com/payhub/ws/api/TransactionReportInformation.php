@@ -420,20 +420,16 @@ class TransactionReportInformation
     
 
     public static function fromArray($data){
-        if(!is_null($data)) {
-            $err=null;
-            $tri = new TransactionReportInformation();
-            foreach ($data as $key => $value) {
-                if (property_exists(get_class($tri), $key)) {
-                   $tri->{$key} = $value;
+        $trn=new TransactionReportInformation();
+        foreach ($data as $key => $value){
+            if( property_exists( get_class($trn), $key ) ) {
+                if($key=="errors"){
+                    $trn->{$key}=Errors::fromArray($value);
                 }else{
-                    $err[]=$value;
+                    $trn->{$key} = $value;
                 }
             }
-            if(!is_null($err)){
-                $tri->errors=Errors::fromArray($err);
-            }
-            return $tri;
         }
+        return $trn;
     }
 }

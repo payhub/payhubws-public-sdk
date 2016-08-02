@@ -1175,5 +1175,126 @@ namespace PayHubSDK.com.payhub.ws.api
             return JsonConvert.DeserializeObject<RoleSettings>(result);
         }
 
+        public TransactionTotals findTotals(TransactionSearchParameters parameters)
+        {
+            String url = _url + TransactionTotals.TRN_TOTAL_LINK;
+            HttpWebRequest request = setHeadersPost(url, this._oauthToken);
+            string json = JsonConvert.SerializeObject(parameters, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+            string result = findTransactionReports(request, json);
+            TransactionTotals response = new TransactionTotals();
+            try
+            {
+                var node = JArray.Parse(result);              
+                response = JsonConvert.DeserializeObject<TransactionTotals>(node[0].ToString());
+            }
+            catch
+            {
+                try
+                {
+                    var node = JObject.Parse(result);
+                    List<Errors> errors = JsonConvert.DeserializeObject<List<Errors>>(node["errors"].ToString());
+                    TransactionTotals t = new TransactionTotals();
+                    t.Errors = errors;
+                    return t;
+                }
+                catch
+                {
+                    List<Errors> errors = new List<Errors>();
+                    Errors error = new Errors();
+                    error.Reason = "Unknown Error";
+                    errors.Add(error);
+                    TransactionTotals t = new TransactionTotals();
+                    t.Errors = errors;
+                    return t;
+                }
+            }
+
+            return response;
+        }
+
+        public Batch closeBatch(string id) {
+            if (id == null || id.Equals(""))
+            {
+                return null;
+            }
+
+            String url = _url + Batch.BATCH_LINK+id;
+            HttpWebRequest request = setHeadersPatch(url, this._oauthToken);
+            string result = doPatchForBatch(request);
+            Batch response = new Batch();
+            try
+            {
+                response = JsonConvert.DeserializeObject<Batch>(result);
+            }
+            catch
+            {
+                try
+                {
+                    var node = JObject.Parse(result);
+                    List<Errors> errors = JsonConvert.DeserializeObject<List<Errors>>(node["errors"].ToString());
+                    Batch t = new Batch();
+                    t.Errors = errors;
+                    return t;
+                }
+                catch
+                {
+                    List<Errors> errors = new List<Errors>();
+                    Errors error = new Errors();
+                    error.Reason = "Unknown Error";
+                    errors.Add(error);
+                    Batch t = new Batch();
+                    t.Errors = errors;
+                    return t;
+                }
+            }
+
+            return response;
+
+
+        }
+
+
+        public BatchResponseInformation getBatchInformation(string id)
+        {
+            if (id == null || id.Equals(""))
+            {
+                return null;
+            }
+
+            String url = _url + Batch.BATCH_LINK + id;
+            HttpWebRequest request = setHeadersGet(url, this._oauthToken);
+            string result = doGet(request);
+            BatchResponseInformation response = new BatchResponseInformation();
+            try
+            {
+                response = JsonConvert.DeserializeObject<BatchResponseInformation>(result);
+            }
+            catch
+            {
+                try
+                {
+                    var node = JObject.Parse(result);
+                    List<Errors> errors = JsonConvert.DeserializeObject<List<Errors>>(node["errors"].ToString());
+                    BatchResponseInformation t = new BatchResponseInformation();
+                    t.Errors = errors;
+                    return t;
+                }
+                catch
+                {
+                    List<Errors> errors = new List<Errors>();
+                    Errors error = new Errors();
+                    error.Reason = "Unknown Error";
+                    errors.Add(error);
+                    BatchResponseInformation t = new BatchResponseInformation();
+                    t.Errors = errors;
+                    return t;
+                }
+            }
+
+            return response;
+
+
+        }
+
     }
 }

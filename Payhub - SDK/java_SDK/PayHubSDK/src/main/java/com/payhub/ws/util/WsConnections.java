@@ -138,7 +138,7 @@ public class WsConnections {
 				    	error.add(_error);
 				    	errors.put("errors",error);
 				    	result = errors.toString();
-				   }if(statusCode==400 && StringUtils.isNotBlank(result)){
+				   }else if(statusCode==400 && StringUtils.isNotBlank(result)){
 					   JSONObject aux = new JSONObject(result);
 					   if(aux.get("errors")!=null){
 						   return result;
@@ -224,7 +224,7 @@ public class WsConnections {
 			    	error.add(_error);
 			    	errors.put("errors",error);
 			    	result = errors.toString();
-			   }if(statusCode==400 && StringUtils.isNotBlank(result)){
+			   }else if(statusCode==400 && StringUtils.isNotBlank(result)){
 				   JSONObject errors = new JSONObject();
 					ObjectMapper mapper = new ObjectMapper();
 				    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -311,33 +311,72 @@ public class WsConnections {
 		wr.writeBytes(json);
 		wr.flush();
 		wr.close();	
-		
+		String result = null;
     	StringBuffer response = new StringBuffer();   	
     	int statusCode = responseDataRequest.getResponseCode();
+    	InputStream is=null;
 		System.out.println("Response Code : " + statusCode);
 		if (statusCode >= 200 && statusCode < 400) {
-			BufferedReader in = new BufferedReader(new InputStreamReader(responseDataRequest.getInputStream()));
+			is = responseDataRequest.getInputStream();
+        	BufferedReader in = new BufferedReader(new InputStreamReader(is));
         	String line;
         	while ((line = in.readLine()) != null){ 
         		response.append(line); 
         	}
         		in.close();
-                return response.toString();   	
+                result =  response.toString();   	
 		}else{
-			BufferedReader er = new BufferedReader(new InputStreamReader(responseDataRequest.getErrorStream()));
-         	String line;
-         	try {
-         		int c = 0;
-			     while((c = er.read()) != -1) {					         
-			          response.append((char)c);
-			     }					    
-						 
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            return response.toString();
-		}  	           
+			is = responseDataRequest.getErrorStream();			  
+			if(is!=null){
+				BufferedReader er = new BufferedReader(new InputStreamReader(is));	            	
+				   try {
+					     int c = 0;
+					     while((c = er.read()) != -1) {					         
+					          response.append((char)c);
+					     }
+					     result =  response.toString(); 
+	 				} catch (IOException e) {
+	 					// TODO Auto-generated catch block
+	 					System.out.println(e.getMessage());
+	 				}
+				   
+			}
+        	
+		   if(statusCode==401){
+			    JSONObject errors = new JSONObject();
+				ObjectMapper mapper = new ObjectMapper();
+			    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		    	Errors _error  = mapper.readValue(result, Errors.class);
+		    	List<Errors>error = new ArrayList<Errors>();
+		    	error.add(_error);
+		    	errors.put("errors",error);
+		    	return errors.toString();
+		   }else if(statusCode==400 && StringUtils.isNotBlank(result)){
+			   JSONObject errors = new JSONObject();
+				ObjectMapper mapper = new ObjectMapper();
+			    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		    	Errors _error  = mapper.readValue(result, Errors.class);
+		    	List<Errors>error = new ArrayList<Errors>();
+		    	error.add(_error);
+		    	errors.put("errors",error);
+		    	result = errors.toString();
+		   }else{
+			   JSONObject errors = new JSONObject();
+			   Errors _error = new Errors();
+               _error.setStatus("BAD_REQUEST");
+               _error.setCode("9995");
+               _error.setLocation("404 not found.");
+               _error.setReason("404 There aren't results");
+               _error.setSeverity("ERROR");
+               List<Errors>error = new ArrayList<Errors>();
+		    	error.add(_error);
+		    	errors.put("errors",error);
+		    	result = errors.toString();
+		   }
+		   	
+            return result;
+		}
+		return result;
     }
     
     public String doPatch(String url,String token,String json) throws IOException
@@ -369,7 +408,7 @@ public class WsConnections {
 		    	error.add(_error);
 		    	errors.put("errors",error);
 		    	return errors.toString();
-		   }if(statusCode==400 && StringUtils.isNotBlank(bodys)){
+		   }else if(statusCode==400 && StringUtils.isNotBlank(bodys)){
 			   JSONObject errors = new JSONObject();
 				ObjectMapper mapper = new ObjectMapper();
 			    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -427,4 +466,60 @@ public class WsConnections {
 	        return responseB.toString();
     	}
     }
+    
+    public String doPatchForBatch(String url,String token) throws IOException
+    {
+    	OkHttpClient client = new OkHttpClient();
+
+    	MediaType mediaType = MediaType.parse("application/json");
+    	Request request = new Request.Builder().url(url)
+    	  .patch(RequestBody.create(null, new byte[0]))
+    	  .addHeader("accept", "application/json")
+    	  .addHeader("content-type", "application/json")
+    	  .addHeader("authorization", "Bearer "+token)
+    	  .addHeader("cache-control", "no-cache")
+    	  .build();
+
+    	Response responseDataRequest = client.newCall(request).execute();   
+    	int statusCode = responseDataRequest.code();
+    	if (statusCode >= 200 && statusCode < 400) {
+
+    		String bodys = responseDataRequest.body().string();	
+    		return 	bodys.toString();
+    	}else{
+			String bodys = responseDataRequest.body().string();			
+		   if(statusCode==401){
+			    JSONObject errors = new JSONObject();
+				ObjectMapper mapper = new ObjectMapper();
+			    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		    	Errors _error  = mapper.readValue(bodys, Errors.class);
+		    	List<Errors>error = new ArrayList<Errors>();
+		    	error.add(_error);
+		    	errors.put("errors",error);
+		    	return errors.toString();
+		   }else if(statusCode==400 && StringUtils.isNotBlank(bodys)){
+			   JSONObject errors = new JSONObject();
+				ObjectMapper mapper = new ObjectMapper();
+			    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		    	Errors _error  = mapper.readValue(bodys, Errors.class);
+		    	List<Errors>error = new ArrayList<Errors>();
+		    	error.add(_error);
+		    	errors.put("errors",error);
+		    	return errors.toString();
+		   }else{
+			   JSONObject errors = new JSONObject();
+			   Errors _error = new Errors();
+               _error.setStatus("BAD_REQUEST");
+               _error.setCode("9995");
+               _error.setLocation("404 not found.");
+               _error.setReason("404 There aren't results");
+               _error.setSeverity("ERROR");
+               List<Errors>error = new ArrayList<Errors>();
+		    	error.add(_error);
+		    	errors.put("errors",error);
+		    	return errors.toString();
+		   }		   	
+		}
+    }
+    
 }

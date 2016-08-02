@@ -2,15 +2,9 @@ package com.payhub.ws.api;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.omg.CORBA.Any;
-import org.omg.CORBA.Object;
-import org.omg.CORBA.TypeCode;
-import org.omg.CORBA.portable.InputStream;
-import org.omg.CORBA.portable.OutputStream;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -19,8 +13,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.payhub.ws.model.AuthOnly;
 import com.payhub.ws.model.Bill;
@@ -35,10 +29,12 @@ import com.payhub.ws.model.TransactionSearchParameters;
 import com.payhub.ws.model.Verify;
 import com.payhub.ws.model.VoidTransaction;
 import com.payhub.ws.util.WsConnections;
+import com.payhub.ws.vt.Batch;
 import com.payhub.ws.vt.EmailConfiguration;
 import com.payhub.ws.vt.GeneralSettings;
 import com.payhub.ws.vt.RiskFraudSettings;
 import com.payhub.ws.vt.RoleSettings;
+import com.payhub.ws.vt.TransactionTotals;
 import com.payhub.ws.vt.UserRoles;
 import com.payhub.ws.vt.ValidatedDevices;
 import com.payhub.ws.vt.WebhookConfiguration;
@@ -902,5 +898,65 @@ public class TransactionManager extends WsConnections{
         }
         return;
 	}
+	
+	public TransactionTotals findTotals(TransactionSearchParameters parameters)throws Exception{
+    	String url = _url + TransactionTotals.TRN_TOTAL_LINK;
+        HttpURLConnection request = setHeadersPost(url, this._oauthToken);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        String json = mapper.writeValueAsString(parameters);        
+        String result = findTransactionReports(request, json);
+        try{
+        	ArrayNode  node = mapper.readValue(result,ArrayNode .class);
+        	TransactionTotals response = new TransactionTotals();
+        	response =  mapper.readValue(node.get(0).toString(),TransactionTotals.class); 
+        	return response;
+        }catch(Exception e){
+        	try{
+        		TransactionTotals response = new TransactionTotals();
+	        	ObjectNode  node = mapper.readValue(result,ObjectNode .class);
+	        	response =  mapper.readValue(result, TransactionTotals.class);
+	        	return response;
+        	}catch(Exception ex){
+        		throw ex;
+        	}
+        }
+        
+    }
+	
+	public Batch closeBatch(String id) throws JsonParseException, JsonMappingException, IOException {
+        if (StringUtils.isBlank(id))
+        {
+            return null;
+        }
+
+        String url = _url + Batch.BATCH_LINK+id;
+        String result = doPatchForBatch(url, this._oauthToken);
+        Batch response = new Batch();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        response =  mapper.readValue(result, Batch.class);
+        
+        return response;
+    }
+
+
+    public BatchResponseInformation getBatchInformation(String id) throws IOException
+    {
+        if (StringUtils.isBlank(id))
+        {
+            return null;
+        }
+        String url = _url + Batch.BATCH_LINK+id;
+        HttpURLConnection request = setHeadersGet(url, this._oauthToken);
+        String result = doGet(request);
+        BatchResponseInformation response = new BatchResponseInformation();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        response =  mapper.readValue(result, BatchResponseInformation.class);
+        return response;
+    }
+    
+	
 	 
 }

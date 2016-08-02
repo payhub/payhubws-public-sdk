@@ -19,6 +19,7 @@ class EmailConfiguration
     public $pdfOrCsvForBatch;
     public $customRBReport;
     public $pdfOrCsvForRB;
+    public $errors;
     /**
      * EmailConfiguration constructor.
      */
@@ -189,9 +190,15 @@ class EmailConfiguration
     public static function fromArray($data)
     {
         $wh = new EmailConfiguration();
+
         foreach ($data as $key => $value) {
             if (property_exists(get_class($wh), $key)) {
+                if($key=="errors"){
+                    $wh->{$key}=$value;
+                }else{
                     $wh->{$key} = $value;
+                }
+
             }
         }
         return $wh;
