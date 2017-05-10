@@ -458,8 +458,8 @@ class TransactionManager extends WsConnections
         return $response;
     }
 
-    public function getAllRecurringBillInformation(){
-        $url = $this->getUrl().RecurringBill::$RECURRENT_BILL_ID_LINK;
+    public function getAllRecurringBillInformation($page=0,$size=20){
+        $url = $this->getUrl().RecurringBill::$RECURRENT_BILL_ID_LINK."?page=".$page."&size=".$size."&sort=id,desc";
         $request = $this->setHeadersGet($url, $this->_oauthToken);
         $result = $this->doGet($request);
         if(array_key_exists('_embedded',$result)) {
@@ -641,14 +641,14 @@ class TransactionManager extends WsConnections
         }
     }
 
-    public function updateRecurringBillStatus($id){
+    public function updateRecurringBillStatus($id,$status="CANCELED"){
         if(is_null($id) || $id==""){
             return false;
         }
         $url=$this->getUrl()."recurring-bill-status/".$id;
         $request = $this->setHeadersPatch($url,$this->_oauthToken);
 
-        $data = array("recurring_bill_status" => "CANCELED");
+        $data = array("recurring_bill_status" => $status);
         $json = json_encode($data);
         $result=$this->doPatch($request,$json);
         return $result;
